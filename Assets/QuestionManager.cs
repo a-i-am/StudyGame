@@ -1,25 +1,30 @@
-ï»¿using UnityEngine;
+using UnityEngine;
 using UnityEngine.EventSystems;
 using TMPro;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Text;
+using System.Linq;
 
-// ë°ì´í„°ë¥¼ ë‹´ì„ í´ë˜ìŠ¤ ìƒì„±
 [System.Serializable]
 public class MockPassageData
 {
-    public string passageId;       // ì˜ˆ: "P_001"
-    [TextArea(3, 5)]               // ì¸ìŠ¤í™í„°ì—ì„œ ë„“ê²Œ ì…ë ¥í•  ìˆ˜ ìˆë„ë¡ ì†ì„± ì¶”ê°€
-    public string contentText;     // ì‹¤ì œ ì§€ë¬¸ í…ìŠ¤íŠ¸
-    public string correctKeyword;  // ì¶”í›„ ì‚¬ìš©í•  ì •ë‹µ ì •ë³´
+    public string passageId;
+    [TextArea(3, 5)]
+    public string contentText;
+    public string correctKeyword;
+
+    [Header("¹®Àåº° °¡ÁßÄ¡ (¼ø¼­´ë·Î 1¹ø, 2¹ø ¹®Àå...")]
+    public List<int> sentenceScores; // ÀÎ½ºÆåÅÍ¿¡¼­ °¢ ¹®Àå ¹èÁ¡À» ¼³Á¤ÇÒ ¸®½ºÆ®
 }
+
 public enum HighlightMode
 {
     Color,
     Underline,
     Mark
 }
+
 public class QuestionManager : MonoBehaviour, IPointerClickHandler
 {
     [Header("Data Settings")]
@@ -28,24 +33,24 @@ public class QuestionManager : MonoBehaviour, IPointerClickHandler
 
     [Header("UI Components")]
     [SerializeField] TextMeshProUGUI passageText;
+    [SerializeField] TextMeshProUGUI scoreText; // Á¡¼ö¸¦ Ç¥½ÃÇÒ UI ÅØ½ºÆ®
 
     [Header("Feedback Settings")]
-    HighlightMode currentHighlightMode = HighlightMode.Underline;
+    [SerializeField] HighlightMode currentHighlightMode = HighlightMode.Underline;
 
-    // ë‹¤ì¤‘ ì„ íƒëœ ë¬¸ì¥ì˜ ì¸ë±ìŠ¤ë“¤ì„ ì €ì¥í•  HashSet (ì¤‘ë³µ ë°©ì§€ ë° ë¹ ë¥¸ íƒìƒ‰)
     private HashSet<int> selectedSentenceIndices = new HashSet<int>();
+    private int previousTestIndex = -1;
+
     void Start()
     {
         BuildLinkedText();
     }
 
-    // ë§ˆìš°ìŠ¤ í´ë¦­ì´ë‚˜ í„°ì¹˜ê°€ ë°œìƒí•  ë•Œ ìë™ìœ¼ë¡œ í˜¸ì¶œë˜ëŠ” í•¨ìˆ˜
     public void OnPointerClick(PointerEventData eventData)
     {
         Camera eventCamera = eventData.pressEventCamera;
         int linkIndex = TMP_TextUtilities.FindIntersectingLink(passageText, eventData.position, eventCamera);
 
-        // 2. í´ë¦­ëœ ê³³ì— ë§í¬ê°€ ì¡´ì¬í•œë‹¤ë©´ (linkIndexê°€ -1ì´ ì•„ë‹ˆë¼ë©´)
         if (linkIndex != -1)
         {
             TMP_LinkInfo linkInfo = passageText.textInfo.linkInfo[linkIndex];
@@ -57,29 +62,38 @@ public class QuestionManager : MonoBehaviour, IPointerClickHandler
                 {
                     selectedSentenceIndices.Remove(clickedIndex);
                 }
-            }
-            else
-            {
-                selectedSentenceIndices.Add(clickedIndex);
-            }
+                else
+                {
+                    selectedSentenceIndices.Add(clickedIndex);
+                }
 
-            // ìƒíƒœê°€ ë³€í–ˆìœ¼ë¯€ë¡œ í…ìŠ¤íŠ¸ ë‹¤ì‹œ ë Œë”ë§
-            BuildLinkedText();
+                // ÅØ½ºÆ® ½Ã°¢Àû È¿°ú °»½Å
+                BuildLinkedText();
+
+                // Á¡¼ö UI °»½Å
+                UpdateTotalScore();
+            }
         }
     }
 
     void OnValidate()
     {
-        if (Application.isPlaying && passageText != null)
+        if (passageText != null)
         {
+            if (previousTestIndex != testIndex)
+            {
+                selectedSentenceIndices.Clear();
+                previousTestIndex = testIndex;
+            }
             BuildLinkedText();
         }
     }
+
     public void BuildLinkedText()
     {
-        if (mockPassages == null || testIndex < 0 || testIndex >= mockPassages.Count) 
-        { 
-            return; 
+        if (mockPassages == null || testIndex < 0 || testIndex >= mockPassages.Count)
+        {
+            return;
         }
 
         string targetText = mockPassages[testIndex].contentText;
@@ -95,8 +109,6 @@ public class QuestionManager : MonoBehaviour, IPointerClickHandler
                 continue;
             }
 
-            // HashSetì— í˜„ì¬ ë¬¸ì¥ì˜ ì¸ë±ìŠ¤ê°€ í¬í•¨ë˜ì–´ ìˆëŠ”ì§€ í™•ì¸í•˜ì—¬ ë‹¤ì¤‘ ì„ íƒ ì²˜ë¦¬
-
             if (selectedSentenceIndices.Contains(i))
             {
                 switch (currentHighlightMode)
@@ -110,20 +122,47 @@ public class QuestionManager : MonoBehaviour, IPointerClickHandler
                     case HighlightMode.Mark:
                         sentence = $"<mark=#FFFF0055>{sentence}</mark>";
                         break;
-
                 }
             }
 
-            // <link="ì¸ë±ìŠ¤ë²ˆí˜¸">ë¬¸ì¥ë‚´ìš©</link> í˜•íƒœë¡œ ì¡°ë¦½
-            // ë¬¸ì¥ê³¼ ë¬¸ì¥ ì‚¬ì´ì— ë„ì–´ì“°ê¸°ë¥¼ í•œ ì¹¸ ë„£ì–´ì£¼ì–´ ìì—°ìŠ¤ëŸ½ê²Œ ì´ì–´ë¶™ì„
             sb.Append($"<link=\"{i}\">{sentence}</link> ");
         }
-        
+
         passageText.text = sb.ToString();
         passageText.ForceMeshUpdate();
     }
 
-    // ë‹¤ìŒ ë¬¸ì œë¡œ ë„˜ì–´ê°ˆ ë•Œ ì„ íƒ ë‚´ì—­ì„ ì´ˆê¸°í™”í•˜ëŠ” ìœ í‹¸ë¦¬í‹° í•¨ìˆ˜
+    // ¼±ÅÃµÈ ¹®ÀåµéÀÇ °¡ÁßÄ¡¸¦ ÇÕ»êÇÏ¿© È­¸é¿¡ Ç¥½ÃÇÏ´Â ÇÔ¼ö
+    private void UpdateTotalScore()
+    {
+        // scoreText°¡ ¿¬°áµÇ¾î ÀÖÁö ¾Ê´Ù¸é ¿¡·¯ ¹æÁö¸¦ À§ÇØ ¸®ÅÏ
+        if (scoreText == null || mockPassages.Count == 0)
+        {
+            return;
+        }
+
+        int totalSum = 0;
+        var currentData = mockPassages[testIndex];
+
+        foreach (int index in selectedSentenceIndices)
+        {
+            int score = 0;
+
+            if (currentData.sentenceScores != null && index < currentData.sentenceScores.Count)
+            {
+                score = currentData.sentenceScores[index];
+            }
+            else
+            {
+                // ÀÎ½ºÆåÅÍ¿¡ ¹èÁ¡À» ÀÔ·ÂÇÏÁö ¾Ê¾Ò°Å³ª °³¼ö°¡ ¸ğÀÚ¶õ ¹®ÀåÀº ±âº» 10Á¡À¸·Î Ã³¸® (¿¹¿Ü Ã³¸®)
+                score = 10;
+            }
+
+            totalSum += score;
+        }
+
+        scoreText.text = $"ÇöÀç ÃÑ ´Ü¼­ Á¡¼ö: {totalSum}";
+    }
     public void ClearSelection()
     {
         selectedSentenceIndices.Clear();
