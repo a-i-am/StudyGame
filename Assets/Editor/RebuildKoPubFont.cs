@@ -19,7 +19,7 @@ public class RebuildKoPubFont
         string fontAssetPath = "Assets/Resources/StudyGame-Art/Fonts/KoPubWorld Batang Bold.asset";
         TMP_FontAsset existingAsset = AssetDatabase.LoadAssetAtPath<TMP_FontAsset>(fontAssetPath);
 
-        TMP_FontAsset newAsset = TMP_FontAsset.CreateFontAsset(font, 90, 9, UnityEngine.TextCore.LowLevel.GlyphRenderMode.SDFF, 1024, 1024, AtlasPopulationMode.Dynamic);
+        TMP_FontAsset newAsset = TMP_FontAsset.CreateFontAsset(font, 90, 9, UnityEngine.TextCore.LowLevel.GlyphRenderMode.SDFAA, 1024, 1024, AtlasPopulationMode.Dynamic);
         
         if (existingAsset != null)
         {
