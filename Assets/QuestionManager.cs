@@ -1,18 +1,18 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using UnityEngine.EventSystems;
 using TMPro;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Text;
 
-// µ¥ÀÌÅÍ¸¦ ´ãÀ» Å¬·¡½º »ı¼º
+// ë°ì´í„°ë¥¼ ë‹´ì„ í´ë˜ìŠ¤ ìƒì„±
 [System.Serializable]
 public class MockPassageData
 {
-    public string passageId;       // ¿¹: "P_001"
-    [TextArea(3, 5)]               // ÀÎ½ºÆåÅÍ¿¡¼­ ³Ğ°Ô ÀÔ·ÂÇÒ ¼ö ÀÖµµ·Ï ¼Ó¼º Ãß°¡
-    public string contentText;     // ½ÇÁ¦ Áö¹® ÅØ½ºÆ®
-    public string correctKeyword;  // ÃßÈÄ »ç¿ëÇÒ Á¤´ä Á¤º¸
+    public string passageId;       // ì˜ˆ: "P_001"
+    [TextArea(3, 5)]               // ì¸ìŠ¤í™í„°ì—ì„œ ë„“ê²Œ ì…ë ¥í•  ìˆ˜ ìˆë„ë¡ ì†ì„± ì¶”ê°€
+    public string contentText;     // ì‹¤ì œ ì§€ë¬¸ í…ìŠ¤íŠ¸
+    public string correctKeyword;  // ì¶”í›„ ì‚¬ìš©í•  ì •ë‹µ ì •ë³´
 }
 
 public class QuestionManager : MonoBehaviour, IPointerClickHandler
@@ -21,20 +21,20 @@ public class QuestionManager : MonoBehaviour, IPointerClickHandler
     [SerializeField] TextMeshProUGUI passageText;
     [SerializeField] int testIndex = 0;
 
-    // ¸¶¿ì½º Å¬¸¯ÀÌ³ª ÅÍÄ¡°¡ ¹ß»ıÇÒ ¶§ ÀÚµ¿À¸·Î È£ÃâµÇ´Â ÇÔ¼ö
+    // ë§ˆìš°ìŠ¤ í´ë¦­ì´ë‚˜ í„°ì¹˜ê°€ ë°œìƒí•  ë•Œ ìë™ìœ¼ë¡œ í˜¸ì¶œë˜ëŠ” í•¨ìˆ˜
     public void OnPointerClick(PointerEventData eventData)
     {
         Camera eventCamera = eventData.pressEventCamera;
         int linkIndex = TMP_TextUtilities.FindIntersectingLink(passageText, eventData.position, eventCamera);
 
-        // 2. Å¬¸¯µÈ °÷¿¡ ¸µÅ©°¡ Á¸ÀçÇÑ´Ù¸é (linkIndex°¡ -1ÀÌ ¾Æ´Ï¶ó¸é)
+        // 2. í´ë¦­ëœ ê³³ì— ë§í¬ê°€ ì¡´ì¬í•œë‹¤ë©´ (linkIndexê°€ -1ì´ ì•„ë‹ˆë¼ë©´)
         if (linkIndex != -1)
         {
             TMP_LinkInfo linkInfo = passageText.textInfo.linkInfo[linkIndex];
             string linkId = linkInfo.GetLinkID();
 
-            Debug.Log($"Å¬¸¯µÈ ¹®Àå ID: {linkId}");
-            Debug.Log($"Å¬¸¯µÈ ¹®Àå ³»¿ë: {linkInfo.GetLinkText()}");
+            Debug.Log($"í´ë¦­ëœ ë¬¸ì¥ ID: {linkId}");
+            Debug.Log($"í´ë¦­ëœ ë¬¸ì¥ ë‚´ìš©: {linkInfo.GetLinkText()}");
         }
     }
     void Start()
@@ -69,8 +69,8 @@ public class QuestionManager : MonoBehaviour, IPointerClickHandler
                 continue;
             }
 
-            // <link="ÀÎµ¦½º¹øÈ£">¹®Àå³»¿ë</link> ÇüÅÂ·Î Á¶¸³
-            // ¹®Àå°ú ¹®Àå »çÀÌ¿¡ ¶ç¾î¾²±â¸¦ ÇÑ Ä­ ³Ö¾îÁÖ¾î ÀÚ¿¬½º·´°Ô ÀÌ¾îºÙÀÓ
+            // <link="ì¸ë±ìŠ¤ë²ˆí˜¸">ë¬¸ì¥ë‚´ìš©</link> í˜•íƒœë¡œ ì¡°ë¦½
+            // ë¬¸ì¥ê³¼ ë¬¸ì¥ ì‚¬ì´ì— ë„ì–´ì“°ê¸°ë¥¼ í•œ ì¹¸ ë„£ì–´ì£¼ì–´ ìì—°ìŠ¤ëŸ½ê²Œ ì´ì–´ë¶™ì„
             sb.Append($"<link=\"{i}\">{sentence}</link> ");
         }
         

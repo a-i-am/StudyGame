@@ -1,10 +1,10 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using TMPro;
 
 public class TestScript : MonoBehaviour
 {
     public TMP_Text myText;
-    private string fullText = "Ã¹¹øÂ° ¹®Àå. µÎ¹øÂ° ¹®Àå.";
+    private string fullText = "ì²«ë²ˆì§¸ ë¬¸ì¥. ë‘ë²ˆì§¸ ë¬¸ì¥.";
 
     private void Start()
     {
