@@ -14,12 +14,30 @@ public class MockPassageData
     public string contentText;     // 실제 지문 텍스트
     public string correctKeyword;  // 추후 사용할 정답 정보
 }
-
+public enum HighlightMode
+{
+    Color,
+    Underline,
+    Mark
+}
 public class QuestionManager : MonoBehaviour, IPointerClickHandler
 {
+    [Header("Data Settings")]
     [SerializeField] List<MockPassageData> mockPassages;
-    [SerializeField] TextMeshProUGUI passageText;
     [SerializeField] int testIndex = 0;
+
+    [Header("UI Components")]
+    [SerializeField] TextMeshProUGUI passageText;
+
+    [Header("Feedback Settings")]
+    HighlightMode currentHighlightMode = HighlightMode.Underline;
+
+    // 다중 선택된 문장의 인덱스들을 저장할 HashSet (중복 방지 및 빠른 탐색)
+    private HashSet<int> selectedSentenceIndices = new HashSet<int>();
+    void Start()
+    {
+        BuildLinkedText();
+    }
 
     // 마우스 클릭이나 터치가 발생할 때 자동으로 호출되는 함수
     public void OnPointerClick(PointerEventData eventData)
@@ -33,13 +51,21 @@ public class QuestionManager : MonoBehaviour, IPointerClickHandler
             TMP_LinkInfo linkInfo = passageText.textInfo.linkInfo[linkIndex];
             string linkId = linkInfo.GetLinkID();
 
-            Debug.Log($"클릭된 문장 ID: {linkId}");
-            Debug.Log($"클릭된 문장 내용: {linkInfo.GetLinkText()}");
+            if (int.TryParse(linkId, out int clickedIndex))
+            {
+                if (selectedSentenceIndices.Contains(clickedIndex))
+                {
+                    selectedSentenceIndices.Remove(clickedIndex);
+                }
+            }
+            else
+            {
+                selectedSentenceIndices.Add(clickedIndex);
+            }
+
+            // 상태가 변했으므로 텍스트 다시 렌더링
+            BuildLinkedText();
         }
-    }
-    void Start()
-    {
-        BuildLinkedText();
     }
 
     void OnValidate()
@@ -69,6 +95,25 @@ public class QuestionManager : MonoBehaviour, IPointerClickHandler
                 continue;
             }
 
+            // HashSet에 현재 문장의 인덱스가 포함되어 있는지 확인하여 다중 선택 처리
+
+            if (selectedSentenceIndices.Contains(i))
+            {
+                switch (currentHighlightMode)
+                {
+                    case HighlightMode.Color:
+                        sentence = $"<color=#FFD700>{sentence}</color>";
+                        break;
+                    case HighlightMode.Underline:
+                        sentence = $"<u>{sentence}</u>";
+                        break;
+                    case HighlightMode.Mark:
+                        sentence = $"<mark=#FFFF0055>{sentence}</mark>";
+                        break;
+
+                }
+            }
+
             // <link="인덱스번호">문장내용</link> 형태로 조립
             // 문장과 문장 사이에 띄어쓰기를 한 칸 넣어주어 자연스럽게 이어붙임
             sb.Append($"<link=\"{i}\">{sentence}</link> ");
@@ -76,5 +121,12 @@ public class QuestionManager : MonoBehaviour, IPointerClickHandler
         
         passageText.text = sb.ToString();
         passageText.ForceMeshUpdate();
+    }
+
+    // 다음 문제로 넘어갈 때 선택 내역을 초기화하는 유틸리티 함수
+    public void ClearSelection()
+    {
+        selectedSentenceIndices.Clear();
+        BuildLinkedText();
     }
 }
