@@ -1,0 +1,5 @@
+root = true
+
+[*.{cs,json,md}]
+charset = utf-8
+insert_final_newline = true

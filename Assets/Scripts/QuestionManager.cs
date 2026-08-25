@@ -1,4 +1,4 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using UnityEngine.EventSystems;
 using TMPro;
 using System.Collections.Generic;
@@ -14,8 +14,8 @@ public class MockPassageData
     public string contentText;
     public string correctKeyword;
 
-    [Header("¹®Àåº° °¡ÁßÄ¡ (¼ø¼­´ë·Î 1¹ø, 2¹ø ¹®Àå...")]
-    public List<int> sentenceScores; // ÀÎ½ºÆåÅÍ¿¡¼­ °¢ ¹®Àå ¹èÁ¡À» ¼³Á¤ÇÒ ¸®½ºÆ®
+    [Header("ë¬¸ì¥ë³„ ê°€ì¤‘ì¹˜ (ìˆœì„œëŒ€ë¡œ 1ë²ˆ, 2ë²ˆ ë¬¸ì¥...")]
+    public List<int> sentenceScores; // ì¸ìŠ¤í™í„°ì—ì„œ ê° ë¬¸ì¥ ë°°ì ì„ ì„¤ì •í•  ë¦¬ìŠ¤íŠ¸
 }
 
 public enum HighlightMode
@@ -33,7 +33,7 @@ public class QuestionManager : MonoBehaviour, IPointerClickHandler
 
     [Header("UI Components")]
     [SerializeField] TextMeshProUGUI passageText;
-    [SerializeField] TextMeshProUGUI scoreText; // Á¡¼ö¸¦ Ç¥½ÃÇÒ UI ÅØ½ºÆ®
+    [SerializeField] TextMeshProUGUI scoreText; // ì ìˆ˜ë¥¼ í‘œì‹œí•  UI í…ìŠ¤íŠ¸
 
     [Header("Feedback Settings")]
     [SerializeField] HighlightMode currentHighlightMode = HighlightMode.Underline;
@@ -67,10 +67,10 @@ public class QuestionManager : MonoBehaviour, IPointerClickHandler
                     selectedSentenceIndices.Add(clickedIndex);
                 }
 
-                // ÅØ½ºÆ® ½Ã°¢Àû È¿°ú °»½Å
+                // í…ìŠ¤íŠ¸ ì‹œê°ì  íš¨ê³¼ ê°±ì‹ 
                 BuildLinkedText();
 
-                // Á¡¼ö UI °»½Å
+                // ì ìˆ˜ UI ê°±ì‹ 
                 UpdateTotalScore();
             }
         }
@@ -132,10 +132,10 @@ public class QuestionManager : MonoBehaviour, IPointerClickHandler
         passageText.ForceMeshUpdate();
     }
 
-    // ¼±ÅÃµÈ ¹®ÀåµéÀÇ °¡ÁßÄ¡¸¦ ÇÕ»êÇÏ¿© È­¸é¿¡ Ç¥½ÃÇÏ´Â ÇÔ¼ö
+    // ì„ íƒëœ ë¬¸ì¥ë“¤ì˜ ê°€ì¤‘ì¹˜ë¥¼ í•©ì‚°í•˜ì—¬ í™”ë©´ì— í‘œì‹œí•˜ëŠ” í•¨ìˆ˜
     private void UpdateTotalScore()
     {
-        // scoreText°¡ ¿¬°áµÇ¾î ÀÖÁö ¾Ê´Ù¸é ¿¡·¯ ¹æÁö¸¦ À§ÇØ ¸®ÅÏ
+        // scoreTextê°€ ì—°ê²°ë˜ì–´ ìˆì§€ ì•Šë‹¤ë©´ ì—ëŸ¬ ë°©ì§€ë¥¼ ìœ„í•´ ë¦¬í„´
         if (scoreText == null || mockPassages.Count == 0)
         {
             return;
@@ -154,14 +154,14 @@ public class QuestionManager : MonoBehaviour, IPointerClickHandler
             }
             else
             {
-                // ÀÎ½ºÆåÅÍ¿¡ ¹èÁ¡À» ÀÔ·ÂÇÏÁö ¾Ê¾Ò°Å³ª °³¼ö°¡ ¸ğÀÚ¶õ ¹®ÀåÀº ±âº» 10Á¡À¸·Î Ã³¸® (¿¹¿Ü Ã³¸®)
+                // ì¸ìŠ¤í™í„°ì— ë°°ì ì„ ì…ë ¥í•˜ì§€ ì•Šì•˜ê±°ë‚˜ ê°œìˆ˜ê°€ ëª¨ìë€ ë¬¸ì¥ì€ ê¸°ë³¸ 10ì ìœ¼ë¡œ ì²˜ë¦¬ (ì˜ˆì™¸ ì²˜ë¦¬)
                 score = 10;
             }
 
             totalSum += score;
         }
 
-        scoreText.text = $"ÇöÀç ÃÑ ´Ü¼­ Á¡¼ö: {totalSum}";
+        scoreText.text = $"í˜„ì¬ ì´ ë‹¨ì„œ ì ìˆ˜: {totalSum}";
     }
     public void ClearSelection()
     {
