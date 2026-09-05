@@ -4,7 +4,6 @@ using System.Collections.Generic;
 public class BindableProperty<T>
 {
     private T _value;
-
     public Action<T> OnValueChanged;
 
     public T Value
@@ -24,4 +23,24 @@ public class BindableProperty<T>
     {
         _value = initialValue;
     }
+
+    public IDisposable Subscribe(Action<T> action)
+    {
+        OnValueChanged += action;
+        return new Subscription(() => OnValueChanged -= action);
+    }
+    private class Subscription : IDisposable
+    {
+        private Action _unsubscribeAction;
+        public Subscription(Action unsubscribeAction)
+        {
+            _unsubscribeAction = unsubscribeAction;
+        }
+        public void Dispose()
+        {
+            _unsubscribeAction?.Invoke();
+            _unsubscribeAction = null;
+        }
+    }
+
 }
