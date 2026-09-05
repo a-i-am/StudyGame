@@ -167,3 +167,5 @@ x86/
 
 # Publish Web Output
 *.[Pp]ublish.xml
+
+.code-notes/
