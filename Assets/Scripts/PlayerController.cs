@@ -33,7 +33,7 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
-        float targetYVelocity = rb.velocity.y;
+        float targetYVelocity = rb.linearVelocity.y;
 
         if (jumpRequested)
         {
@@ -47,7 +47,7 @@ public class PlayerController : MonoBehaviour
 
         if (moveDir != Vector3.zero)
         {
-            rb.velocity = new Vector3(moveDir.x * moveSpeed, targetYVelocity, moveDir.z * moveSpeed);
+            rb.linearVelocity = new Vector3(moveDir.x * moveSpeed, targetYVelocity, moveDir.z * moveSpeed);
 
             if (moveDir != Vector3.zero)
             {
@@ -57,7 +57,7 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            rb.velocity = new Vector3(0, targetYVelocity, 0);
+            rb.linearVelocity = new Vector3(0, targetYVelocity, 0);
         }
     }
 
