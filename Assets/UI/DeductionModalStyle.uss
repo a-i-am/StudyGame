@@ -1,0 +1,116 @@
+.deduction-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.75);
+    justify-content: center;
+    align-items: center;
+}
+
+.deduction-window {
+    width: 800px;
+    height: 520px;
+    background-color: #1A202C;
+    border-width: 2px;
+    border-color: #DD6B20;
+    border-radius: 14px;
+    padding: 20px;
+    flex-direction: column;
+}
+
+.deduction-header {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom-width: 1px;
+    border-bottom-color: #2D3748;
+    padding-bottom: 10px;
+    margin-bottom: 12px;
+}
+
+.deduction-title {
+    font-size: 20px;
+    font-style: bold;
+    color: #ED8936;
+}
+
+.ap-label {
+    font-size: 16px;
+    font-style: bold;
+    color: #ECC94B;
+}
+
+.deduction-body {
+    flex-direction: row;
+    flex-grow: 1;
+}
+
+.clues-section {
+    width: 320px;
+    border-right-width: 1px;
+    border-right-color: #2D3748;
+    padding-right: 15px;
+    flex-direction: column;
+}
+
+.section-label {
+    font-size: 14px;
+    font-style: bold;
+    color: #A0AEC0;
+    margin-bottom: 8px;
+}
+
+.clues-scroll-view {
+    flex-grow: 1;
+    background-color: #2D3748;
+    border-radius: 6px;
+    padding: 10px;
+}
+
+.clue-item {
+    font-size: 13px;
+    color: #E2E8F0;
+    padding: 6px;
+    border-bottom-width: 1px;
+    border-bottom-color: #4A5568;
+    white-space: normal;
+}
+
+.candidates-section {
+    flex-grow: 1;
+    padding-left: 15px;
+    flex-direction: column;
+}
+
+.candidates-grid {
+    flex-direction: row;
+    flex-wrap: wrap;
+    flex-grow: 1;
+}
+
+.candidate-button {
+    width: 48%;
+    margin: 1%;
+    height: 45px;
+    background-color: #2D3748;
+    color: #EDF2F7;
+    border-width: 1px;
+    border-color: #4A5568;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+.candidate-button:hover {
+    background-color: #DD6B20;
+    border-color: #ED8936;
+}
+
+.feedback-label {
+    font-size: 15px;
+    font-style: bold;
+    color: #E2E8F0;
+    margin-top: 10px;
+    text-align: center;
+}

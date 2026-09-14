@@ -1,0 +1,17 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElementsSchema.xsd" editor-extension-mode="False">
+    <ui:Style src="project://database/Assets/UI%20Toolkit/PhoneUIDocument.uss" />
+    <ui:VisualElement name="PhoneFrame" class="phone-frame">
+        <ui:VisualElement name="ProfileBar" class="profile-bar">
+            <ui:VisualElement name="ProfileImage" class="profile-image" />
+            <ui:Label text="NPC 메신저" name="SenderName" class="sender-name" />
+        </ui:VisualElement>
+        <ui:ScrollView name="MessageScroll" mode="Vertical" class="message-scroll">
+            <ui:VisualElement class="sns-bubble">
+                <ui:Label text="연구소 중앙서버 데이터에 수치 무한 발산 오류가 발생했습니다!" class="sns-bubble-text" />
+            </ui:VisualElement>
+            <ui:VisualElement class="sns-bubble">
+                <ui:Label text="제어 스킬을 이용해 이상 현상을 정상화해 주세요." class="sns-bubble-text" />
+            </ui:VisualElement>
+        </ui:ScrollView>
+    </ui:VisualElement>
+</ui:UXML>

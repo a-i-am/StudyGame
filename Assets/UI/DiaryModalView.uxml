@@ -1,0 +1,31 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" path="Assets/UI/DiaryModalView.uxml">
+    <ui:Style src="DiaryModalStyle.uss" />
+    <ui:VisualElement name="modal-overlay" class="modal-overlay">
+        <ui:VisualElement name="modal-window" class="modal-window">
+            <ui:VisualElement class="modal-header">
+                <ui:Label class="modal-title" text="수학 개념 도감 (다이어리)" />
+                <ui:Button name="close-button" class="close-button" text="X" />
+            </ui:VisualElement>
+            <ui:VisualElement class="tab-container">
+                <ui:Button name="tab-calculus" class="tab-button tab-active" text="미적분" />
+                <ui:Button name="tab-sequence" class="tab-button" text="수열과 극한" />
+                <ui:Button name="tab-stats" class="tab-button" text="확률과 통계" />
+            </ui:VisualElement>
+            <ui:VisualElement class="modal-body">
+                <ui:VisualElement class="list-panel">
+                    <ui:ListView name="concept-list" />
+                </ui:VisualElement>
+                <ui:VisualElement class="detail-panel">
+                    <ui:VisualElement class="detail-header">
+                        <ui:VisualElement name="detail-icon" class="detail-icon" />
+                        <ui:Label name="detail-title" class="detail-title" text="항목을 선택하세요" />
+                    </ui:VisualElement>
+                    <ui:Label class="detail-section-title" text="개념 요약" />
+                    <ui:Label name="detail-summary" class="detail-summary" text="-" />
+                    <ui:Label class="detail-section-title" text="로어 및 메모" />
+                    <ui:Label name="detail-lore" class="detail-lore" text="-" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

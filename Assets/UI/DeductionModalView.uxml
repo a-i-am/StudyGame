@@ -1,0 +1,23 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" path="Assets/UI/DeductionModalView.uxml">
+    <ui:Style src="DeductionModalStyle.uss" />
+    <ui:VisualElement name="deduction-overlay" class="deduction-overlay">
+        <ui:VisualElement name="deduction-window" class="deduction-window">
+            <ui:VisualElement class="deduction-header">
+                <ui:Label class="deduction-title" text="🔍 수학 개념 정답 추론" />
+                <ui:Label name="ap-label" class="ap-label" text="남은 AP: 20 / 20" />
+                <ui:Button name="close-button" class="close-button" text="X" />
+            </ui:VisualElement>
+            <ui:VisualElement class="deduction-body">
+                <ui:VisualElement class="clues-section">
+                    <ui:Label class="section-label" text="수집된 현상 단서" />
+                    <ui:ScrollView name="clues-scroll-view" class="clues-scroll-view" />
+                </ui:VisualElement>
+                <ui:VisualElement class="candidates-section">
+                    <ui:Label class="section-label" text="후보 개념 선택" />
+                    <ui:VisualElement name="candidates-grid" class="candidates-grid" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+            <ui:Label name="feedback-label" class="feedback-label" text="후보 개념을 선택해 추론을 완료하세요." />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

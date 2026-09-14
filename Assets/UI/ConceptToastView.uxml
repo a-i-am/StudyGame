@@ -1,0 +1,4 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" path="Assets/UI/ConceptToastView.uxml">
+    <ui:Style src="ConceptToastStyle.uss" />
+    <ui:VisualElement name="toast-container" class="toast-container" picking-mode="Ignore" />
+</ui:UXML>
