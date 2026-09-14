@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88c7a4ff97624f04d983c742a5ba569d, type: 3}
+  m_Name: Node_Prereq_Ratio
+  m_EditorClassIdentifier: 
+  guid: 
+  graphPosition: {x: 0, y: 0}
+  sequenceType: 0
+  mapPrefab: {fileID: 0}
+  characterStanding: {fileID: 0}
+  snsData: {fileID: 0}
+  unlockConcept: {fileID: 11400000, guid: ac83778d48091d04e8f8afdc642137ce, type: 2}
+  discoveredClue: "\uD56D\uACFC \uD56D \uC0AC\uC774\uC5D0 \uC77C\uC815\uD55C \uACF1\uC148
+    \uBE44\uC728(\uACF5\uBE44)\uC774 \uAD00\uCC30\uB41C\uB2E4."
+  apCost: 0
+  dialogueLines: []
+  personaDialogues:
+  - personality: 1
+    lines:
+    - speakerName: "\uC544\uCE74\uB370\uBBF8 \uB0C9\uC18C\uD30C \uC870\uAD50"
+      text: "\uACF5\uBE44\uB3C4 \uBAA8\uB974\uBA74\uC11C \uADF9\uD55C\uC744 \uB2E4\uB8E8\uACA0\uB2E4\uACE0?
+        \uCBE7, \uC5F0\uC18D\uB41C \uB450 \uD56D\uC744 \uB098\uB220\uBD10\uB77C.
+        \uADF8\uAC8C \uACF5\uBE44\uB2E4."
+      standingSprite: {fileID: 0}
+  nextNode: {fileID: 0}
+  choices: []

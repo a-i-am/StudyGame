@@ -1,0 +1,85 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-7910457637024527728
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88c7a4ff97624f04d983c742a5ba569d, type: 3}
+  m_Name: SeqNode_3
+  m_EditorClassIdentifier: 
+  guid: d23ed289-d381-4ee4-bc0d-7eb15856e8a1
+  graphPosition: {x: 276, y: 216.8}
+  sequenceType: 0
+  mapPrefab: {fileID: 0}
+  characterStanding: {fileID: 0}
+  snsData: {fileID: 0}
+  unlockConcept: {fileID: 0}
+  nextNode: {fileID: 0}
+  choices: []
+--- !u!114 &-6035879604289816542
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88c7a4ff97624f04d983c742a5ba569d, type: 3}
+  m_Name: SeqNode_2
+  m_EditorClassIdentifier: 
+  guid: f871eb80-6df8-4e4c-86ba-8befbe1aa3db
+  graphPosition: {x: 427.742, y: 100}
+  sequenceType: 0
+  mapPrefab: {fileID: 0}
+  characterStanding: {fileID: 0}
+  snsData: {fileID: 0}
+  unlockConcept: {fileID: 0}
+  nextNode: {fileID: 0}
+  choices: []
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a69f8261cac24ac45ba823c697a86ac1, type: 3}
+  m_Name: New Sequence Graph
+  m_EditorClassIdentifier: 
+  entryNode: {fileID: 0}
+  allNodes:
+  - {fileID: 4351576866830960417}
+  - {fileID: -6035879604289816542}
+  - {fileID: -7910457637024527728}
+--- !u!114 &4351576866830960417
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88c7a4ff97624f04d983c742a5ba569d, type: 3}
+  m_Name: SeqNode_1
+  m_EditorClassIdentifier: 
+  guid: 80390fa4-9c28-419f-bd67-442e732d94b9
+  graphPosition: {x: 100, y: 100}
+  sequenceType: 0
+  mapPrefab: {fileID: 0}
+  characterStanding: {fileID: 21300000, guid: 841a65227df540c8188ab9fd0521ffd2, type: 3}
+  snsData: {fileID: 0}
+  unlockConcept: {fileID: 11400000, guid: 4963b04648ce9c243a697234e73ad03a, type: 2}
+  nextNode: {fileID: 0}
+  choices:
+  - portGuid: 763f3183-2d08-4577-80ea-e8afa8b2bd6c
+    choiceText: "\uC218\uB834\uC774 \uBB50\uC57C?"
+    targetNode: {fileID: -6035879604289816542}
