@@ -2,15 +2,22 @@ using UnityEngine;
 
 public class AnomalyEncounter : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public ScriptableObject anomalyData;
+
+    void OnTriggerEnter(Collider other)
     {
-        
+        if (other.CompareTag("Player"))
+        {
+            PlayerController playerController = other.GetComponent<PlayerController>();
+            if (playerController != null)
+            {
+                playerController.enabled = false;
+            }
+
+            GetComponent<Collider>().enabled = false;
+
+            BattleManager.Instance.StartBattle(anomalyData, playerController);
+        }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

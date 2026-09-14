@@ -1,4 +1,3 @@
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -18,21 +17,39 @@ public class PlayerController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
-        cameraTransform = Camera.main.transform;
+        if (Camera.main != null)
+        {
+            cameraTransform = Camera.main.transform;
+        }
     }
 
     void Update()
     {
+        if (StageManager.Instance != null && StageManager.Instance.CurrentState != StageManager.GameState.Exploration)
+        {
+            moveDir = Vector3.zero;
+            jumpRequested = false;
+            return;
+        }
+
         HandleInput();
         if (Input.GetButtonDown("Jump") && IsGrounded())
         {
             jumpRequested = true;
         }
-
     }
 
     void FixedUpdate()
     {
+        if (StageManager.Instance != null && StageManager.Instance.CurrentState != StageManager.GameState.Exploration)
+        {
+            if (rb != null)
+            {
+                rb.linearVelocity = new Vector3(0, rb.linearVelocity.y, 0);
+            }
+            return;
+        }
+
         float targetYVelocity = rb.linearVelocity.y;
 
         if (jumpRequested)
@@ -81,37 +98,35 @@ public class PlayerController : MonoBehaviour
             isDragging = false;
         }
 
-        if (isDragging)
+        if (cameraTransform == null && Camera.main != null)
         {
-
+            cameraTransform = Camera.main.transform;
         }
 
-        Vector3 camForward = cameraTransform.forward;
-        Vector3 camRight = cameraTransform.right;
-        camForward.y = 0;
-        camRight.y = 0;
-        camForward.Normalize();
-        camRight.Normalize();
+        if (cameraTransform != null)
+        {
+            Vector3 camForward = cameraTransform.forward;
+            Vector3 camRight = cameraTransform.right;
+            camForward.y = 0;
+            camRight.y = 0;
+            camForward.Normalize();
+            camRight.Normalize();
 
-        moveDir = (camForward * v + camRight * h).normalized;
+            moveDir = (camForward * v + camRight * h).normalized;
+        }
+        else
+        {
+            moveDir = new Vector3(h, 0, v).normalized;
+        }
     }
 
     bool IsGrounded()
     {
-        // 1. 캐릭터의 콜라이더 영역을 가져와 정확한 '발바닥' 높이를 계산합니다.
         Collider col = GetComponent<Collider>();
+        if (col == null) return true;
+
         Vector3 rayOrigin = new Vector3(transform.position.x, col.bounds.min.y + 0.1f, transform.position.z);
-
-        // 발바닥에서 시작하므로 레이 길이는 0.3 정도면 바닥을 충분히 감지합니다.
         float rayLength = 0.3f;
-
-        // 선이 캡슐 바깥으로 살짝 튀어나오므로 Scene 뷰(Shaded 모드)에서도 관찰하기 쉽습니다.
-        Debug.DrawRay(rayOrigin, Vector3.down * rayLength, Color.red);
-
-        // 2. 바닥 판정 '결과값'을 콘솔에 직접 출력하여 확인합니다.
-        bool isHit = Physics.Raycast(rayOrigin, Vector3.down, rayLength);
-        Debug.Log("바닥 판정 결과: " + isHit);
-
-        return isHit;
+        return Physics.Raycast(rayOrigin, Vector3.down, rayLength);
     }
 }
