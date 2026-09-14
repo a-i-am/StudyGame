@@ -1,0 +1,95 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElementsSchema.xsd" editor-extension-mode="False">
+    <ui:Style src="project://database/Assets/UI%20Toolkit/MathProofUI.uss" />
+    <ui:VisualElement name="Root" class="root-container">
+        <ui:VisualElement name="TopHeaderContainer" class="top-header-container">
+            <ui:VisualElement class="alert-banner-box">
+                <ui:Label text="&gt;SYSTEM ERROR ALERT&lt;" name="ErrorAlertHeader" class="alert-banner-header" />
+            </ui:VisualElement>
+            <ui:VisualElement class="formula-display-box">
+                <ui:Label text="f(x) = x^3 - 3x^2 + 4 발산 중" name="ErrorSubHeader" class="formula-text" />
+            </ui:VisualElement>
+            <ui:VisualElement class="hp-badge-box">
+                <ui:Label text="inf HP" name="ErrorHpLog" class="hp-badge-text" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+
+        <ui:VisualElement name="BottomHUDContainer" class="bottom-hud-container">
+            <ui:VisualElement name="LeftCharacterSlot" class="player-profile-card">
+                <ui:Image name="PlayerStandingImage" class="player-portrait-image" />
+                <ui:VisualElement class="mental-bar-badge">
+                    <ui:Label text="[멘탈 50/100]" class="mental-bar-text" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+
+            <ui:VisualElement name="CenterDeckArea" class="deck-and-slot-area">
+                <ui:Label text="플레이 수학 스킬 덱" class="deck-section-title" />
+                <ui:VisualElement class="deck-row-container">
+                    <ui:ScrollView name="SkillDeckScrollView" mode="Horizontal" class="skill-deck-scroll-view">
+                        <ui:VisualElement name="Skill_Limit" class="skill-card">
+                            <ui:VisualElement class="skill-icon-area">
+                                <ui:Label text="➡️🔒" class="skill-icon-text" />
+                            </ui:VisualElement>
+                            <ui:Label text="Limit" class="skill-title-text" />
+                            <ui:Label text="[고정] 수치 수렴" class="skill-sub-text" />
+                        </ui:VisualElement>
+                        <ui:VisualElement name="Skill_Log_Scale" class="skill-card">
+                            <ui:VisualElement class="skill-icon-area">
+                                <ui:Label text="📉" class="skill-icon-text" />
+                            </ui:VisualElement>
+                            <ui:Label text="Log" class="skill-title-text" />
+                            <ui:Label text="[압축] 스케일 제어" class="skill-sub-text" />
+                        </ui:VisualElement>
+                        <ui:VisualElement name="Skill_Log_Slope" class="skill-card">
+                            <ui:VisualElement class="skill-icon-area">
+                                <ui:Label text="📐" class="skill-icon-text" />
+                            </ui:VisualElement>
+                            <ui:Label text="Log" class="skill-title-text" />
+                            <ui:Label text="[압축] 스케일 제어" class="skill-sub-text" />
+                        </ui:VisualElement>
+                        <ui:VisualElement name="Skill_Derivative" class="skill-card skill-card-selected">
+                            <ui:VisualElement class="skill-icon-area">
+                                <ui:Label text="🔪" class="skill-icon-text" />
+                            </ui:VisualElement>
+                            <ui:Label text="Derivative" class="skill-title-text" />
+                            <ui:Label text="[쪼개기] 가속도 제어" class="skill-sub-text" />
+                        </ui:VisualElement>
+                        <ui:VisualElement name="Skill_Integral" class="skill-card">
+                            <ui:VisualElement class="skill-icon-area">
+                                <ui:Label text="🧩" class="skill-icon-text" />
+                            </ui:VisualElement>
+                            <ui:Label text="Integral" class="skill-title-text" />
+                            <ui:Label text="[밝기] 데이터 실체화" class="skill-sub-text" />
+                        </ui:VisualElement>
+                        <ui:VisualElement name="Skill_Substitute" class="skill-card">
+                            <ui:VisualElement class="skill-icon-area">
+                                <ui:Label text="🌐" class="skill-icon-text" />
+                            </ui:VisualElement>
+                            <ui:Label text="Substitute" class="skill-title-text" />
+                            <ui:Label text="[대입] 좌표 축 고정" class="skill-sub-text" />
+                        </ui:VisualElement>
+                    </ui:ScrollView>
+
+                    <ui:VisualElement class="target-slot-group">
+                        <ui:VisualElement name="TargetSlot" class="target-slot-card">
+                            <ui:Label text="⚔️_y" class="target-slot-icon" />
+                        </ui:VisualElement>
+                        <ui:VisualElement class="dial-gauge-wrapper">
+                            <ui:VisualElement class="dial-gauge-circle">
+                                <ui:VisualElement class="dial-gauge-pointer" />
+                            </ui:VisualElement>
+                            <ui:VisualElement class="dial-value-box">
+                                <ui:Label text="0" class="dial-value-text" />
+                            </ui:VisualElement>
+                        </ui:VisualElement>
+                    </ui:VisualElement>
+                </ui:VisualElement>
+            </ui:VisualElement>
+
+            <ui:VisualElement name="RightCharacterSlot" class="boss-info-card">
+                <ui:Label text="&lt;적 현상&gt;" class="boss-info-title" />
+                <ui:Label text="&lt;이상 현상_#104:&#10;요동치는 3차 함수&#10;방어막&gt;" class="boss-info-desc" />
+                <ui:Label text="&lt;약점: 극솟값 좌표(x=2)&gt;" class="boss-info-weakness" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

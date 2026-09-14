@@ -1,0 +1,21 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" path="Assets/UI/DialogueView.uxml">
+    <ui:Style src="DialogueStyle.uss" />
+    <ui:VisualElement name="dialogue-overlay" class="dialogue-overlay">
+        <ui:VisualElement name="dialogue-box" class="dialogue-box">
+            <ui:Label name="ap-display-label" class="ap-display-label" text="AP: 8" />
+            <ui:VisualElement name="character-standing" class="character-standing" />
+            <ui:VisualElement class="dialogue-content">
+                <ui:VisualElement>
+                    <ui:Label name="speaker-name" class="speaker-name" text="Speaker" />
+                    <ui:Label name="dialogue-text" class="dialogue-text" text="Dialogue Message Text goes here..." />
+                </ui:VisualElement>
+                <ui:VisualElement name="choices-container" class="choices-container" />
+                <ui:VisualElement name="question-bar" class="question-bar">
+                    <ui:TextField name="custom-question-field" class="custom-question-field" placeholder-text="NPC에게 자유 질문 작성 (AP 1 소모)..." />
+                    <ui:Button name="send-question-button" class="send-question-button" text="질문 전송" />
+                    <ui:Label name="loading-indicator" class="loading-indicator" text="AI 답변 생성 중..." />
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
