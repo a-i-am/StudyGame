@@ -1,0 +1,23 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements">
+    <Style src="SkillDeckStyle.uss" />
+    <ui:VisualElement name="skill-deck-container" class="skill-deck-container" style="display: none;">
+        <ui:Label text="[전투 페이즈] 스킬을 선택하여 현상을 진정시키세요" class="skill-instruction" />
+        <ui:VisualElement name="card-list" class="card-list">
+            <ui:Button name="btn-skill-limit" class="skill-card">
+                <ui:Label text="1" class="hotkey-label" />
+                <ui:Label text="극한 (Limit)" class="skill-name" />
+                <ui:Label text="f(x) → ∞" class="skill-desc" />
+            </ui:Button>
+            <ui:Button name="btn-skill-derivative" class="skill-card">
+                <ui:Label text="2" class="hotkey-label" />
+                <ui:Label text="미분 (Derivative)" class="skill-name" />
+                <ui:Label text="f'(x)" class="skill-desc" />
+            </ui:Button>
+            <ui:Button name="btn-skill-integral" class="skill-card">
+                <ui:Label text="3" class="hotkey-label" />
+                <ui:Label text="적분 (Integral)" class="skill-name" />
+                <ui:Label text="∫ f(x) dx" class="skill-desc" />
+            </ui:Button>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
