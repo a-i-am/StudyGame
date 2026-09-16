@@ -16,7 +16,7 @@ public class DialogueChoice
 [Serializable]
 public class PersonaDialogueGroup
 {
-    public NPCType personality;
+    public MBTIType personality;
     public List<DialogueLine> lines = new List<DialogueLine>();
 }
 
@@ -43,14 +43,14 @@ public class SequenceNode : ScriptableObject
 
     public List<DialogueChoice> choices = new List<DialogueChoice>();
 
-    public List<DialogueLine> GetDialogueLines(NPCType type)
+    public List<DialogueLine> GetDialogueLines(MBTIType type)
     {
         if (personaDialogues != null && personaDialogues.Count > 0)
         {
             PersonaDialogueGroup match = personaDialogues.Find(p => p != null && p.personality == type && p.lines != null && p.lines.Count > 0);
             if (match != null) return match.lines;
 
-            PersonaDialogueGroup standard = personaDialogues.Find(p => p != null && p.personality == NPCType.Standard && p.lines != null && p.lines.Count > 0);
+            PersonaDialogueGroup standard = personaDialogues.Find(p => p != null && p.personality == MBTIType.Unknown && p.lines != null && p.lines.Count > 0);
             if (standard != null) return standard.lines;
         }
 

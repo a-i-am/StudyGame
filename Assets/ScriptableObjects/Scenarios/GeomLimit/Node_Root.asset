@@ -1,0 +1,43 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88c7a4ff97624f04d983c742a5ba569d, type: 3}
+  m_Name: Node_Root
+  m_EditorClassIdentifier: 
+  guid: aec974dc-08c1-4380-b0f9-688d6312cf22
+  graphPosition: {x: 0, y: 0}
+  sequenceType: 0
+  mapPrefab: {fileID: 0}
+  characterStanding: {fileID: 0}
+  snsData: {fileID: 0}
+  unlockConcept: {fileID: 11400000, guid: c13484599b889424b86aaa57ac84f9c1, type: 2}
+  discoveredClue: "\uBB3C\uCCB4\uC758 \uD06C\uAE30\uAC00 \uB9E4\uBC88 \uC808\uBC18\uC529
+    \uC904\uC5B4\uB4E4\uACE0 \uC788\uC73C\uB098, \uC601\uC6D0\uD788 \uC0AC\uB77C\uC9C0\uC9C0
+    \uC54A\uACE0 \uD55C\uACC4\uC810\uC5D0 \uC218\uB834\uD55C\uB2E4."
+  apCost: 1
+  dialogueLines: []
+  personaDialogues:
+  - personality: 2
+    lines:
+    - speakerName: AI Tutor
+      text: "\uD604\uC0C1\uC758 \uBC94\uC704\uB97C \uBD84\uC11D\uD55C \uACB0\uACFC,
+        \uD2B9\uC815\uD55C \uD328\uD134\uC744 \uB530\uB974\uACE0 \uC788\uC2B5\uB2C8\uB2E4."
+      standingSprite: {fileID: 0}
+    - speakerName: AI Tutor
+      text: "\uBB34\uD55C\uD788 \uC791\uC544\uC9C0\uC9C0\uB9CC \uACB0\uCF54 0\uC5D0
+        \uB3C4\uB2EC\uD558\uC9C4 \uC54A\uB124\uC694."
+      standingSprite: {fileID: 0}
+  nextNode: {fileID: 0}
+  choices:
+  - portGuid: 
+    choiceText: "[\uAE30\uCD08 \uC9C8\uBB38] \uACF5\uBE44\uAC00 \uB300\uCCB4 \uBB50\uC57C?"
+    targetNode: {fileID: 11400000, guid: 8cdae8462da013b4abd7c46917d3bd4b, type: 2}
+    isSubBranch: 1
