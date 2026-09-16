@@ -38,18 +38,18 @@ public static class StudyGameTestSetup
         ConceptData conceptLimit = CreateOrLoadConcept("Assets/ScriptableObjects/TestConcepts/Concept_Limit.asset", "Math_Limit", "수열의 극한", "무한히 진행할 때 가까워지는 값", SubjectType.SequenceLimit, null);
         ConceptData conceptGeomLimit = CreateOrLoadConcept("Assets/ScriptableObjects/TestConcepts/Concept_GeomLimit.asset", "Math_GeomLimit", "등비수열의 극한", "공비의 절댓값에 따라 수렴/발산이 결정되는 규칙", SubjectType.SequenceLimit, new List<ConceptData> { conceptRatio, conceptLimit });
 
-        NPCData npcCynical = CreateOrLoadNPC("Assets/ScriptableObjects/TestNPCs/NPC_Cynical.asset", "NPC_01", "아카데미 냉소파 조교", NPCType.Cynical);
+        NPCData npcCynical = CreateOrLoadNPC("Assets/ScriptableObjects/TestNPCs/NPC_Cynical.asset", "NPC_01", "아카데미 냉소파 조교", MBTIType.INTJ);
 
         SequenceNode nodeRoot = CreateOrLoadSequenceNode("Assets/ScriptableObjects/TestGraph/Node_Root.asset", "Node_Root", conceptGeomLimit, 0, "크기가 절반씩 계속 줄어들고 있으나 완전히 0이 되지는 않는다.", new List<DialogueLine>
         {
             new DialogueLine { speakerName = "아카데미 냉소파 조교", text = "흥, 또 이상한 현상을 들고 왔군. 어디서부터 손을 대야 할지 감도 안 잡히나?" },
             new DialogueLine { speakerName = "아카데미 냉소파 조교", text = "단서를 잘 봐. 계속 줄어들고 있지만 단순한 뺄셈이 아니야." }
-        }, NPCType.Cynical);
+        }, MBTIType.INTJ);
 
         SequenceNode nodePrereqRatio = CreateOrLoadSequenceNode("Assets/ScriptableObjects/TestGraph/Node_Prereq_Ratio.asset", "Node_Prereq_Ratio", conceptRatio, 0, "항과 항 사이에 일정한 곱셈 비율(공비)이 관찰된다.", new List<DialogueLine>
         {
             new DialogueLine { speakerName = "아카데미 냉소파 조교", text = "공비도 모르면서 극한을 다루겠다고? 쯧, 연속된 두 항을 나눠봐라. 그게 공비다." }
-        }, NPCType.Cynical);
+        }, MBTIType.INTJ);
 
         nodeRoot.choices = new List<DialogueChoice>
         {
@@ -163,7 +163,7 @@ public static class StudyGameTestSetup
         return asset;
     }
 
-    private static NPCData CreateOrLoadNPC(string path, string id, string name, NPCType personality)
+    private static NPCData CreateOrLoadNPC(string path, string id, string name, MBTIType personality)
     {
         NPCData asset = AssetDatabase.LoadAssetAtPath<NPCData>(path);
         if (asset == null)
@@ -174,13 +174,13 @@ public static class StudyGameTestSetup
 
         asset.npcId = id;
         asset.npcName = name;
-        asset.personalityType = personality;
+        asset.mbtiType = personality;
 
         EditorUtility.SetDirty(asset);
         return asset;
     }
 
-    private static SequenceNode CreateOrLoadSequenceNode(string path, string name, ConceptData concept, int ap, string clue, List<DialogueLine> lines, NPCType personality)
+    private static SequenceNode CreateOrLoadSequenceNode(string path, string name, ConceptData concept, int ap, string clue, List<DialogueLine> lines, MBTIType personality)
     {
         SequenceNode asset = AssetDatabase.LoadAssetAtPath<SequenceNode>(path);
         if (asset == null)
