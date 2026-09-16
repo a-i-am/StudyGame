@@ -169,3 +169,7 @@ x86/
 *.[Pp]ublish.xml
 
 .code-notes/
+models.json
+search_log.py
+search_results.txt
+test_nim.py
