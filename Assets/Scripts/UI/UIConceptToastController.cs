@@ -19,13 +19,18 @@ namespace StudyGame.UI
         private void Awake()
         {
             uiDocument = GetComponent<UIDocument>();
-            VisualElement root = uiDocument.rootVisualElement;
-            root.pickingMode = PickingMode.Ignore;
+            if (uiDocument != null) uiDocument.sortingOrder = 20;
 
-            toastContainer = root.Q<VisualElement>("toast-container");
-            if (toastContainer != null)
+            VisualElement root = uiDocument.rootVisualElement;
+            if (root != null) root.pickingMode = PickingMode.Ignore;
+
+            if (root != null)
             {
-                toastContainer.pickingMode = PickingMode.Ignore;
+                toastContainer = root.Q<VisualElement>("toast-container");
+                if (toastContainer != null)
+                {
+                    toastContainer.pickingMode = PickingMode.Ignore;
+                }
             }
         }
 

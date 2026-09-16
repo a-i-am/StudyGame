@@ -10,10 +10,17 @@ namespace StudyGame.LLM
     {
         public static LLMStreamSender Instance { get; private set; }
 
-        [SerializeField] private bool useMockStreaming = true;
+        [Header("LLM Settings")]
+        [SerializeField] private bool useMockStreaming = false;
+        
+        [Tooltip("비워두면 PC 환경변수(NVIDIA_API_KEY)에서 자동으로 읽어옵니다. 보안상 비워두는 것을 권장합니다.")]
         [SerializeField] private string apiKey = "";
-        [SerializeField] private string apiUrl = "https://api.openai.com/v1/chat/completions";
-        [SerializeField] private string modelName = "gpt-3.5-turbo";
+        
+        [Tooltip("NVIDIA NIM (클라우드) 기본 주소")]
+        [SerializeField] private string apiUrl = "https://integrate.api.nvidia.com/v1/chat/completions";
+        
+        [Tooltip("현재 사용 가능한 NVIDIA NIM 모델입니다.")]
+        [SerializeField] private string modelName = "meta/llama-3.2-11b-vision-instruct";
 
         private void Awake()
         {
@@ -28,16 +35,29 @@ namespace StudyGame.LLM
 
         public void StartStream(string systemPrompt, string userPrompt, Action<string> onToken, Action onComplete, Action<string> onError)
         {
-            if (useMockStreaming || string.IsNullOrEmpty(apiKey))
+            if (useMockStreaming)
             {
                 StartCoroutine(MockStreamRoutine(userPrompt, onToken, onComplete));
                 return;
             }
 
-            StartCoroutine(PostStreamRoutine(systemPrompt, userPrompt, onToken, onComplete, onError));
+            string actualApiKey = apiKey;
+            if (string.IsNullOrEmpty(actualApiKey))
+            {
+                actualApiKey = System.Environment.GetEnvironmentVariable("NVIDIA_API_KEY");
+                if (string.IsNullOrEmpty(actualApiKey))
+                {
+                    Debug.LogError("[LLMStreamSender] API Key가 설정되지 않았습니다. 환경변수 NVIDIA_API_KEY를 확인해주세요.");
+                    onError?.Invoke("API Key is missing.");
+                    return;
+                }
+            }
+
+            Debug.Log($"[LLMStreamSender] API 호출 시작. 모델: {modelName}, URL: {apiUrl}, Key: {actualApiKey.Substring(0, Mathf.Min(8, actualApiKey.Length))}...");
+            StartCoroutine(PostStreamRoutine(systemPrompt, userPrompt, actualApiKey, onToken, onComplete, onError));
         }
 
-        private IEnumerator PostStreamRoutine(string systemPrompt, string userPrompt, Action<string> onToken, Action onComplete, Action<string> onError)
+        private IEnumerator PostStreamRoutine(string systemPrompt, string userPrompt, string actualApiKey, Action<string> onToken, Action onComplete, Action<string> onError)
         {
             string jsonBody = $"{{\"model\":\"{modelName}\",\"stream\":true,\"messages\":[{{\"role\":\"system\",\"content\":\"{EscapeJson(systemPrompt)}\"}},{{\"role\":\"user\",\"content\":\"{EscapeJson(userPrompt)}\"}}]}}";
 
@@ -48,14 +68,15 @@ namespace StudyGame.LLM
                 request.downloadHandler = new SSEDownloadHandler(onToken, onComplete);
                 request.SetRequestHeader("Content-Type", "application/json");
                 request.SetRequestHeader("Accept", "text/event-stream");
-                request.SetRequestHeader("Authorization", $"Bearer {apiKey}");
+                request.SetRequestHeader("Authorization", $"Bearer {actualApiKey}");
 
                 yield return request.SendWebRequest();
 
                 if (request.result != UnityWebRequest.Result.Success)
                 {
-                    Debug.LogWarning($"[LLMStreamSender] Stream failed: {request.error}. Fallback to Mock Stream.");
-                    StartCoroutine(MockStreamRoutine(userPrompt, onToken, onComplete));
+                    string responseBody = request.downloadHandler?.text ?? "(no body)";
+                    Debug.LogError($"[LLMStreamSender] API 호출 실패! result={request.result}, error={request.error}, HTTP={request.responseCode}, body={responseBody}");
+                    onError?.Invoke($"API 호출 실패: {request.error} (HTTP {request.responseCode})");
                 }
             }
         }

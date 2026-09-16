@@ -17,10 +17,24 @@ namespace StudyGame.UI
         private VisualElement candidatesGrid;
         private Label feedbackLabel;
 
-        private void Awake()
+        private bool isInitialized = false;
+
+        private void OnEnable()
         {
+            InitializeUI();
+            StartCoroutine(SubscribeToEngine());
+        }
+
+        private void InitializeUI()
+        {
+            if (isInitialized) return;
+
             uiDocument = GetComponent<UIDocument>();
+            if (uiDocument == null || uiDocument.rootVisualElement == null) return;
+            uiDocument.sortingOrder = 10;
+
             VisualElement root = uiDocument.rootVisualElement;
+            root.pickingMode = PickingMode.Ignore;
 
             deductionOverlay = root.Q<VisualElement>("deduction-overlay");
             apLabel = root.Q<Label>("ap-label");
@@ -38,12 +52,11 @@ namespace StudyGame.UI
             {
                 deductionOverlay.style.display = DisplayStyle.None;
             }
+
+            isInitialized = true;
         }
 
-        private void OnEnable()
-        {
-            StartCoroutine(SubscribeToEngine());
-        }
+
 
         private IEnumerator SubscribeToEngine()
         {
@@ -68,6 +81,15 @@ namespace StudyGame.UI
 
         public void OpenModal()
         {
+            StartCoroutine(OpenModalRoutine());
+        }
+
+        private IEnumerator OpenModalRoutine()
+        {
+            uiDocument = GetComponent<UIDocument>();
+            while (uiDocument != null && uiDocument.rootVisualElement == null) yield return null;
+
+            InitializeUI();
             if (deductionOverlay != null)
             {
                 deductionOverlay.style.display = DisplayStyle.Flex;

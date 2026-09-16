@@ -44,10 +44,24 @@ namespace StudyGame.UI
         private bool isStreamingActive = false;
         private string currentFullText = "";
 
-        private void Awake()
+        private bool isInitialized = false;
+
+        private void OnEnable()
         {
+            InitializeUI();
+            StartCoroutine(SubscribeToDeductionEngine());
+        }
+
+        private void InitializeUI()
+        {
+            if (isInitialized) return;
+
             uiDocument = GetComponent<UIDocument>();
+            if (uiDocument == null || uiDocument.rootVisualElement == null) return;
+            uiDocument.sortingOrder = 5;
+
             VisualElement root = uiDocument.rootVisualElement;
+            root.pickingMode = PickingMode.Ignore;
 
             dialogueOverlay = root.Q<VisualElement>("dialogue-overlay");
             dialogueBox = root.Q<VisualElement>("dialogue-box");
@@ -61,6 +75,19 @@ namespace StudyGame.UI
             sendQuestionButton = root.Q<Button>("send-question-button");
             loadingIndicator = root.Q<Label>("loading-indicator");
 
+            if (customQuestionField != null)
+            {
+                customQuestionField.value = "";
+                customQuestionField.SelectRange(0, 0);
+                customQuestionField.RegisterValueChangedCallback(evt =>
+                {
+                    if (string.IsNullOrEmpty(evt.newValue))
+                    {
+                        customQuestionField.SetValueWithoutNotify("");
+                        customQuestionField.SelectRange(0, 0);
+                    }
+                });
+            }
             if (dialogueBox != null)
             {
                 dialogueBox.RegisterCallback<ClickEvent>(OnDialogueBoxClicked);
@@ -75,6 +102,8 @@ namespace StudyGame.UI
             {
                 dialogueOverlay.style.display = DisplayStyle.None;
             }
+
+            isInitialized = true;
         }
 
         private void Start()
@@ -85,10 +114,7 @@ namespace StudyGame.UI
             }
         }
 
-        private void OnEnable()
-        {
-            StartCoroutine(SubscribeToDeductionEngine());
-        }
+
 
         private IEnumerator SubscribeToDeductionEngine()
         {
@@ -123,7 +149,20 @@ namespace StudyGame.UI
 
         public void StartDialogue(SequenceGraphData graph)
         {
-            if (graph == null || graph.allNodes == null || graph.allNodes.Count == 0) return;
+            StartCoroutine(StartDialogueRoutine(graph));
+        }
+
+        private IEnumerator StartDialogueRoutine(SequenceGraphData graph)
+        {
+            uiDocument = GetComponent<UIDocument>();
+            while (uiDocument != null && uiDocument.rootVisualElement == null)
+            {
+                yield return null;
+            }
+
+            InitializeUI();
+
+            if (graph == null || graph.allNodes == null || graph.allNodes.Count == 0) yield break;
 
             currentGraph = graph;
             navigationStack.Clear();
@@ -205,7 +244,7 @@ namespace StudyGame.UI
                 DeductionRuleEngine.Instance.CollectClue(node.discoveredClue);
             }
 
-            NPCType personaType = activeNPC != null ? activeNPC.personalityType : NPCType.Standard;
+            MBTIType personaType = activeNPC != null ? activeNPC.mbtiType : MBTIType.Unknown;
             List<DialogueLine> lines = node.GetDialogueLines(personaType);
 
             dialogueQueue.Clear();
@@ -235,6 +274,13 @@ namespace StudyGame.UI
 
         private void OnDialogueBoxClicked(ClickEvent evt)
         {
+            VisualElement target = evt.target as VisualElement;
+            while (target != null)
+            {
+                if (target is Button || target is TextField || target is ScrollView) return;
+                target = target.parent;
+            }
+
             if (isStreamingActive) return;
 
             if (isTyping)
@@ -465,6 +511,8 @@ namespace StudyGame.UI
 
             string userQuestion = customQuestionField.value;
             customQuestionField.value = "";
+            customQuestionField.SelectRange(0, 0);
+            customQuestionField.Blur();
 
             if (choicesContainer != null) choicesContainer.Clear();
             if (loadingIndicator != null) loadingIndicator.style.display = DisplayStyle.Flex;
