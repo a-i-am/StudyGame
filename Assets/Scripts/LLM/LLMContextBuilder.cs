@@ -9,26 +9,27 @@ namespace StudyGame.LLM
         {
             StringBuilder sb = new StringBuilder();
 
-            sb.AppendLine("You are an in-game AI NPC providing hints to the player in a mathematical concept discovery game.");
+            sb.AppendLine("You are an in-game AI NPC interactively talking with the player in an anomaly investigation game.");
 
             if (activeNPC != null)
             {
-                sb.AppendLine($"[NPC Persona]: {activeNPC.npcName}");
-                sb.AppendLine($"[Personality Type]: {activeNPC.personalityType}");
-                switch (activeNPC.personalityType)
+                sb.AppendLine($"[NPC Name]: {activeNPC.npcName}");
+                sb.AppendLine($"[MBTI Persona]: {activeNPC.mbtiType}");
+                
+                if (!string.IsNullOrEmpty(activeNPC.personalityDescription))
                 {
-                    case NPCType.Cynical:
-                        sb.AppendLine("Tone: Sarcastic, sharp, yet insightful and subtly helpful.");
-                        break;
-                    case NPCType.Passionate:
-                        sb.AppendLine("Tone: Enthusiastic, energetic, highly motivating and encouraging.");
-                        break;
-                    case NPCType.Analytical:
-                        sb.AppendLine("Tone: Logical, precise, structured, using mathematical formalisms.");
-                        break;
-                    default:
-                        sb.AppendLine("Tone: Friendly, supportive, polite standard tutor.");
-                        break;
+                    sb.AppendLine($"[Personality]: {activeNPC.personalityDescription}");
+                }
+                
+                if (!string.IsNullOrEmpty(activeNPC.speechStyle))
+                {
+                    sb.AppendLine($"[Speech Style & Tone]: {activeNPC.speechStyle}");
+                    sb.AppendLine("CRITICAL: You MUST strictly adhere to this speech style and tone. Express your personality naturally in every response.");
+                }
+
+                if (!string.IsNullOrEmpty(activeNPC.promptInjection))
+                {
+                    sb.AppendLine($"[Special Directives]: {activeNPC.promptInjection}");
                 }
             }
 
@@ -40,7 +41,7 @@ namespace StudyGame.LLM
 
             if (concept != null)
             {
-                sb.AppendLine($"[Current Topic Summary]: {concept.archiveSummary}");
+                sb.AppendLine($"[Investigation Topic Context]: {concept.archiveSummary}");
             }
 
             if (DeductionRuleEngine.Instance != null && DeductionRuleEngine.Instance.AccumulatedClues.Count > 0)
@@ -52,14 +53,15 @@ namespace StudyGame.LLM
                 }
             }
 
-            sb.AppendLine("[CRITICAL CONSTRAINTS]:");
+            sb.AppendLine("[RESPONSE BEHAVIOR GUIDELINES]:");
+            sb.AppendLine("1. CONTEXTUAL RELEVANCE: Listen carefully to what the player is asking. If the player asks casual questions (e.g., 'Who are you?', 'Why are you wearing a mask?', 'How are you feeling?', 'Where are we?'), respond naturally in character according to your MBTI/personality without forcing mathematical hints.");
+            sb.AppendLine("2. HINT INTEGRATION: Only weave in mathematical or analytical hints when the player specifically asks about the anomaly, clues, puzzles, or how to solve the current situation.");
             if (concept != null && !string.IsNullOrEmpty(concept.title))
             {
-                sb.AppendLine($"1. NEVER reveal the exact name of the concept target: '{concept.title}'. Protect the solution!");
+                sb.AppendLine($"3. SPOILER PROTECTION: NEVER explicitly state the exact solution term '{concept.title}'. Guide them with subtle logic instead.");
             }
-            sb.AppendLine("2. Provide subtle, thought-provoking hints based on the discovered clues.");
-            sb.AppendLine("3. Keep your response within 2-3 sentences max for UI dialogue compatibility.");
-            sb.AppendLine("4. Respond in Natural Korean language.");
+            sb.AppendLine("4. LENGTH: Keep responses concise (2 to 3 sentences max) for UI dialogue box readability.");
+            sb.AppendLine("5. LANGUAGE: Always respond in natural, immersive Korean matching the NPC's tone.");
 
             return sb.ToString();
         }

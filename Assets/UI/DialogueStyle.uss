@@ -105,9 +105,14 @@
     min-width: 0;
     height: 36px;
     margin-right: 10px;
+}
+
+.custom-question-field .unity-text-field__input {
     background-color: #1A202C;
     color: #EDF2F7;
+    border-color: #4A5568;
     border-radius: 6px;
+    padding: 0 10px;
 }
 
 .send-question-button {

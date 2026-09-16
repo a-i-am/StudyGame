@@ -23,6 +23,12 @@ namespace StudyGame.LLM
         {
             if (data == null || dataLength < 1) return true;
 
+            int maxChars = Encoding.UTF8.GetMaxCharCount(dataLength);
+            if (charBuffer.Length < maxChars)
+            {
+                charBuffer = new char[maxChars];
+            }
+
             int charsDecoded = utf8Decoder.GetChars(data, 0, dataLength, charBuffer, 0, false);
             for (int i = 0; i < charsDecoded; i++)
             {
