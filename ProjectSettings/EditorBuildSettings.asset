@@ -8,5 +8,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/VerificationTestScene.unity
     guid: 3e3f3698f6921a042bbf83f7465d6801
+  - enabled: 1
+    path: Assets/Scenes/Scene_ExplorationRunner.unity
+    guid: 2c4d0ad648a71404491d151ccbe659f8
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0

@@ -5,23 +5,75 @@ using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
+using UnityEditor.Callbacks;
+using StudyGame.Data;
 
 public class StageSequencerWindow : EditorWindow
 {
     private SequenceGraphView graphView;
+    private StageScenarioData currentScenarioData;
     private SequenceGraphData currentGraphData;
-    private VisualElement detailPanel;
+    private VisualElement rightPaneContent;
     private Image standingPreviewImage;
     private Label previewInfoLabel;
-    private SerializedObject selectedSerializedObject;
-    private NPCType selectedPersonaTab = NPCType.Standard;
+    
+    private SerializedObject scenarioSerializedObject;
+    private SerializedObject selectedNodeSerializedObject;
+    private MBTIType selectedPersonaTab = MBTIType.Unknown;
 
-    [MenuItem("Tools/Stage Sequencer")]
+    private int activeTabIndex = 0; // 0 = Scenario, 1 = Node
+
+    [MenuItem("StudyGame/Stage Sequencer (All-in-One)")]
     public static void ShowWindow()
     {
         StageSequencerWindow wnd = GetWindow<StageSequencerWindow>();
         wnd.titleContent = new GUIContent("Stage Sequencer");
-        wnd.minSize = new Vector2(900, 500);
+        wnd.minSize = new Vector2(1000, 600);
+    }
+
+    [OnOpenAsset]
+    public static bool OnOpenAsset(int instanceID, int line)
+    {
+        UnityEngine.Object obj = EditorUtility.InstanceIDToObject(instanceID);
+        if (obj is StageScenarioData scenario)
+        {
+            ShowWindow();
+            GetWindow<StageSequencerWindow>().LoadScenario(scenario);
+            return true;
+        }
+        else if (obj is SequenceGraphData graph)
+        {
+            ShowWindow();
+            GetWindow<StageSequencerWindow>().LoadGraph(graph);
+            return true;
+        }
+        return false;
+    }
+
+    public void LoadScenario(StageScenarioData scenario)
+    {
+        currentScenarioData = scenario;
+        if (scenario != null)
+        {
+            scenarioSerializedObject = new SerializedObject(scenario);
+            LoadGraph(scenario.dialogueGraph);
+        }
+        else
+        {
+            scenarioSerializedObject = null;
+            LoadGraph(null);
+        }
+        activeTabIndex = 0;
+        RefreshRightPane();
+    }
+
+    public void LoadGraph(SequenceGraphData graph)
+    {
+        currentGraphData = graph;
+        if (graphView != null)
+        {
+            graphView.PopulateView(currentGraphData);
+        }
     }
 
     public void CreateGUI()
@@ -35,6 +87,18 @@ public class StageSequencerWindow : EditorWindow
         leftPane.style.flexGrow = 1;
 
         Toolbar toolbar = new Toolbar();
+        ObjectField scenarioField = new ObjectField("Scenario Asset")
+        {
+            objectType = typeof(StageScenarioData),
+            allowSceneObjects = false,
+            value = currentScenarioData
+        };
+        scenarioField.RegisterValueChangedCallback(evt =>
+        {
+            LoadScenario(evt.newValue as StageScenarioData);
+        });
+        toolbar.Add(scenarioField);
+
         ObjectField graphField = new ObjectField("Graph Asset")
         {
             objectType = typeof(SequenceGraphData),
@@ -43,11 +107,7 @@ public class StageSequencerWindow : EditorWindow
         };
         graphField.RegisterValueChangedCallback(evt =>
         {
-            currentGraphData = evt.newValue as SequenceGraphData;
-            if (graphView != null)
-            {
-                graphView.PopulateView(currentGraphData);
-            }
+            LoadGraph(evt.newValue as SequenceGraphData);
         });
         toolbar.Add(graphField);
 
@@ -62,39 +122,35 @@ public class StageSequencerWindow : EditorWindow
 
         splitView.Add(leftPane);
 
-        VisualElement rightPane = new ScrollView();
-        rightPane.style.width = 320;
-        rightPane.style.paddingLeft = 10;
-        rightPane.style.paddingRight = 10;
-        rightPane.style.paddingTop = 10;
+        VisualElement rightPane = new VisualElement();
+        rightPane.style.width = 350;
+        rightPane.style.flexDirection = FlexDirection.Column;
 
-        detailPanel = new VisualElement();
-        rightPane.Add(detailPanel);
+        Toolbar rightTabs = new Toolbar();
+        Button tabScenario = new Button(() => { activeTabIndex = 0; RefreshRightPane(); }) { text = "시나리오 설정" };
+        Button tabNode = new Button(() => { activeTabIndex = 1; RefreshRightPane(); }) { text = "노드 설정" };
+        rightTabs.Add(tabScenario);
+        rightTabs.Add(tabNode);
+        rightPane.Add(rightTabs);
 
-        VisualElement previewBox = new VisualElement();
-        previewBox.style.marginTop = 15;
-        previewBox.style.paddingTop = 10;
-        previewBox.style.borderTopWidth = 1;
-        previewBox.style.borderTopColor = new Color(0.3f, 0.3f, 0.3f);
+        ScrollView scroll = new ScrollView();
+        scroll.style.flexGrow = 1;
+        scroll.style.paddingLeft = 10;
+        scroll.style.paddingRight = 10;
+        scroll.style.paddingTop = 10;
 
-        previewInfoLabel = new Label("아트 미리보기 (캐릭터 스탠딩 / 맵)");
-        previewInfoLabel.style.unityFontStyleAndWeight = FontStyle.Bold;
-        previewBox.Add(previewInfoLabel);
+        rightPaneContent = new VisualElement();
+        scroll.Add(rightPaneContent);
 
-        standingPreviewImage = new Image();
-        standingPreviewImage.style.width = 180;
-        standingPreviewImage.style.height = 240;
-        standingPreviewImage.style.marginTop = 10;
-        standingPreviewImage.style.backgroundColor = new Color(0.1f, 0.1f, 0.1f, 0.4f);
-        previewBox.Add(standingPreviewImage);
-
-        rightPane.Add(previewBox);
+        rightPane.Add(scroll);
         splitView.Add(rightPane);
 
         if (currentGraphData != null)
         {
             graphView.PopulateView(currentGraphData);
         }
+        
+        RefreshRightPane();
     }
 
     private void CreateNewNode()
@@ -123,27 +179,104 @@ public class StageSequencerWindow : EditorWindow
 
     private void OnSequenceNodeSelected(SequenceNodeView nodeView)
     {
-        detailPanel.Clear();
-        if (nodeView == null || nodeView.NodeData == null) return;
+        if (nodeView == null || nodeView.NodeData == null)
+        {
+            selectedNodeSerializedObject = null;
+        }
+        else
+        {
+            selectedNodeSerializedObject = new SerializedObject(nodeView.NodeData);
+            activeTabIndex = 1; // Auto switch to node tab
+        }
+        RefreshRightPane();
+    }
 
-        SequenceNode node = nodeView.NodeData;
-        selectedSerializedObject = new SerializedObject(node);
+    private void RefreshRightPane()
+    {
+        if (rightPaneContent == null) return;
+        rightPaneContent.Clear();
 
-        SerializedProperty prop = selectedSerializedObject.GetIterator();
+        if (activeTabIndex == 0)
+        {
+            RenderScenarioTab();
+        }
+        else
+        {
+            RenderNodeTab();
+        }
+    }
+
+    private void RenderScenarioTab()
+    {
+        if (scenarioSerializedObject == null)
+        {
+            rightPaneContent.Add(new Label("선택된 시나리오가 없습니다."));
+            return;
+        }
+
+        scenarioSerializedObject.Update();
+
+        SerializedProperty prop = scenarioSerializedObject.GetIterator();
         if (prop.NextVisible(true))
         {
             do
             {
                 if (prop.name == "m_Script") continue;
                 PropertyField field = new PropertyField(prop);
-                field.Bind(selectedSerializedObject);
+                field.Bind(scenarioSerializedObject);
+                rightPaneContent.Add(field);
+            }
+            while (prop.NextVisible(false));
+        }
+    }
+
+    private void RenderNodeTab()
+    {
+        if (selectedNodeSerializedObject == null)
+        {
+            rightPaneContent.Add(new Label("선택된 노드가 없습니다."));
+            return;
+        }
+
+        selectedNodeSerializedObject.Update();
+        SequenceNode node = selectedNodeSerializedObject.targetObject as SequenceNode;
+
+        SerializedProperty prop = selectedNodeSerializedObject.GetIterator();
+        if (prop.NextVisible(true))
+        {
+            do
+            {
+                if (prop.name == "m_Script") continue;
+                PropertyField field = new PropertyField(prop);
+                field.Bind(selectedNodeSerializedObject);
                 field.RegisterValueChangeCallback(_ => UpdatePreview(node));
-                detailPanel.Add(field);
+                rightPaneContent.Add(field);
             }
             while (prop.NextVisible(false));
         }
 
         RenderPersonaSection(node);
+
+        // Preview Box
+        VisualElement previewBox = new VisualElement();
+        previewBox.style.marginTop = 15;
+        previewBox.style.paddingTop = 10;
+        previewBox.style.borderTopWidth = 1;
+        previewBox.style.borderTopColor = new Color(0.3f, 0.3f, 0.3f);
+
+        previewInfoLabel = new Label("아트 미리보기 (캐릭터 스탠딩 / 맵)");
+        previewInfoLabel.style.unityFontStyleAndWeight = FontStyle.Bold;
+        previewBox.Add(previewInfoLabel);
+
+        standingPreviewImage = new Image();
+        standingPreviewImage.style.width = 180;
+        standingPreviewImage.style.height = 240;
+        standingPreviewImage.style.marginTop = 10;
+        standingPreviewImage.style.backgroundColor = new Color(0.1f, 0.1f, 0.1f, 0.4f);
+        previewBox.Add(standingPreviewImage);
+
+        rightPaneContent.Add(previewBox);
+
         UpdatePreview(node);
     }
 
@@ -160,16 +293,12 @@ public class StageSequencerWindow : EditorWindow
         section.Add(header);
 
         Toolbar personaToolbar = new Toolbar();
-        foreach (NPCType type in Enum.GetValues(typeof(NPCType)))
+        foreach (MBTIType type in Enum.GetValues(typeof(MBTIType)))
         {
             Button tabBtn = new Button(() =>
             {
                 selectedPersonaTab = type;
-                if (graphView != null && graphView.selection != null)
-                {
-                    SequenceNodeView selected = graphView.selection.Find(e => e is SequenceNodeView) as SequenceNodeView;
-                    if (selected != null) OnSequenceNodeSelected(selected);
-                }
+                RefreshRightPane();
             })
             { text = type.ToString() };
             if (type == selectedPersonaTab)
@@ -180,7 +309,7 @@ public class StageSequencerWindow : EditorWindow
         }
         section.Add(personaToolbar);
 
-        SerializedProperty personaListProp = selectedSerializedObject.FindProperty("personaDialogues");
+        SerializedProperty personaListProp = selectedNodeSerializedObject.FindProperty("personaDialogues");
         int targetIndex = -1;
         if (personaListProp != null)
         {
@@ -188,7 +317,7 @@ public class StageSequencerWindow : EditorWindow
             {
                 SerializedProperty groupProp = personaListProp.GetArrayElementAtIndex(i);
                 SerializedProperty personalityProp = groupProp.FindPropertyRelative("personality");
-                if (personalityProp != null && (NPCType)personalityProp.enumValueIndex == selectedPersonaTab)
+                if (personalityProp != null && (MBTIType)personalityProp.enumValueIndex == selectedPersonaTab)
                 {
                     targetIndex = i;
                     break;
@@ -199,37 +328,32 @@ public class StageSequencerWindow : EditorWindow
             {
                 SerializedProperty groupProp = personaListProp.GetArrayElementAtIndex(targetIndex);
                 PropertyField linesField = new PropertyField(groupProp.FindPropertyRelative("lines"), $"{selectedPersonaTab} 대사 목록");
-                linesField.Bind(selectedSerializedObject);
+                linesField.Bind(selectedNodeSerializedObject);
                 section.Add(linesField);
             }
             else
             {
                 Button addGroupBtn = new Button(() =>
                 {
-                    selectedSerializedObject.Update();
+                    selectedNodeSerializedObject.Update();
                     personaListProp.arraySize++;
                     SerializedProperty newElement = personaListProp.GetArrayElementAtIndex(personaListProp.arraySize - 1);
                     newElement.FindPropertyRelative("personality").enumValueIndex = (int)selectedPersonaTab;
                     newElement.FindPropertyRelative("lines").ClearArray();
-                    selectedSerializedObject.ApplyModifiedProperties();
-
-                    if (graphView != null && graphView.selection != null)
-                    {
-                        SequenceNodeView selected = graphView.selection.Find(e => e is SequenceNodeView) as SequenceNodeView;
-                        if (selected != null) OnSequenceNodeSelected(selected);
-                    }
+                    selectedNodeSerializedObject.ApplyModifiedProperties();
+                    RefreshRightPane();
                 })
                 { text = $"+ [{selectedPersonaTab}] 페르소나 대사 그룹 추가" };
                 section.Add(addGroupBtn);
             }
         }
 
-        detailPanel.Add(section);
+        rightPaneContent.Add(section);
     }
 
     private void UpdatePreview(SequenceNode node)
     {
-        if (node == null) return;
+        if (node == null || standingPreviewImage == null || previewInfoLabel == null) return;
 
         if (node.characterStanding != null)
         {
