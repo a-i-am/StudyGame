@@ -173,3 +173,7 @@ models.json
 search_log.py
 search_results.txt
 test_nim.py
+
+# Resources folder ignored as per project requirement
+Assets/Resources/
+

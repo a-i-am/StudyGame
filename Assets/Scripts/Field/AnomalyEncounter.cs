@@ -1,4 +1,5 @@
 using UnityEngine;
+using StudyGame.Player;
 
 public class AnomalyEncounter : MonoBehaviour
 {
@@ -11,13 +12,15 @@ public class AnomalyEncounter : MonoBehaviour
             PlayerController playerController = other.GetComponent<PlayerController>();
             if (playerController != null)
             {
-                playerController.enabled = false;
+                playerController.SetMovementEnabled(false);
             }
 
             GetComponent<Collider>().enabled = false;
 
-            BattleManager.Instance.StartBattle(anomalyData, playerController);
+            if (BattleManager.Instance != null)
+            {
+                BattleManager.Instance.StartBattle(anomalyData, playerController);
+            }
         }
     }
-
 }
