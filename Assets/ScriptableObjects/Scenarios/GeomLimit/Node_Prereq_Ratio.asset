@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 88c7a4ff97624f04d983c742a5ba569d, type: 3}
   m_Name: Node_Prereq_Ratio
   m_EditorClassIdentifier: 
-  guid: a8907123-814d-4691-a540-e6513926e8dd
+  guid: 129094e7-6397-4d58-961d-3b0caf591982
   graphPosition: {x: 0, y: 0}
   sequenceType: 0
   mapPrefab: {fileID: 0}
