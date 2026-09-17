@@ -1,0 +1,17 @@
+.sentence-item-card {
+    width: 140px;
+    height: 80px;
+    background-color: rgb(80, 80, 80);
+    border-color: rgb(200, 200, 200);
+    border-width: 1px;
+    border-radius: 8px;
+    margin: 10px;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
+
+.sentence-item-card:hover {
+    background-color: rgb(100, 100, 100);
+    border-color: rgb(255, 255, 255);
+}
