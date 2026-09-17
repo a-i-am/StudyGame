@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e6e2bd4f683cf74987c0cd6edd6953b, type: 3}
   m_Name: TutorSkill_Node Id
   m_EditorClassIdentifier: 
-  nodeId: 
-  skillName: 
-  description: 
+  nodeId: tutor_limit_02
+  skillName: "극한 직관 연산"
+  description: "도영이와의 협동 연산. 이상현상 타격 시 보너스 추론 포인트를 획득합니다."
   icon: {fileID: 0}
   requiredConcept: {fileID: 0}
   prerequisites: []
-  effectType: 0
-  effectValue: 0
+  effectType: 1
+  effectValue: 15
   rewardSentenceItem: {fileID: 0}
