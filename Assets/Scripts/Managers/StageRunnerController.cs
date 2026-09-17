@@ -91,6 +91,7 @@ namespace StudyGame.Managers
 
             // 2. Exploration State
             ChangeState(StageState.Exploration);
+            CursorManager.Instance.SetGameCursorLocked(true);
             if (playerController != null)
             {
                 playerController.SetMovementEnabled(true);
@@ -109,6 +110,7 @@ namespace StudyGame.Managers
 
             // 4. Deduction State
             ChangeState(StageState.Deduction);
+            CursorManager.Instance.SetGameCursorLocked(false);
             if (playerController != null)
             {
                 playerController.SetMovementEnabled(false);

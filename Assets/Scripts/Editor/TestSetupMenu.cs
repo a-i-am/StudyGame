@@ -58,22 +58,43 @@ namespace StudyGame.EditorScripts
             }
             testScript.synthesizerUI = controller;
 
-            // 5. Find SOs and assign to testScript
             testScript.testItems = new System.Collections.Generic.List<SentenceItemData>();
-            string[] allAssetPaths = AssetDatabase.GetAllAssetPaths();
-            foreach (string path in allAssetPaths)
+            string[] guids = AssetDatabase.FindAssets("t:SentenceItemData");
+            foreach (string guid in guids)
             {
-                if (path.EndsWith(".asset"))
+                string path = AssetDatabase.GUIDToAssetPath(guid);
+                SentenceItemData data = AssetDatabase.LoadAssetAtPath<SentenceItemData>(path);
+                if (data != null)
                 {
-                    SentenceItemData data = AssetDatabase.LoadAssetAtPath<SentenceItemData>(path);
-                    if (data != null)
-                    {
-                        testScript.testItems.Add(data);
-                    }
+                    testScript.testItems.Add(data);
                 }
             }
 
-            // 6. Setup TutorManager if not present
+            GameObject tutorGo = GameObject.Find("UI_TutorModal");
+            if (tutorGo == null)
+            {
+                tutorGo = new GameObject("UI_TutorModal");
+            }
+            UIDocument tutorUiDoc = tutorGo.GetComponent<UIDocument>();
+            if (tutorUiDoc == null)
+            {
+                tutorUiDoc = tutorGo.AddComponent<UIDocument>();
+            }
+            VisualTreeAsset tutorUxml = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/UI/TutorModalView.uxml");
+            if (tutorUxml != null)
+            {
+                tutorUiDoc.visualTreeAsset = tutorUxml;
+            }
+            if (panelSettings != null)
+            {
+                tutorUiDoc.panelSettings = panelSettings;
+            }
+            UITutorModalController tutorController = tutorGo.GetComponent<UITutorModalController>();
+            if (tutorController == null)
+            {
+                tutorController = tutorGo.AddComponent<UITutorModalController>();
+            }
+
             GameObject tutorMgrGo = GameObject.Find("TutorManager");
             if (tutorMgrGo == null)
             {
