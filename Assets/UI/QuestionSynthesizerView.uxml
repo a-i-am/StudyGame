@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ui:UXML
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ui="UnityEngine.UIElements"
+    xmlns:editor="UnityEditor.UIElements"
+    xsi:noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd">
+
+    <ui:Style src="QuestionSynthesizerStyle.uss" />
+
+    <ui:VisualElement name="modal-overlay" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; background-color: rgba(0,0,0,0.8); align-items: center; justify-content: center;">
+        
+        <ui:VisualElement name="modal-container" style="width: 800px; height: 600px; background-color: rgb(40,40,40); border-radius: 12px; padding: 20px;">
+            
+            <ui:Label text="질문 조립기 (Question Synthesizer)" style="font-size: 24px; color: white; -unity-font-style: bold; margin-bottom: 20px; align-self: center;" />
+            
+            <ui:VisualElement style="flex-direction: row; justify-content: space-around; margin-bottom: 30px; height: 120px;">
+                <ui:VisualElement name="slot-subject" style="width: 150px; height: 100px; background-color: rgb(60,60,60); border-color: rgb(150,150,150); border-width: 2px; border-radius: 8px; align-items: center; justify-content: center;">
+                    <ui:Label text="[주어]" style="color: gray;" />
+                </ui:VisualElement>
+                
+                <ui:VisualElement name="slot-operator" style="width: 150px; height: 100px; background-color: rgb(60,60,60); border-color: rgb(150,150,150); border-width: 2px; border-radius: 8px; align-items: center; justify-content: center;">
+                    <ui:Label text="[연산자]" style="color: gray;" />
+                </ui:VisualElement>
+                
+                <ui:VisualElement name="slot-target" style="width: 150px; height: 100px; background-color: rgb(60,60,60); border-color: rgb(150,150,150); border-width: 2px; border-radius: 8px; align-items: center; justify-content: center;">
+                    <ui:Label text="[대상 개념]" style="color: gray;" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+
+            <ui:Label name="lbl-feedback" text="말 아이템을 슬롯에 드래그 앤 드롭 하세요." style="color: rgb(100,200,255); -unity-font-style: italic; align-self: center; margin-bottom: 20px;" />
+
+            <ui:Label text="내 인벤토리 (말 조각)" style="color: white; margin-bottom: 10px;" />
+            
+            <ui:ScrollView style="flex-grow: 1; background-color: rgb(30,30,30); border-radius: 8px; padding: 10px;">
+                <ui:VisualElement name="inventory-container" style="flex-direction: row; flex-wrap: wrap;" />
+            </ui:ScrollView>
+
+            <ui:VisualElement style="flex-direction: row; justify-content: flex-end; margin-top: 20px;">
+                <ui:Button name="btn-close" text="닫기" style="width: 100px; height: 40px; margin-right: 10px;" />
+                <ui:Button name="btn-synthesize" text="송출하기" style="width: 120px; height: 40px; background-color: rgb(40,150,40); color: white; -unity-font-style: bold;" />
+            </ui:VisualElement>
+            
+        </ui:VisualElement>
+    </ui:VisualElement>
+
+</ui:UXML>
