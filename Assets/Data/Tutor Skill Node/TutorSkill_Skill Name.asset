@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e6e2bd4f683cf74987c0cd6edd6953b, type: 3}
   m_Name: TutorSkill_Skill Name
   m_EditorClassIdentifier: 
-  nodeId: 
-  skillName: 
-  description: 
+  nodeId: tutor_seq_01
+  skillName: "소켓 시너지 강화"
+  description: "도영이와의 과외 지도 패시브. 질문 조립 시 AP 소비량이 1 감소합니다."
   icon: {fileID: 0}
   requiredConcept: {fileID: 0}
   prerequisites: []
   effectType: 0
-  effectValue: 0
+  effectValue: 1
   rewardSentenceItem: {fileID: 0}

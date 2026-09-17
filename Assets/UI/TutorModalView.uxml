@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ui:UXML
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ui="UnityEngine.UIElements"
+    xmlns:editor="UnityEditor.UIElements"
+    xsi:noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd">
+
+    <ui:VisualElement name="modal-overlay" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; background-color: rgba(0,0,0,0.8); align-items: center; justify-content: center;">
+        <ui:VisualElement name="modal-container" style="width: 700px; height: 500px; background-color: rgb(35,35,45); border-radius: 12px; padding: 20px;">
+            <ui:Label name="lbl-student-name" text="과외 스킬 트리" style="font-size: 22px; color: white; -unity-font-style: bold; align-self: center; margin-bottom: 15px;" />
+            <ui:ScrollView style="flex-grow: 1; background-color: rgb(25,25,35); border-radius: 8px; padding: 15px; margin-bottom: 15px;">
+                <ui:VisualElement name="skill-tree-container" style="flex-direction: row; flex-wrap: wrap; justify-content: center;" />
+            </ui:ScrollView>
+            <ui:Label name="lbl-skill-description" text="스킬 노드를 선택하세요." style="color: rgb(200,220,255); font-size: 14px; margin-bottom: 15px; align-self: center;" />
+            <ui:VisualElement style="flex-direction: row; justify-content: flex-end;">
+                <ui:Button name="btn-unlock-skill" text="스킬 해금" style="width: 120px; height: 40px; margin-right: 10px; background-color: rgb(50,150,220); color: white; -unity-font-style: bold;" />
+                <ui:Button name="btn-close" text="닫기" style="width: 100px; height: 40px; background-color: rgb(80,80,90); color: white;" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+
+</ui:UXML>
