@@ -72,16 +72,6 @@ namespace StudyGame.Player
         public void SetInputEnabled(bool isEnabled)
         {
             isInputEnabled = isEnabled;
-            if (isEnabled)
-            {
-                Cursor.lockState = CursorLockMode.Locked;
-                Cursor.visible = false;
-            }
-            else
-            {
-                Cursor.lockState = CursorLockMode.None;
-                Cursor.visible = true;
-            }
         }
     }
 }
