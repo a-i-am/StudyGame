@@ -49,9 +49,6 @@ namespace StudyGame.UI
             targetElement.CapturePointer(evt.pointerId);
             isDragging = true;
 
-            UnityEngine.Cursor.visible = true;
-            UnityEngine.Cursor.lockState = CursorLockMode.None;
-
             CreateGhost(evt.position);
             OnDragStarted?.Invoke(this, evt.position);
             evt.StopPropagation();
@@ -66,9 +63,6 @@ namespace StudyGame.UI
                 ghostElement.style.left = evt.position.x - (ghostElement.resolvedStyle.width / 2f);
                 ghostElement.style.top = evt.position.y - (ghostElement.resolvedStyle.height / 2f);
             }
-
-            UnityEngine.Cursor.visible = true;
-            UnityEngine.Cursor.lockState = CursorLockMode.None;
 
             OnDragMoved?.Invoke(this, evt.position);
             evt.StopPropagation();
@@ -97,9 +91,6 @@ namespace StudyGame.UI
 
             RemoveGhost();
             VisualElement droppedTarget = rootVisualElement?.panel?.Pick(finalPosition);
-
-            UnityEngine.Cursor.visible = true;
-            UnityEngine.Cursor.lockState = CursorLockMode.None;
 
             OnDragEnded?.Invoke(this, finalPosition, droppedTarget);
         }

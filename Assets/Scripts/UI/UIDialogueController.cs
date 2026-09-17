@@ -412,6 +412,18 @@ namespace StudyGame.UI
                 choicesContainer.Add(returnBtn);
             }
 
+            Button synthBtn = new Button();
+            synthBtn.text = "🧪 [질문 조립기]";
+            synthBtn.AddToClassList("choice-button");
+            synthBtn.clicked += OpenQuestionSynthesizerModal;
+            choicesContainer.Add(synthBtn);
+
+            Button tutorBtn = new Button();
+            tutorBtn.text = "🎓 [과외 스킬 트리]";
+            tutorBtn.AddToClassList("choice-button");
+            tutorBtn.clicked += OpenTutorModal;
+            choicesContainer.Add(tutorBtn);
+
             Button deductionBtn = new Button();
             deductionBtn.text = "🔍 [정답 추론]";
             deductionBtn.AddToClassList("choice-button");
@@ -425,6 +437,24 @@ namespace StudyGame.UI
                 completeBtn.AddToClassList("choice-button");
                 completeBtn.clicked += EndDialogue;
                 choicesContainer.Add(completeBtn);
+            }
+        }
+
+        private void OpenQuestionSynthesizerModal()
+        {
+            UIQuestionSynthesizerController synthUI = FindFirstObjectByType<UIQuestionSynthesizerController>(FindObjectsInactive.Include);
+            if (synthUI != null)
+            {
+                synthUI.ShowModal();
+            }
+        }
+
+        private void OpenTutorModal()
+        {
+            UITutorModalController tutorModal = FindFirstObjectByType<UITutorModalController>(FindObjectsInactive.Include);
+            if (tutorModal != null)
+            {
+                tutorModal.ShowModal();
             }
         }
 

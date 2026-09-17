@@ -45,17 +45,7 @@ namespace StudyGame.UI
             ClearDragHandlers();
         }
 
-        private void Update()
-        {
-            if (rootVisualElement != null && rootVisualElement.style.display == DisplayStyle.Flex)
-            {
-                if (!UnityEngine.Cursor.visible || UnityEngine.Cursor.lockState != CursorLockMode.None)
-                {
-                    UnityEngine.Cursor.visible = true;
-                    UnityEngine.Cursor.lockState = CursorLockMode.None;
-                }
-            }
-        }
+
 
         private void EnsureUIInitialized()
         {
@@ -260,20 +250,7 @@ namespace StudyGame.UI
                 PopulateInventory(cachedItems);
             }
 
-            UnityEngine.Cursor.visible = true;
-            UnityEngine.Cursor.lockState = CursorLockMode.None;
-
-            var player = FindObjectOfType<StudyGame.Player.PlayerController>();
-            if (player != null)
-            {
-                player.SetMovementEnabled(false);
-            }
-
-            var cam = FindObjectOfType<StudyGame.Player.CameraController>();
-            if (cam != null)
-            {
-                cam.SetInputEnabled(false);
-            }
+            CursorManager.Instance.RegisterModalOpen();
         }
 
         public void HideModal()
@@ -283,17 +260,7 @@ namespace StudyGame.UI
                 rootVisualElement.style.display = DisplayStyle.None;
             }
 
-            var player = FindObjectOfType<StudyGame.Player.PlayerController>();
-            if (player != null)
-            {
-                player.SetMovementEnabled(true);
-            }
-
-            var cam = FindObjectOfType<StudyGame.Player.CameraController>();
-            if (cam != null)
-            {
-                cam.SetInputEnabled(true);
-            }
+            CursorManager.Instance.RegisterModalClose();
         }
 
         private void ClearDragHandlers()

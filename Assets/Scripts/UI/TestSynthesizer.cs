@@ -9,6 +9,9 @@ public class TestSynthesizer : MonoBehaviour
     public UIQuestionSynthesizerController synthesizerUI;
     public List<SentenceItemData> testItems;
 
+    private UITutorModalController tutorModal;
+    private bool synthesizerVisible = true;
+
     void Start()
     {
 #if UNITY_EDITOR
@@ -54,7 +57,7 @@ public class TestSynthesizer : MonoBehaviour
 
         if (synthesizerUI == null)
         {
-            synthesizerUI = FindObjectOfType<UIQuestionSynthesizerController>();
+            synthesizerUI = FindFirstObjectByType<UIQuestionSynthesizerController>();
         }
 
         if (synthesizerUI != null)
@@ -68,19 +71,56 @@ public class TestSynthesizer : MonoBehaviour
             TutorManager.Instance.SetStudentRescued("doyoung", true);
         }
 
-        UnityEngine.Cursor.visible = true;
-        UnityEngine.Cursor.lockState = CursorLockMode.None;
-        
-        StudyGame.Player.PlayerController playerController = FindObjectOfType<StudyGame.Player.PlayerController>();
-        if (playerController != null)
+        tutorModal = FindFirstObjectByType<UITutorModalController>();
+        if (tutorModal != null)
         {
-            playerController.SetMovementEnabled(false);
+            List<TutorSkillNodeData> skillNodes = LoadTutorSkillNodes();
+            if (skillNodes.Count > 0)
+            {
+                tutorModal.DisplayTutorSession("doyoung", "도영", skillNodes);
+            }
+            tutorModal.HideModal();
         }
 
-        StudyGame.Player.CameraController cameraController = FindObjectOfType<StudyGame.Player.CameraController>();
-        if (cameraController != null)
+        CursorManager.Instance.SetGameCursorLocked(false);
+    }
+
+    private List<TutorSkillNodeData> LoadTutorSkillNodes()
+    {
+        var nodes = new List<TutorSkillNodeData>();
+
+#if UNITY_EDITOR
+        string[] guids = UnityEditor.AssetDatabase.FindAssets("t:TutorSkillNodeData");
+        foreach (string guid in guids)
         {
-            cameraController.SetInputEnabled(false);
+            string path = UnityEditor.AssetDatabase.GUIDToAssetPath(guid);
+            TutorSkillNodeData node = UnityEditor.AssetDatabase.LoadAssetAtPath<TutorSkillNodeData>(path);
+            if (node != null)
+            {
+                nodes.Add(node);
+            }
+        }
+#endif
+
+        return nodes;
+    }
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            synthesizerVisible = !synthesizerVisible;
+            if (synthesizerVisible)
+            {
+                if (tutorModal != null) tutorModal.HideModal();
+                if (synthesizerUI != null) synthesizerUI.ShowModal();
+            }
+            else
+            {
+                if (synthesizerUI != null) synthesizerUI.HideModal();
+                if (tutorModal != null) tutorModal.ShowModal();
+            }
         }
     }
 }
+
