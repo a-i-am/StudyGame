@@ -98,6 +98,13 @@ namespace StudyGame.Combat
                 float smoothT = 1f - Mathf.Pow(1f - t, 3);
 
                 transform.localRotation = Quaternion.Slerp(startRot, endRot, smoothT);
+                
+                // Perform parry check during active frames
+                if (t > 0.2f && t < 0.8f)
+                {
+                    CheckParryCollision();
+                }
+                
                 yield return null;
             }
 
@@ -135,6 +142,24 @@ namespace StudyGame.Combat
                     new GradientAlphaKey[] { new GradientAlphaKey(0.9f, 0.0f), new GradientAlphaKey(0.0f, 1.0f) }
                 );
                 trailRenderer.colorGradient = gradient;
+            }
+        }
+
+        private void CheckParryCollision()
+        {
+            Vector3 extents = new Vector3(1.5f, 1f, 1.5f);
+            Vector3 center = transform.position + transform.forward * 1.5f;
+
+            Collider[] hits = Physics.OverlapBox(center, extents, transform.rotation);
+            foreach (var hit in hits)
+            {
+                // Basic parry collision check, can be expanded to check for specific projectile components
+                if (hit.CompareTag("EnemyProjectile"))
+                {
+                    Debug.Log("[WeaponController] PARRY SUCCESS!");
+                    Destroy(hit.gameObject); // Simple reflect/destroy for now
+                    // Implement stun linkage or reflect damage here later
+                }
             }
         }
     }

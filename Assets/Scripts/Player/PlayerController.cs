@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using StudyGame.Combat;
 using StudyGame.Partner;
 
@@ -36,6 +37,12 @@ namespace StudyGame.Player
         private float lastDashTime = -999f;
         private Vector3 lastMoveDir = Vector3.forward;
 
+        // Input Actions
+        private InputAction moveAction;
+        private InputAction jumpAction;
+        private InputAction dashAction;
+        private InputAction attackAction;
+
         private void Awake()
         {
             characterController = GetComponent<CharacterController>();
@@ -43,6 +50,44 @@ namespace StudyGame.Player
             {
                 weaponController = GetComponentInChildren<WeaponController>();
             }
+
+            SetupInputActions();
+        }
+
+        private void SetupInputActions()
+        {
+            moveAction = new InputAction("Move", binding: "<Gamepad>/leftStick");
+            moveAction.AddCompositeBinding("Dpad")
+                .With("Up", "<Keyboard>/w")
+                .With("Down", "<Keyboard>/s")
+                .With("Left", "<Keyboard>/a")
+                .With("Right", "<Keyboard>/d");
+
+            jumpAction = new InputAction("Jump", binding: "<Keyboard>/space");
+            jumpAction.AddBinding("<Gamepad>/buttonSouth");
+
+            dashAction = new InputAction("Dash", binding: "<Keyboard>/leftShift");
+            dashAction.AddBinding("<Mouse>/rightButton");
+            dashAction.AddBinding("<Gamepad>/buttonEast");
+
+            attackAction = new InputAction("Attack", binding: "<Mouse>/leftButton");
+            attackAction.AddBinding("<Gamepad>/buttonWest");
+        }
+
+        private void OnEnable()
+        {
+            moveAction.Enable();
+            jumpAction.Enable();
+            dashAction.Enable();
+            attackAction.Enable();
+        }
+
+        private void OnDisable()
+        {
+            moveAction.Disable();
+            jumpAction.Disable();
+            dashAction.Disable();
+            attackAction.Disable();
         }
 
         private void Update()
@@ -67,8 +112,8 @@ namespace StudyGame.Player
 
         private void HandleInput()
         {
-            // 1. Dash Input (LeftShift or Right Click)
-            if ((Input.GetKeyDown(KeyCode.LeftShift) || Input.GetMouseButtonDown(1)) && CanDash())
+            // 1. Dash Input
+            if (dashAction.WasPressedThisFrame() && CanDash())
             {
                 StartCoroutine(PerformDashRoutine());
                 return;
@@ -77,15 +122,15 @@ namespace StudyGame.Player
             if (isDashing) return;
 
             // 2. Jump & Double Jump Input
-            if (Input.GetButtonDown("Jump") && jumpCount < maxJumps)
+            if (jumpAction.WasPressedThisFrame() && jumpCount < maxJumps)
             {
                 velocity.y = (jumpCount == 0) ? jumpForce : doubleJumpForce;
                 jumpCount++;
                 TriggerJumpVisualEffect(jumpCount);
             }
 
-            // 3. Attack Input (Left Click)
-            if (Input.GetMouseButtonDown(0))
+            // 3. Attack Input
+            if (attackAction.WasPressedThisFrame())
             {
                 // Check if not clicking UI
                 if (UnityEngine.EventSystems.EventSystem.current == null ||
@@ -96,10 +141,8 @@ namespace StudyGame.Player
             }
 
             // 4. Movement Calculation
-            float horizontal = Input.GetAxisRaw("Horizontal");
-            float vertical = Input.GetAxisRaw("Vertical");
-
-            Vector3 inputDirection = new Vector3(horizontal, 0f, vertical).normalized;
+            Vector2 inputVal = moveAction.ReadValue<Vector2>();
+            Vector3 inputDirection = new Vector3(inputVal.x, 0f, inputVal.y).normalized;
 
             if (inputDirection.magnitude >= 0.1f)
             {
