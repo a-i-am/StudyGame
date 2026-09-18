@@ -1,31 +1,68 @@
-<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" path="Assets/UI/DiaryModalView.uxml">
-    <ui:Style src="DiaryModalStyle.uss" />
-    <ui:VisualElement name="modal-overlay" class="modal-overlay">
-        <ui:VisualElement name="modal-window" class="modal-window">
-            <ui:VisualElement class="modal-header">
-                <ui:Label class="modal-title" text="수학 개념 도감 (다이어리)" />
-                <ui:Button name="close-button" class="close-button" text="X" />
-            </ui:VisualElement>
-            <ui:VisualElement class="tab-container">
-                <ui:Button name="tab-calculus" class="tab-button tab-active" text="미적분" />
-                <ui:Button name="tab-sequence" class="tab-button" text="수열과 극한" />
-                <ui:Button name="tab-stats" class="tab-button" text="확률과 통계" />
-            </ui:VisualElement>
-            <ui:VisualElement class="modal-body">
-                <ui:VisualElement class="list-panel">
-                    <ui:ListView name="concept-list" />
-                </ui:VisualElement>
-                <ui:VisualElement class="detail-panel">
-                    <ui:VisualElement class="detail-header">
-                        <ui:VisualElement name="detail-icon" class="detail-icon" />
-                        <ui:Label name="detail-title" class="detail-title" text="항목을 선택하세요" />
-                    </ui:VisualElement>
-                    <ui:Label class="detail-section-title" text="개념 요약" />
-                    <ui:Label name="detail-summary" class="detail-summary" text="-" />
-                    <ui:Label class="detail-section-title" text="로어 및 메모" />
-                    <ui:Label name="detail-lore" class="detail-lore" text="-" />
-                </ui:VisualElement>
-            </ui:VisualElement>
-        </ui:VisualElement>
+<?xml version="1.0" encoding="utf-8"?>
+<ui:UXML
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ui="UnityEngine.UIElements"
+    xsi:noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd">
+
+  <ui:Style src="Styles/PremiumTheme.uss" />
+
+  <ui:VisualElement name="modal-overlay" class="glass-panel" style="flex-grow: 1; margin: 40px; padding: 20px; flex-direction: column; opacity: 1;">
+    
+    <!-- Header Area -->
+    <ui:VisualElement class="border-subtle" style="flex-direction: row; justify-content: space-between; align-items: center; border-bottom-width: 1px; padding-bottom: 15px; margin-bottom: 20px;">
+      <ui:Label text="다이어리 (Concept Archive)" class="text-title" />
+      <ui:Button name="close-button" text="닫기 [Tab]" class="premium-btn" />
     </ui:VisualElement>
+
+    <!-- Content Area (Row) -->
+    <ui:VisualElement style="flex-direction: row; flex-grow: 1;">
+      
+      <!-- Left Panel: Tabs & List -->
+      <ui:VisualElement style="flex-basis: 35%; flex-grow: 1; margin-right: 20px; flex-direction: column;">
+        
+        <!-- Tabs -->
+        <ui:VisualElement class="panel-container" style="flex-direction: row; padding: 5px; margin-bottom: 15px;">
+          <ui:Button name="tab-calculus" text="미적분" class="premium-btn" style="flex-grow: 1; margin: 2px;" />
+          <ui:Button name="tab-sequence" text="수열/극한" class="premium-btn" style="flex-grow: 1; margin: 2px;" />
+          <ui:Button name="tab-stats" text="확률/통계" class="premium-btn" style="flex-grow: 1; margin: 2px;" />
+        </ui:VisualElement>
+        
+        <!-- Concept List -->
+        <ui:ListView name="concept-list" class="panel-container" style="flex-grow: 1; padding: 10px;" />
+        
+      </ui:VisualElement>
+
+
+      <!-- Right Panel: Detail View (Cassette Player Aesthetic) -->
+      <ui:VisualElement class="panel-container" style="flex-basis: 65%; flex-grow: 1; padding: 30px; flex-direction: column; background-color: rgba(10, 15, 20, 0.9);">
+        
+        <!-- Icon & Title Header -->
+        <ui:VisualElement style="flex-direction: row; align-items: center; margin-bottom: 20px; border-bottom-width: 1px; border-color: rgba(0, 229, 255, 0.2); padding-bottom: 20px;">
+          <ui:VisualElement name="detail-icon" class="border-magenta" style="width: 80px; height: 80px; border-radius: 40px; background-color: rgba(255,255,255,0.05); margin-right: 20px; border-width: 2px;" />
+          <ui:VisualElement style="flex-direction: column; flex-grow: 1;">
+            <ui:Label name="detail-title" text="항목을 선택하세요" class="text-title" style="font-size: 28px; margin-bottom: 5px;" />
+            <ui:Label text="ARCHIVE.ENTRY" class="text-subtitle text-magenta" />
+          </ui:VisualElement>
+          
+          <!-- Audio Play Button -->
+          <ui:Button name="play-audio-button" text="▶ 재생 (Play)" class="premium-btn border-magenta" style="background-color: rgba(255, 0, 255, 0.2);" />
+        </ui:VisualElement>
+
+        <ui:ScrollView style="flex-grow: 1; padding-right: 10px;">
+          <!-- Summary -->
+          <ui:Label text="[ SUMMARY ]" class="text-subtitle" style="margin-bottom: 10px; font-size: 14px;" />
+          <ui:Label name="detail-summary" text="-" class="text-body" style="font-size: 16px; margin-bottom: 30px; line-height: 24px;" />
+          
+          <!-- Lore -->
+          <ui:Label text="[ AUDIO LOG / LORE ]" class="text-subtitle" style="margin-bottom: 10px; font-size: 14px;" />
+          <ui:VisualElement class="panel-container border-left-cyan" style="background-color: rgba(0,0,0,0.5); padding: 15px; border-left-width: 4px;">
+            <ui:Label name="detail-lore" text="-" class="text-body" style="font-size: 15px; color: #CCCCCC; font-style: italic; line-height: 22px;" />
+          </ui:VisualElement>
+        </ui:ScrollView>
+
+      </ui:VisualElement>
+
+
+    </ui:VisualElement>
+  </ui:VisualElement>
 </ui:UXML>
