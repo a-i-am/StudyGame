@@ -21,4 +21,5 @@ public class ConceptData : ScriptableObject
     [TextArea(3, 6)]
     public string loreFlavorText;
     public Sprite diaryIcon;
+    public AudioClip cassetteAudio;
 }

@@ -8,7 +8,21 @@ namespace StudyGame.Data
         Subject,
         Operator,
         TargetConcept,
-        MathematicalConstraint
+        MathematicalConstraint,
+        Premise,
+        Contradiction,
+        Conclusion
+    }
+
+    [Flags]
+    public enum ItemTag
+    {
+        None = 0,
+        Logic = 1 << 0,
+        Emotional = 1 << 1,
+        Deductive = 1 << 2,
+        Quest = 1 << 3,
+        Rare = 1 << 4
     }
 
     [CreateAssetMenu(fileName = "SentenceItem_", menuName = "StudyGame/Data/Sentence Item Data")]
@@ -17,6 +31,8 @@ namespace StudyGame.Data
         public string itemId;
         public string displayText;
         public SentenceCategory category;
+        public ItemTag tags = ItemTag.None;
+        
         public ConceptData associatedConcept;
         public MathSkillData associatedSkill;
         public int apCost = 1;

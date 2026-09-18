@@ -127,9 +127,11 @@ namespace StudyGame.Managers
             if (currentMapInstance != null) Destroy(currentMapInstance);
             if (currentMonsterInstance != null) Destroy(currentMonsterInstance);
 
+            Vector3 legacyOffset = new Vector3(0, 500, 0);
+
             if (CurrentScenario.mapEnvironmentPrefab != null)
             {
-                currentMapInstance = Instantiate(CurrentScenario.mapEnvironmentPrefab);
+                currentMapInstance = Instantiate(CurrentScenario.mapEnvironmentPrefab, legacyOffset, Quaternion.identity);
             }
 
             if (CurrentScenario.playerPrefab != null)
@@ -153,7 +155,7 @@ namespace StudyGame.Managers
 
             if (CurrentScenario.anomalyMonsterPrefab != null)
             {
-                currentMonsterInstance = Instantiate(CurrentScenario.anomalyMonsterPrefab);
+                currentMonsterInstance = Instantiate(CurrentScenario.anomalyMonsterPrefab, legacyOffset, Quaternion.identity);
                 AnomalyTrigger trigger = currentMonsterInstance.GetComponent<AnomalyTrigger>();
                 if (trigger != null)
                 {

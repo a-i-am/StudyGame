@@ -14,32 +14,58 @@ namespace StudyGame.Managers
 
     public class QuestionSynthesizerValidator
     {
-        public SynthesisResult ValidateSynthesis(SentenceItemData subject, SentenceItemData op, SentenceItemData target)
+        public SynthesisResult ValidateSynthesis(ValidationRuleSO rule, List<SentenceItemData> submittedItems)
         {
             SynthesisResult result = new SynthesisResult();
 
-            if (subject == null || op == null || target == null)
+            if (rule == null || submittedItems == null || submittedItems.Count == 0)
             {
                 result.isValid = false;
-                result.feedbackMessage = "모든 조립 슬롯(주어, 연산자, 대상)을 채워야 합니다.";
+                result.feedbackMessage = "올바르지 않은 조립 요청입니다.";
                 return result;
             }
 
-            if (subject.category != SentenceCategory.Subject ||
-                op.category != SentenceCategory.Operator ||
-                target.category != SentenceCategory.TargetConcept)
+            if (!rule.Validate(submittedItems))
             {
                 result.isValid = false;
-                result.feedbackMessage = "올바른 슬롯 카테고리 조합이 아닙니다.";
+                result.feedbackMessage = "추론 논리가 규칙에 부합하지 않습니다.";
+                return result;
+            }
+
+            // Climax Puzzle 'NaN Error' Logic
+            bool hasOperator = false;
+            foreach (var item in submittedItems)
+            {
+                if (item.category == SentenceCategory.Operator || item.category == SentenceCategory.Contradiction)
+                {
+                    hasOperator = true;
+                    if (item.associatedSkill == null)
+                    {
+                        // NaN Error Logic: A rule was structurally correct but practically unsolvable
+                        result.isValid = false;
+                        result.feedbackMessage = "수식 오류(NaN): 대상을 타격할 유효한 스킬 연산자가 없습니다.";
+                        return result;
+                    }
+                    result.resolvedSkill = item.associatedSkill;
+                }
+                
+                if (item.associatedConcept != null)
+                {
+                    result.targetConcept = item.associatedConcept;
+                }
+
+                result.totalApCost += item.apCost;
+            }
+
+            if (!hasOperator)
+            {
+                result.isValid = false;
+                result.feedbackMessage = "수식 오류(NaN): 연산자가 누락되었습니다.";
                 return result;
             }
 
             result.isValid = true;
-            result.resolvedSkill = op.associatedSkill;
-            result.targetConcept = target.associatedConcept;
-            result.totalApCost = subject.apCost + op.apCost + target.apCost;
-            result.feedbackMessage = $"질문 조립 성공: [{subject.displayText}] + [{op.displayText}] + [{target.displayText}]";
-
+            result.feedbackMessage = "질문 조립 성공! 클라이맥스 논리 공격 준비 완료.";
             return result;
         }
     }
