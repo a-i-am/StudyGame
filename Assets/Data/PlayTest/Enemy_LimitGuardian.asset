@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce1fd2c441c374245bf9d58e9234c7a5, type: 3}
+  m_Name: Enemy_LimitGuardian
+  m_EditorClassIdentifier: 
+  enemyId: enemy_limit_guardian
+  displayName: "\uADF9\uD55C\uC758 \uC218\uD638\uC790"
+  maxHP: 100
+  attackPower: 12
+  defense: 5
+  weakness: 1
+  weaknessDamageMultiplier: 2
+  actionsPerTurn: 1
+  specialAttackChance: 0.3
+  fieldMoveSpeed: 3
+  fieldDetectionRange: 8
+  stunDuration: 2.5
+  fieldPrefab: {fileID: 0}
+  emissiveColor: {r: 0, g: 1, b: 1, a: 1}

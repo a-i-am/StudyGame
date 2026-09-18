@@ -177,3 +177,4 @@ test_nim.py
 # Resources folder ignored as per project requirement
 Assets/Resources/
 
+.gemini/rules.md
