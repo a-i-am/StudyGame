@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ui:UXML
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ui="UnityEngine.UIElements"
+    xmlns:editor="UnityEditor.UIElements"
+    xsi:noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd"
+>
+    <ui:VisualElement class="director-container">
+        <editor:Toolbar class="director-toolbar">
+            <editor:ToolbarMenu text="File" />
+            <editor:ToolbarMenu text="Edit" />
+            <editor:ToolbarButton text="Create Database Window" name="BtnCreateDatabase" />
+            <editor:ToolbarSpacer />
+            <editor:ToolbarButton text="Toggle Tracing Overlay" name="BtnToggleOverlay" />
+        </editor:Toolbar>
+
+        <ui:VisualElement name="GraphContainer" class="director-graph-container" />
+    </ui:VisualElement>
+</ui:UXML>

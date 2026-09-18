@@ -1,0 +1,69 @@
+using UnityEditor.Experimental.GraphView;
+using UnityEngine;
+using UnityEngine.UIElements;
+
+namespace StudyGame.Editor.Director
+{
+    public class DirectorGraphView : GraphView
+    {
+        private GridBackground _gridBackground;
+
+        public DirectorGraphView()
+        {
+            SetupZoom(ContentZoomer.DefaultMinScale, ContentZoomer.DefaultMaxScale);
+            
+            this.AddManipulator(new ContentDragger());
+            this.AddManipulator(new SelectionDragger());
+            this.AddManipulator(new RectangleSelector());
+
+            _gridBackground = new GridBackground();
+            Insert(0, _gridBackground);
+            _gridBackground.StretchToParentSize();
+            
+            // Add Stylesheet if needed
+            var styleSheet = UnityEditor.AssetDatabase.LoadAssetAtPath<StyleSheet>("Assets/Editor/StudyGameDirector/UI/DirectorGraphView.uss");
+            if (styleSheet != null)
+            {
+                styleSheets.Add(styleSheet);
+            }
+        }
+
+        public void SetOverlayMode(bool isOverlay)
+        {
+            if (isOverlay)
+            {
+                this.style.backgroundColor = new StyleColor(UnityEngine.Color.clear);
+                _gridBackground.visible = false;
+            }
+            else
+            {
+                this.style.backgroundColor = new StyleColor(new UnityEngine.Color(0.12f, 0.12f, 0.12f, 1.0f));
+                _gridBackground.visible = true;
+            }
+        }
+
+        public void ToggleTransparency(bool isOverlay)
+        {
+            if (_gridBackground != null)
+            {
+                _gridBackground.style.opacity = isOverlay ? 0.3f : 1.0f;
+            }
+        }
+
+        public override System.Collections.Generic.List<Port> GetCompatiblePorts(Port startPort, NodeAdapter nodeAdapter)
+        {
+            var compatiblePorts = new System.Collections.Generic.List<Port>();
+            
+            ports.ForEach(port =>
+            {
+                // Can't connect to same port, same node, or same direction (input->input)
+                if (startPort != port && startPort.node != port.node && startPort.direction != port.direction)
+                {
+                    compatiblePorts.Add(port);
+                }
+            });
+            
+            return compatiblePorts;
+        }
+    }
+}
