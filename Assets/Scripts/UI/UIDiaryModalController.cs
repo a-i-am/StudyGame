@@ -43,8 +43,15 @@ namespace StudyGame.UI
             detailTitle = root.Q<Label>("detail-title");
             detailSummary = root.Q<Label>("detail-summary");
             detailLore = root.Q<Label>("detail-lore");
+            
+            Button playAudioButton = root.Q<Button>("play-audio-button");
 
             if (closeButton != null) closeButton.clicked += CloseModal;
+
+            if (playAudioButton != null)
+            {
+                playAudioButton.clicked += PlayCassetteAudio;
+            }
 
             if (tabCalculus != null) tabCalculus.clicked += () => SwitchTab(SubjectType.Calculus);
             if (tabSequence != null) tabSequence.clicked += () => SwitchTab(SubjectType.SequenceLimit);
@@ -160,6 +167,8 @@ namespace StudyGame.UI
         private void OnConceptSelected(IEnumerable<object> selectedItems)
         {
             ConceptData concept = selectedItems.FirstOrDefault() as ConceptData;
+            selectedConcept = concept;
+            
             if (concept == null)
             {
                 ResetDetailPanel();
@@ -210,6 +219,25 @@ namespace StudyGame.UI
             {
                 detailIcon.style.backgroundImage = null;
                 detailIcon.style.display = DisplayStyle.None;
+            }
+            selectedConcept = null;
+        }
+
+        private ConceptData selectedConcept;
+        private AudioSource audioSource;
+
+        private void PlayCassetteAudio()
+        {
+            if (selectedConcept != null && selectedConcept.cassetteAudio != null)
+            {
+                if (audioSource == null)
+                {
+                    audioSource = gameObject.AddComponent<AudioSource>();
+                }
+                
+                audioSource.clip = selectedConcept.cassetteAudio;
+                audioSource.Play();
+                Debug.Log($"[Diary] Playing cassette audio for: {selectedConcept.title}");
             }
         }
     }

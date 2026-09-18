@@ -10,6 +10,7 @@ namespace StudyGame.UI
     public class UIQuestionSynthesizerController : MonoBehaviour
     {
         [SerializeField] private UIDocument uiDocument;
+        [SerializeField] private ValidationRuleSO currentRule;
 
         private VisualElement rootVisualElement;
         private VisualElement slotSubject;
@@ -212,7 +213,15 @@ namespace StudyGame.UI
 
         private void ValidateCurrentSlots()
         {
-            SynthesisResult result = validator.ValidateSynthesis(selectedSubject, selectedOperator, selectedTarget);
+            if (currentRule == null)
+            {
+                if (lblFeedback != null) lblFeedback.text = "규칙(Rule)이 설정되지 않았습니다.";
+                return;
+            }
+
+            List<SentenceItemData> items = new List<SentenceItemData> { selectedSubject, selectedOperator, selectedTarget };
+            SynthesisResult result = validator.ValidateSynthesis(currentRule, items);
+            
             if (lblFeedback != null)
             {
                 lblFeedback.text = result.feedbackMessage;
@@ -221,7 +230,15 @@ namespace StudyGame.UI
 
         private void OnSynthesizeClicked()
         {
-            SynthesisResult result = validator.ValidateSynthesis(selectedSubject, selectedOperator, selectedTarget);
+            if (currentRule == null)
+            {
+                if (lblFeedback != null) lblFeedback.text = "규칙(Rule)이 설정되지 않았습니다.";
+                return;
+            }
+
+            List<SentenceItemData> items = new List<SentenceItemData> { selectedSubject, selectedOperator, selectedTarget };
+            SynthesisResult result = validator.ValidateSynthesis(currentRule, items);
+            
             if (result.isValid)
             {
                 OnSynthesisSubmitted?.Invoke(result);
