@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56e8c3392e276614bafb5cf671ed3440, type: 3}
+  m_Name: SkillCard_Heal
+  m_EditorClassIdentifier: 
+  skillId: skill_heal
+  displayName: "\uB8E8\uD2F4 \uBCF5\uC6D0"
+  description: 
+  apCost: 1
+  targetType: 0
+  baseDamage: 15
+  exploitsWeakness: 0
+  healAmount: 0
+  shieldAmount: 0
+  debuffTurns: 0
+  stunChance: 0
+  cardIcon: {fileID: 0}
+  cardTintColor: {r: 1, g: 1, b: 1, a: 1}
