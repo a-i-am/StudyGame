@@ -68,8 +68,13 @@ namespace StudyGame.Editor.Director
             var toolbar = new UnityEditor.UIElements.Toolbar();
             var btnWorkspace = new UnityEditor.UIElements.ToolbarButton(() => SwitchTab(0)) { text = "📝 서사/데이터 워크스페이스" };
             var btnDirector = new UnityEditor.UIElements.ToolbarButton(() => SwitchTab(1)) { text = "🏗️ 맵 디렉터 허브" };
+            var btnSaveGraph = new UnityEditor.UIElements.ToolbarButton(SaveGraph) { text = "💾 워크스페이스 저장" };
+            var btnLoadGraph = new UnityEditor.UIElements.ToolbarButton(LoadGraph) { text = "📂 로드" };
             toolbar.Add(btnWorkspace);
             toolbar.Add(btnDirector);
+            toolbar.Add(new VisualElement() { style = { flexGrow = 1 } }); // Spacer
+            toolbar.Add(btnSaveGraph);
+            toolbar.Add(btnLoadGraph);
             root.Add(toolbar);
 
             _workspaceContainer = new VisualElement();
@@ -102,11 +107,8 @@ namespace StudyGame.Editor.Director
             root.Add(mainSplit);
 
             // Left Explorer
-            var explorer = new ScrollView(ScrollViewMode.Vertical);
+            var explorer = new ScrollView();
             explorer.AddToClassList("workspace-panel");
-            var explorerTitle = new Label("탐색기 (Explorer)");
-            explorerTitle.AddToClassList("workspace-title");
-            explorer.Add(explorerTitle);
             
             // Dummy tree
             var ep1 = new Label("▼ Ep.1 수학 (무한과 극한)");
@@ -116,12 +118,31 @@ namespace StudyGame.Editor.Director
             explorer.Add(new Label("  - 🧩 보스전 (서무결)"));
 
             // Add Template drawer
-            var drawerTitle = new Label("▼ 템플릿 서랍");
+            var drawerTitle = new Label("▼ 템플릿 서랍 (Templates)");
             drawerTitle.AddToClassList("workspace-section-header");
             explorer.Add(drawerTitle);
-            explorer.Add(new Button(() => CreateWorkspaceNode("3인 만담", new string[]{"도영 🟣", "지민 🟢", "플레이어 🔵"})) { text = "🗣️ 3인 만담 추가" });
-            explorer.Add(new Button(() => CreateWorkspaceNode("캐릭터 DNA", new string[]{"아트 🎨"})) { text = "👗 캐릭터 DNA 추가" });
-            explorer.Add(new Button(() => CreateWorkspaceNode("질문 조립기", new string[]{"퍼즐 🧩"})) { text = "🧩 질문 조립기 추가" });
+
+            // 동적 템플릿 로딩
+            var templateGuids = UnityEditor.AssetDatabase.FindAssets("t:WorkspaceNodeData", new[] { "Assets/Editor/StudyGameDirector/Workspace/Templates" });
+            foreach(var guid in templateGuids)
+            {
+                var path = UnityEditor.AssetDatabase.GUIDToAssetPath(guid);
+                var tpl = UnityEditor.AssetDatabase.LoadAssetAtPath<StudyGame.Data.WorkspaceNodeData>(path);
+                if (tpl != null)
+                {
+                    explorer.Add(new Button(() => CreateWorkspaceNodeFromTemplate(tpl)) { text = $"{(string.IsNullOrEmpty(tpl.ThemeIcon) ? "📦" : tpl.ThemeIcon)} {tpl.NodeTitle}" });
+                }
+            }
+
+            // 하드코딩된 기본 생성 버튼 (최초용)
+            if (templateGuids.Length == 0)
+            {
+                explorer.Add(new Button(() => CreateWorkspaceNode("이벤트 시작: OnInteract", new string[]{"트리거 🚩", "ID: 빈칸"})) { text = "🚩 필드 상호작용 이벤트" });
+                explorer.Add(new Button(() => CreateWorkspaceNode("대화 재생 (Dialogue)", new string[]{"대화 🗣️", "화자: 미지정"})) { text = "🗣️ 대화 재생 액션" });
+                explorer.Add(new Button(() => CreateWorkspaceNode("캐릭터 DNA", new string[]{"아트 🎨"})) { text = "👗 캐릭터 DNA 튜너" });
+                explorer.Add(new Button(() => CreateWorkspaceNode("보스 퍼즐", new string[]{"퍼즐 🧩"})) { text = "🧩 질문 조립기(보스전)" });
+            }
+            
             mainSplit.Add(explorer);
 
             var rightSplit = new TwoPaneSplitView(0, 500, TwoPaneSplitViewOrientation.Horizontal);
@@ -153,12 +174,121 @@ namespace StudyGame.Editor.Director
 
         private EpisodeGraphView _workspaceGraph;
 
+        private void CreateWorkspaceNodeFromTemplate(StudyGame.Data.WorkspaceNodeData template)
+        {
+            if (_workspaceGraph != null)
+            {
+                var data = ScriptableObject.CreateInstance<StudyGame.Data.WorkspaceNodeData>();
+                data.NodeTitle = template.NodeTitle;
+                data.TemplateType = template.TemplateType;
+                data.ThemeColorHex = template.ThemeColorHex;
+                data.ThemeIcon = template.ThemeIcon;
+                
+                var badges = new System.Collections.Generic.List<string>();
+                foreach (var prop in template.Properties)
+                {
+                    data.Properties.Add(new StudyGame.Data.DynamicProperty {
+                        PropertyName = prop.PropertyName,
+                        Type = prop.Type,
+                        StringValue = prop.StringValue,
+                        FloatValue = prop.FloatValue,
+                        ColorValue = prop.ColorValue,
+                        AssetValue = prop.AssetValue,
+                        ShowAsBadge = prop.ShowAsBadge
+                    });
+
+                    if (prop.ShowAsBadge)
+                    {
+                        string val = prop.Type == StudyGame.Data.PropertyType.Text ? prop.StringValue : 
+                                    (prop.Type == StudyGame.Data.PropertyType.Number ? prop.FloatValue.ToString() : "...");
+                        badges.Add($"{prop.PropertyName}: {val}");
+                    }
+                }
+                
+                var node = _workspaceGraph.CreateNode(data.NodeTitle, new Vector2(100, 100), badges.ToArray());
+                node.NodeData = data;
+            }
+        }
+
         private void CreateWorkspaceNode(string title, string[] badges)
         {
             if (_workspaceGraph != null)
             {
-                _workspaceGraph.CreateNode(title, new Vector2(100, 100), badges);
+                var data = ScriptableObject.CreateInstance<StudyGame.Data.WorkspaceNodeData>();
+                data.NodeTitle = title;
+                data.TemplateType = title;
+                
+                foreach(var badge in badges)
+                {
+                    data.Properties.Add(new StudyGame.Data.DynamicProperty { 
+                        PropertyName = badge, 
+                        ShowAsBadge = true 
+                    });
+                }
+                
+                var node = _workspaceGraph.CreateNode(title, new Vector2(100, 100), badges);
+                node.NodeData = data;
             }
+        }
+
+        private void SaveGraph()
+        {
+            if (_workspaceGraph == null) return;
+            
+            var graphData = ScriptableObject.CreateInstance<StudyGame.Data.EpisodeGraphData>();
+            
+            foreach (var elem in _workspaceGraph.graphElements)
+            {
+                if (elem is EpisodeNode node)
+                {
+                    graphData.Nodes.Add(new StudyGame.Data.EpisodeNodeSaveData {
+                        NodeGuid = node.NodeId,
+                        Position = node.GetPosition().position,
+                        NodeData = node.NodeData
+                    });
+                }
+            }
+
+            string path = "Assets/Editor/StudyGameDirector/Workspace/SavedGraphs/NewEpisodeGraph.asset";
+            UnityEditor.AssetDatabase.CreateAsset(graphData, path);
+            UnityEditor.AssetDatabase.SaveAssets();
+            Debug.Log($"그래프 저장 완료! {path}");
+        }
+
+        private void LoadGraph()
+        {
+            string path = UnityEditor.EditorUtility.OpenFilePanel("로드할 에피소드 그래프 선택", "Assets/Editor/StudyGameDirector/Workspace/SavedGraphs", "asset");
+            if (string.IsNullOrEmpty(path)) return;
+            
+            path = path.Substring(path.IndexOf("Assets/"));
+            var graphData = UnityEditor.AssetDatabase.LoadAssetAtPath<StudyGame.Data.EpisodeGraphData>(path);
+            
+            if (graphData == null) return;
+
+            // Delete current graph elements
+            var elementsToRm = _workspaceGraph.graphElements.ToList();
+            foreach (var elem in elementsToRm)
+            {
+                _workspaceGraph.RemoveElement(elem);
+            }
+
+            foreach (var nodeData in graphData.Nodes)
+            {
+                var badges = new System.Collections.Generic.List<string>();
+                foreach (var prop in nodeData.NodeData.Properties)
+                {
+                    if (prop.ShowAsBadge)
+                    {
+                        string val = prop.Type == StudyGame.Data.PropertyType.Text ? prop.StringValue : 
+                                    (prop.Type == StudyGame.Data.PropertyType.Number ? prop.FloatValue.ToString() : "...");
+                        badges.Add($"{prop.PropertyName}: {val}");
+                    }
+                }
+
+                var node = _workspaceGraph.CreateNode(nodeData.NodeData.NodeTitle, nodeData.Position, badges.ToArray());
+                node.NodeData = nodeData.NodeData;
+            }
+            Debug.Log("그래프 로드 완료!");
         }
 
         private void BuildDirectorHubUI(VisualElement root)

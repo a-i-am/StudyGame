@@ -8,9 +8,7 @@ namespace StudyGame.Editor.Director
     public class EpisodeNode : Node
     {
         public string NodeId { get; private set; }
-        public DialogueChainSO LinkedDialogue;
-        public CharacterDNA LinkedDNA;
-        public SentenceItemDataSO LinkedPuzzle;
+        public WorkspaceNodeData NodeData;
 
         public EpisodeNode(string title)
         {
