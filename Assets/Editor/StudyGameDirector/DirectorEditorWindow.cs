@@ -55,13 +55,114 @@ namespace StudyGame.Editor.Director
             wnd.minSize = new Vector2(800, 600);
         }
 
+        private VisualElement _workspaceContainer;
+        private VisualElement _directorHubContainer;
+
         public void CreateGUI()
         {
             var root = rootVisualElement;
             root.focusable = true;
             root.RegisterCallback<KeyDownEvent>(OnKeyDown);
 
-            // Main horizontal split
+            // Global Toolbar
+            var toolbar = new UnityEditor.UIElements.Toolbar();
+            var btnWorkspace = new UnityEditor.UIElements.ToolbarButton(() => SwitchTab(0)) { text = "📝 서사/데이터 워크스페이스" };
+            var btnDirector = new UnityEditor.UIElements.ToolbarButton(() => SwitchTab(1)) { text = "🏗️ 맵 디렉터 허브" };
+            toolbar.Add(btnWorkspace);
+            toolbar.Add(btnDirector);
+            root.Add(toolbar);
+
+            _workspaceContainer = new VisualElement();
+            _workspaceContainer.style.flexGrow = 1;
+            BuildWorkspaceUI(_workspaceContainer);
+            root.Add(_workspaceContainer);
+
+            _directorHubContainer = new VisualElement();
+            _directorHubContainer.style.flexGrow = 1;
+            BuildDirectorHubUI(_directorHubContainer);
+            root.Add(_directorHubContainer);
+
+            SwitchTab(0); // Default to Workspace
+            EditorApplication.update += RepaintMonitors;
+        }
+
+        private void SwitchTab(int index)
+        {
+            _workspaceContainer.style.display = index == 0 ? DisplayStyle.Flex : DisplayStyle.None;
+            _directorHubContainer.style.display = index == 1 ? DisplayStyle.Flex : DisplayStyle.None;
+        }
+
+        private void BuildWorkspaceUI(VisualElement root)
+        {
+            // Apply USS
+            var styleSheet = UnityEditor.AssetDatabase.LoadAssetAtPath<StyleSheet>("Assets/Editor/StudyGameDirector/Workspace/WorkspaceStyle.uss");
+            if (styleSheet != null) root.styleSheets.Add(styleSheet);
+
+            var mainSplit = new TwoPaneSplitView(0, 260, TwoPaneSplitViewOrientation.Horizontal);
+            root.Add(mainSplit);
+
+            // Left Explorer
+            var explorer = new ScrollView(ScrollViewMode.Vertical);
+            explorer.AddToClassList("workspace-panel");
+            var explorerTitle = new Label("탐색기 (Explorer)");
+            explorerTitle.AddToClassList("workspace-title");
+            explorer.Add(explorerTitle);
+            
+            // Dummy tree
+            var ep1 = new Label("▼ Ep.1 수학 (무한과 극한)");
+            ep1.AddToClassList("workspace-section-header");
+            explorer.Add(ep1);
+            explorer.Add(new Label("  - 🗣️ 도영 조우"));
+            explorer.Add(new Label("  - 🧩 보스전 (서무결)"));
+
+            // Add Template drawer
+            var drawerTitle = new Label("▼ 템플릿 서랍");
+            drawerTitle.AddToClassList("workspace-section-header");
+            explorer.Add(drawerTitle);
+            explorer.Add(new Button(() => CreateWorkspaceNode("3인 만담", new string[]{"도영 🟣", "지민 🟢", "플레이어 🔵"})) { text = "🗣️ 3인 만담 추가" });
+            explorer.Add(new Button(() => CreateWorkspaceNode("캐릭터 DNA", new string[]{"아트 🎨"})) { text = "👗 캐릭터 DNA 추가" });
+            explorer.Add(new Button(() => CreateWorkspaceNode("질문 조립기", new string[]{"퍼즐 🧩"})) { text = "🧩 질문 조립기 추가" });
+            mainSplit.Add(explorer);
+
+            var rightSplit = new TwoPaneSplitView(0, 500, TwoPaneSplitViewOrientation.Horizontal);
+            mainSplit.Add(rightSplit);
+
+            // Middle Canvas
+            var canvasContainer = new VisualElement();
+            canvasContainer.style.flexGrow = 1;
+            var epGraph = new EpisodeGraphView();
+            epGraph.style.flexGrow = 1;
+            canvasContainer.Add(epGraph);
+            rightSplit.Add(canvasContainer);
+
+            // Right Inspector
+            var inspector = new InspectorView();
+            rightSplit.Add(inspector);
+
+            // Bind selection
+            epGraph.RegisterCallback<MouseUpEvent>(evt => {
+                var selection = epGraph.selection;
+                if (selection.Count > 0 && selection[0] is EpisodeNode node)
+                {
+                    inspector.BindNode(node);
+                }
+            });
+            
+            _workspaceGraph = epGraph;
+        }
+
+        private EpisodeGraphView _workspaceGraph;
+
+        private void CreateWorkspaceNode(string title, string[] badges)
+        {
+            if (_workspaceGraph != null)
+            {
+                _workspaceGraph.CreateNode(title, new Vector2(100, 100), badges);
+            }
+        }
+
+        private void BuildDirectorHubUI(VisualElement root)
+        {
             var mainSplitView = new TwoPaneSplitView(0, 200, TwoPaneSplitViewOrientation.Horizontal);
             root.Add(mainSplitView);
 
@@ -215,13 +316,16 @@ namespace StudyGame.Editor.Director
             verticalSplit.Add(_graphView);
 
             mainSplitView.Add(rightContainer);
-
-            EditorApplication.update += RepaintMonitors;
         }
 
         private void CreateNode(string title, DirectorNodeType type = DirectorNodeType.Event)
         {
-            var node = new WindowNode(title, type);
+            WindowNode node;
+            if (type == DirectorNodeType.Database)
+                node = new DatabaseNodeView(title);
+            else
+                node = new WindowNode(title, type);
+                
             int count = _graphView.nodes.ToList().Count;
             
             // Offset UI Position
