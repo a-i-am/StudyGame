@@ -31,6 +31,7 @@ namespace StudyGame.Editor.Director
         private string _currentSavePath = null;
         
         private bool _isBrushMode = false;
+        private int _brushSize = 1;
         private LevelGeometryData _levelGeometry = new LevelGeometryData();
 
         [MenuItem("StudyGame/Director Hub")]
@@ -91,6 +92,10 @@ namespace StudyGame.Editor.Director
             brushToggle.RegisterValueChangedCallback(evt => _isBrushMode = evt.newValue);
             brushContainer.Add(brushToggle);
             
+            var brushSizeField = new IntegerField("Brush Size (Cells)") { value = _brushSize };
+            brushSizeField.RegisterValueChangedCallback(evt => _brushSize = Mathf.Max(1, evt.newValue));
+            brushContainer.Add(brushSizeField);
+            
             var gridField = new FloatField("Grid Size") { value = _levelGeometry.GridSize };
             gridField.RegisterValueChangedCallback(evt => _levelGeometry.GridSize = evt.newValue);
             brushContainer.Add(gridField);
@@ -100,8 +105,18 @@ namespace StudyGame.Editor.Director
             brushContainer.Add(wallToggle);
 
             var ceilToggle = new Toggle("Auto Ceiling") { value = _levelGeometry.GenerateCeiling };
-            ceilToggle.RegisterValueChangedCallback(evt => { _levelGeometry.GenerateCeiling = evt.newValue; LevelGeometryManager.Rebuild(_levelGeometry); });
+            ceilToggle.RegisterValueChangedCallback(evt => {
+                _levelGeometry.GenerateCeiling = evt.newValue;
+                LevelGeometryManager.Rebuild(_levelGeometry);
+            });
             brushContainer.Add(ceilToggle);
+
+            var opacitySlider = new Slider("Ceiling Opacity", 0f, 1f) { value = _levelGeometry.CeilingOpacity };
+            opacitySlider.RegisterValueChangedCallback(evt => {
+                _levelGeometry.CeilingOpacity = evt.newValue;
+                LevelGeometryManager.Rebuild(_levelGeometry);
+            });
+            brushContainer.Add(opacitySlider);
             
             var wallHeightField = new FloatField("Wall Height") { value = _levelGeometry.WallHeight };
             wallHeightField.RegisterValueChangedCallback(evt => { _levelGeometry.WallHeight = evt.newValue; LevelGeometryManager.Rebuild(_levelGeometry); });
@@ -322,23 +337,32 @@ namespace StudyGame.Editor.Director
                     float s = _levelGeometry.GridSize;
                     int cx = Mathf.FloorToInt(hitPoint.x / s);
                     int cz = Mathf.FloorToInt(hitPoint.z / s);
-                    Vector2Int cell = new Vector2Int(cx, cz);
                     
                     bool changed = false;
-                    if (e.shift) // Erase
+                    int radius = _brushSize - 1;
+                    
+                    for (int xOffset = -radius; xOffset <= radius; xOffset++)
                     {
-                        if (_levelGeometry.FloorCells.Contains(cell))
+                        for (int zOffset = -radius; zOffset <= radius; zOffset++)
                         {
-                            _levelGeometry.FloorCells.Remove(cell);
-                            changed = true;
-                        }
-                    }
-                    else // Paint
-                    {
-                        if (!_levelGeometry.FloorCells.Contains(cell))
-                        {
-                            _levelGeometry.FloorCells.Add(cell);
-                            changed = true;
+                            Vector2Int cell = new Vector2Int(cx + xOffset, cz + zOffset);
+                            
+                            if (e.shift) // Erase
+                            {
+                                if (_levelGeometry.FloorCells.Contains(cell))
+                                {
+                                    _levelGeometry.FloorCells.Remove(cell);
+                                    changed = true;
+                                }
+                            }
+                            else // Paint
+                            {
+                                if (!_levelGeometry.FloorCells.Contains(cell))
+                                {
+                                    _levelGeometry.FloorCells.Add(cell);
+                                    changed = true;
+                                }
+                            }
                         }
                     }
 
