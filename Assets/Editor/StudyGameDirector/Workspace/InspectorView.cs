@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEditor.UIElements;
 using StudyGame.Data;
+using System.Linq;
 
 namespace StudyGame.Editor.Director
 {
@@ -17,178 +18,273 @@ namespace StudyGame.Editor.Director
             style.flexGrow = 1;
             AddToClassList("workspace-panel");
 
+            var titleRow = new VisualElement();
+            titleRow.style.flexDirection = FlexDirection.Row;
+            titleRow.style.justifyContent = Justify.SpaceBetween;
+            
             var title = new Label("동적 작업대 (Inspector)");
             title.AddToClassList("workspace-title");
-            Add(title);
+            titleRow.Add(title);
 
-            // Tabs
-            var tabContainer = new VisualElement();
-            tabContainer.AddToClassList("inspector-tab-container");
-
-            var tabScenario = new Button(() => ShowTab("Scenario")) { text = "✍️ 시나리오" };
-            var tabDNA = new Button(() => ShowTab("DNA")) { text = "🎨 아트/DNA" };
-            var tabPuzzle = new Button(() => ShowTab("Puzzle")) { text = "🧩 룰/퍼즐" };
-
-            tabScenario.AddToClassList("inspector-tab");
-            tabDNA.AddToClassList("inspector-tab");
-            tabPuzzle.AddToClassList("inspector-tab");
-
-            tabContainer.Add(tabScenario);
-            tabContainer.Add(tabDNA);
-            tabContainer.Add(tabPuzzle);
-            Add(tabContainer);
+            var saveTplBtn = new Button(SaveAsTemplate) { text = "💾 템플릿으로 저장" };
+            titleRow.Add(saveTplBtn);
+            Add(titleRow);
 
             _contentContainer = new VisualElement();
             _contentContainer.AddToClassList("inspector-content");
-            Add(_contentContainer);
-
-            ShowTab("Scenario"); // Default
+            
+            var scroll = new ScrollView();
+            scroll.Add(_contentContainer);
+            Add(scroll);
         }
 
         public void BindNode(EpisodeNode node)
         {
             _activeNode = node;
-            ShowTab("Scenario"); // Refresh
+            RenderDynamicProperties();
         }
 
-        private void ShowTab(string tabName)
+        private void RenderDynamicProperties()
         {
             _contentContainer.Clear();
-            if (_activeNode == null)
+            if (_activeNode == null || _activeNode.NodeData == null)
             {
-                _contentContainer.Add(new Label("노드를 선택해주세요.") { style = { color = Color.gray, marginTop = 20, unityTextAlign = TextAnchor.MiddleCenter } });
+                var l = new Label("노드를 선택해주세요.");
+                l.style.color = Color.gray;
+                l.style.marginTop = 20;
+                l.style.unityTextAlign = TextAnchor.MiddleCenter;
+                _contentContainer.Add(l);
                 return;
             }
 
-            switch (tabName)
+            var data = _activeNode.NodeData;
+
+            // Title Editor
+            var header = new Label($"[{data.TemplateType}] 노드 설정");
+            header.AddToClassList("workspace-section-header");
+            _contentContainer.Add(header);
+
+            var titleField = new TextField("노드 제목") { value = data.NodeTitle };
+            titleField.RegisterValueChangedCallback(evt => {
+                data.NodeTitle = evt.newValue;
+                _activeNode.title = data.NodeTitle;
+                EditorUtility.SetDirty(data);
+            });
+            _contentContainer.Add(titleField);
+
+            // Job-Specific Smart Viewers
+            if (data.TemplateType.Contains("캐릭터 DNA"))
             {
-                case "Scenario":
-                    RenderScenarioTab();
-                    break;
-                case "DNA":
-                    RenderDNATab();
-                    break;
-                case "Puzzle":
-                    RenderPuzzleTab();
-                    break;
+                RenderDNAPreview();
             }
+            else if (data.TemplateType.Contains("보스 퍼즐"))
+            {
+                RenderPuzzleSimulator();
+            }
+
+            // Dynamic Properties
+            var propHeader = new Label("▼ 동적 속성 (Dynamic Properties)");
+            propHeader.AddToClassList("workspace-section-header");
+            propHeader.style.marginTop = 15;
+            _contentContainer.Add(propHeader);
+
+            foreach (var prop in data.Properties)
+            {
+                RenderSingleProperty(prop, data);
+            }
+
+            // Add Property Button (Dropdown Simulation)
+            var addBtnContainer = new VisualElement();
+            addBtnContainer.style.flexDirection = FlexDirection.Row;
+            addBtnContainer.style.marginTop = 20;
+            
+            var addBtn = new Button(() => ShowAddPropertyMenu(data)) { text = "➕ 속성 추가 (Add Property)" };
+            addBtn.style.flexGrow = 1;
+            addBtn.style.height = 30;
+            addBtnContainer.Add(addBtn);
+            _contentContainer.Add(addBtnContainer);
         }
 
-        private void RenderScenarioTab()
+        private void RenderSingleProperty(DynamicProperty prop, WorkspaceNodeData data)
         {
-            var title = new Label("만담 대본 에디터");
-            title.AddToClassList("workspace-section-header");
-            _contentContainer.Add(title);
-            
-            // Dummy example of a chat block
-            var block = new VisualElement();
-            block.AddToClassList("chat-block");
-            block.AddToClassList("chat-block-doyoung");
+            var row = new VisualElement();
+            row.style.flexDirection = FlexDirection.Row;
+            row.style.marginBottom = 5;
+            row.style.backgroundColor = new StyleColor(new Color(0.2f, 0.2f, 0.25f));
+            row.style.paddingTop = row.style.paddingBottom = row.style.paddingLeft = row.style.paddingRight = 5;
+            row.style.borderTopLeftRadius = 5;
+            row.style.borderTopRightRadius = 5;
+            row.style.borderBottomLeftRadius = 5;
+            row.style.borderBottomRightRadius = 5;
 
-            var header = new VisualElement();
-            header.AddToClassList("chat-header");
-            var nameLabel = new Label("도영 (Doyoung)");
-            nameLabel.AddToClassList("chat-name");
-            header.Add(nameLabel);
-            
-            var emotionEnum = new EnumField(Speaker.Doyoung);
-            header.Add(emotionEnum);
+            // Delete Btn
+            var delBtn = new Button(() => {
+                data.Properties.Remove(prop);
+                EditorUtility.SetDirty(data);
+                RenderDynamicProperties();
+                UpdateNodeBadges();
+            }) { text = "X" };
+            delBtn.style.width = 20;
+            row.Add(delBtn);
 
-            block.Add(header);
+            // Badge Toggle
+            var badgeToggle = new Toggle("★") { value = prop.ShowAsBadge, tooltip = "노드 캔버스에 뱃지로 표출" };
+            badgeToggle.RegisterValueChangedCallback(evt => {
+                prop.ShowAsBadge = evt.newValue;
+                EditorUtility.SetDirty(data);
+                UpdateNodeBadges();
+            });
+            row.Add(badgeToggle);
 
-            var textArea = new TextField();
-            textArea.multiline = true;
-            textArea.value = "이 이상현상의 궤도는 비유클리드 기하학적 형태를 띄고 있어.";
-            block.Add(textArea);
+            var fieldContainer = new VisualElement();
+            fieldContainer.style.flexGrow = 1;
+            fieldContainer.style.marginLeft = 5;
 
-            _contentContainer.Add(block);
+            switch (prop.Type)
+            {
+                case PropertyType.Text:
+                    var txt = new TextField(prop.PropertyName) { value = prop.StringValue, multiline = true };
+                    txt.RegisterValueChangedCallback(e => { prop.StringValue = e.newValue; EditorUtility.SetDirty(data); UpdateNodeBadges(); });
+                    fieldContainer.Add(txt);
+                    break;
+                case PropertyType.Number:
+                    var num = new FloatField(prop.PropertyName) { value = prop.FloatValue };
+                    num.RegisterValueChangedCallback(e => { prop.FloatValue = e.newValue; EditorUtility.SetDirty(data); UpdateNodeBadges(); });
+                    fieldContainer.Add(num);
+                    break;
+                case PropertyType.Color:
+                    var col = new ColorField(prop.PropertyName) { value = prop.ColorValue };
+                    col.RegisterValueChangedCallback(e => { prop.ColorValue = e.newValue; EditorUtility.SetDirty(data); UpdateNodeBadges(); });
+                    fieldContainer.Add(col);
+                    break;
+                case PropertyType.Asset:
+                    var obj = new ObjectField(prop.PropertyName) { value = prop.AssetValue, objectType = typeof(UnityEngine.Object) };
+                    obj.RegisterValueChangedCallback(e => { prop.AssetValue = e.newValue; EditorUtility.SetDirty(data); UpdateNodeBadges(); });
+                    fieldContainer.Add(obj);
+                    break;
+                case PropertyType.Dropdown:
+                    var drop = new TextField(prop.PropertyName) { value = prop.StringValue };
+                    drop.RegisterValueChangedCallback(e => { prop.StringValue = e.newValue; EditorUtility.SetDirty(data); UpdateNodeBadges(); });
+                    fieldContainer.Add(drop);
+                    break;
+            }
 
-            // Add button
-            var addBtn = new Button() { text = "+ 대사 블록 추가" };
-            _contentContainer.Add(addBtn);
+            row.Add(fieldContainer);
+            _contentContainer.Add(row);
         }
 
-        private void RenderDNATab()
+        private void RenderDNAPreview()
         {
-            var title = new Label("캐릭터 DNA 튜너");
-            title.AddToClassList("workspace-section-header");
-            _contentContainer.Add(title);
+            var box = new VisualElement();
+            box.style.height = 150;
+            box.style.backgroundColor = Color.black;
+            box.style.marginBottom = 10;
+            box.style.marginTop = 10;
+            box.style.justifyContent = Justify.Center;
+            box.style.alignItems = Align.Center;
 
-            if (_activeNode.LinkedDNA != null)
-            {
-                var so = new SerializedObject(_activeNode.LinkedDNA);
-                
-                var meshField = new PropertyField(so.FindProperty("HeadMeshId"));
-                var capeField = new PropertyField(so.FindProperty("CapeLengthScale"));
-                var sleeveField = new PropertyField(so.FindProperty("SleeveWidthScale"));
-                var rimField = new PropertyField(so.FindProperty("RimLightColor"));
-                var emissiveField = new PropertyField(so.FindProperty("FaceEmissiveColor"));
-                var decalField = new PropertyField(so.FindProperty("DecalTexture"));
+            var label = new Label("🎨 3D 아바타 실시간 프리뷰 (RenderTexture)");
+            label.style.color = Color.gray;
+            box.Add(label);
 
-                meshField.Bind(so);
-                capeField.Bind(so);
-                sleeveField.Bind(so);
-                rimField.Bind(so);
-                emissiveField.Bind(so);
-                decalField.Bind(so);
-
-                _contentContainer.Add(meshField);
-                _contentContainer.Add(capeField);
-                _contentContainer.Add(sleeveField);
-                _contentContainer.Add(rimField);
-                _contentContainer.Add(emissiveField);
-                _contentContainer.Add(decalField);
-            }
-            else
-            {
-                _contentContainer.Add(new Label("연결된 DNA 데이터가 없습니다."));
-                if (GUILayout.Button("Create DNA Asset"))
-                {
-                    // Logic to create SO...
-                }
-            }
+            _contentContainer.Add(box);
         }
 
-        private void RenderPuzzleTab()
+        private void RenderPuzzleSimulator()
         {
-            var title = new Label("질문 조립기 (보스전 검증)");
-            title.AddToClassList("workspace-section-header");
-            _contentContainer.Add(title);
+            var box = new VisualElement();
+            box.style.backgroundColor = new StyleColor(new Color(0.15f, 0.15f, 0.2f));
+            box.style.paddingTop = box.style.paddingBottom = box.style.paddingLeft = box.style.paddingRight = 10;
+            box.style.marginBottom = 10;
+            box.style.marginTop = 10;
+            box.style.borderTopLeftRadius = 5; box.style.borderTopRightRadius = 5;
+            box.style.borderBottomLeftRadius = 5; box.style.borderBottomRightRadius = 5;
 
-            var slot1 = new VisualElement();
-            slot1.AddToClassList("puzzle-slot");
-            var l1 = new Label("[1. 전제]");
-            l1.AddToClassList("puzzle-slot-label");
-            slot1.Add(l1);
-            
-            var slot2 = new VisualElement();
-            slot2.AddToClassList("puzzle-slot");
-            var l2 = new Label("[2. 모순]");
-            l2.AddToClassList("puzzle-slot-label");
-            slot2.Add(l2);
+            var l1 = new Label("[1. 전제] 슬롯"); l1.AddToClassList("puzzle-slot");
+            var l2 = new Label("[2. 모순] 슬롯"); l2.AddToClassList("puzzle-slot");
+            var l3 = new Label("[3. 종결] 슬롯"); l3.AddToClassList("puzzle-slot");
 
-            var slot3 = new VisualElement();
-            slot3.AddToClassList("puzzle-slot");
-            var l3 = new Label("[3. 종결]");
-            l3.AddToClassList("puzzle-slot-label");
-            slot3.Add(l3);
+            box.Add(l1); box.Add(l2); box.Add(l3);
 
-            _contentContainer.Add(slot1);
-            _contentContainer.Add(slot2);
-            _contentContainer.Add(slot3);
-
-            var simBtn = new Button() { text = "▶ 검증 시뮬레이션 실행" };
+            var simBtn = new Button(() => { Debug.Log("시뮬레이션 실행 (NaN 체크)"); }) { text = "▶ 검증 시뮬레이션" };
             simBtn.style.marginTop = 10;
-            simBtn.style.height = 30;
-            _contentContainer.Add(simBtn);
+            box.Add(simBtn);
 
-            // Dummy result
-            simBtn.clicked += () => {
-                var result = new Label("무한 루프 (NaN) 발생! 보스 기믹 돌파 성공!");
-                result.AddToClassList("puzzle-result-nan");
-                result.style.marginTop = 10;
-                _contentContainer.Add(result);
-            };
+            _contentContainer.Add(box);
+        }
+
+        private void ShowAddPropertyMenu(WorkspaceNodeData data)
+        {
+            var menu = new GenericMenu();
+            foreach (PropertyType type in System.Enum.GetValues(typeof(PropertyType)))
+            {
+                menu.AddItem(new GUIContent(type.ToString()), false, () => {
+                    data.Properties.Add(new DynamicProperty { Type = type, PropertyName = $"New {type}" });
+                    EditorUtility.SetDirty(data);
+                    RenderDynamicProperties();
+                });
+            }
+            menu.ShowAsContext();
+        }
+
+        private void SaveAsTemplate()
+        {
+            if (_activeNode == null || _activeNode.NodeData == null) return;
+            
+            var sourceData = _activeNode.NodeData;
+            var newTemplate = ScriptableObject.CreateInstance<WorkspaceNodeData>();
+            newTemplate.NodeTitle = sourceData.NodeTitle;
+            newTemplate.TemplateType = sourceData.NodeTitle; // Use title as template type name
+            newTemplate.ThemeColorHex = sourceData.ThemeColorHex;
+            newTemplate.ThemeIcon = sourceData.ThemeIcon;
+            
+            foreach (var prop in sourceData.Properties)
+            {
+                newTemplate.Properties.Add(new DynamicProperty {
+                    PropertyName = prop.PropertyName,
+                    Type = prop.Type,
+                    StringValue = prop.StringValue,
+                    FloatValue = prop.FloatValue,
+                    ColorValue = prop.ColorValue,
+                    AssetValue = prop.AssetValue,
+                    ShowAsBadge = prop.ShowAsBadge
+                });
+            }
+
+            string safeName = sourceData.NodeTitle.Replace(" ", "_").Replace(":", "_");
+            string path = $"Assets/Editor/StudyGameDirector/Workspace/Templates/{safeName}_Template.asset";
+            
+            AssetDatabase.CreateAsset(newTemplate, path);
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
+
+            Debug.Log($"[{sourceData.NodeTitle}] 템플릿 저장 완료! 경로: {path}");
+        }
+
+        private void UpdateNodeBadges()
+        {
+            if (_activeNode != null && _activeNode.NodeData != null)
+            {
+                var badges = _activeNode.NodeData.Properties
+                    .Where(p => p.ShowAsBadge)
+                    .Select(p => $"{p.PropertyName}: {GetPropertyValueAsString(p)}")
+                    .ToArray();
+                
+                _activeNode.SetBadges(badges);
+            }
+        }
+
+        private string GetPropertyValueAsString(DynamicProperty p)
+        {
+            switch (p.Type)
+            {
+                case PropertyType.Text: return p.StringValue;
+                case PropertyType.Number: return p.FloatValue.ToString();
+                case PropertyType.Color: return $"#{ColorUtility.ToHtmlStringRGB(p.ColorValue)}";
+                case PropertyType.Asset: return p.AssetValue != null ? p.AssetValue.name : "None";
+                case PropertyType.Dropdown: return p.StringValue;
+                default: return "";
+            }
         }
     }
 }
