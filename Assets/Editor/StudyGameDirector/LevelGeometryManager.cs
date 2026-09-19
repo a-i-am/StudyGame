@@ -6,6 +6,19 @@ namespace StudyGame.Editor.Director
 {
     public static class LevelGeometryManager
     {
+        /*
+         * [CRITICAL MESH GENERATION RULES]
+         * 1. DO NOT make faces double-sided to "fix" backface culling.
+         * 2. This level editor uses a 'Sims-like' dollhouse view. The walls MUST be single-sided and face OUTWARDS.
+         *    - This ensures walls facing the camera (outside) are visible.
+         *    - Walls facing away from the camera (blocking the view of the interior) are naturally culled,
+         *      allowing the player/designer to look INSIDE the room effortlessly.
+         * 3. Winding Order:
+         *    - Floor: Faces UP (+Y). Indices: 0, 2, 1 (BL, TL, BR) -> Clockwise.
+         *    - Ceiling: Faces DOWN (-Y). Flipped indices so it is visible from the inside, culled from the top down.
+         *    - Walls: Must face OUTWARD from the room. 
+         * 4. Any future modifications to LevelGeometryManager MUST preserve this single-sided culling behavior.
+         */
         public static void Rebuild(LevelGeometryData data)
         {
             var oldGo = GameObject.Find("PB_LevelGeometry");
@@ -39,13 +52,22 @@ namespace StudyGame.Editor.Director
 
                 if (data.GenerateCeiling)
                 {
-                    // Ceiling Quad (Facing DOWN: -Y)
+                    // Ceiling Quad (Double-sided so it can be seen from top-down editor view and from inside)
                     int vc = positions.Count;
                     positions.Add(new Vector3(x, h, z)); // 0
                     positions.Add(new Vector3(x + s, h, z)); // 1
                     positions.Add(new Vector3(x, h, z + s)); // 2
                     positions.Add(new Vector3(x + s, h, z + s)); // 3
-                    faces.Add(new Face(new int[] { vc, vc+1, vc+2, vc+1, vc+3, vc+2 }));
+                    
+                    // Facing DOWN (-Y, visible from inside)
+                    var fDown = new Face(new int[] { vc, vc+1, vc+2, vc+1, vc+3, vc+2 });
+                    fDown.submeshIndex = 1;
+                    faces.Add(fDown);
+                    
+                    // Facing UP (+Y, visible from outside/top-down)
+                    var fUp = new Face(new int[] { vc, vc+2, vc+1, vc+1, vc+2, vc+3 });
+                    fUp.submeshIndex = 1;
+                    faces.Add(fUp);
                 }
 
                 if (data.GenerateWalls)
@@ -97,6 +119,22 @@ namespace StudyGame.Editor.Director
             {
                 var pbMesh = ProBuilderMesh.Create(positions, faces);
                 pbMesh.gameObject.name = "PB_LevelGeometry";
+                
+                // Assign Default Material to fix magenta error
+                var renderer = pbMesh.GetComponent<MeshRenderer>();
+                if (renderer != null)
+                {
+                    Material defaultMat = UnityEditor.AssetDatabase.GetBuiltinExtraResource<Material>("Default-Material.mat");
+                    if (defaultMat == null) defaultMat = new Material(Shader.Find("Standard"));
+                    
+                    Material ceilMat = new Material(Shader.Find("Transparent/Diffuse"));
+                    ceilMat.color = new Color(1, 1, 1, data.CeilingOpacity);
+                    
+                    Material[] mats = new Material[2];
+                    mats[0] = defaultMat;
+                    mats[1] = ceilMat;
+                    renderer.sharedMaterials = mats;
+                }
                 
                 var col = pbMesh.gameObject.AddComponent<MeshCollider>();
                 col.sharedMesh = pbMesh.GetComponent<MeshFilter>().sharedMesh;

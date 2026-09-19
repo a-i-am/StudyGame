@@ -23,6 +23,7 @@ namespace StudyGame.Editor.Director
         public float WallHeight = 3.0f;
         public bool GenerateWalls = true;
         public bool GenerateCeiling = false;
+        public float CeilingOpacity = 0.5f;
     }
 
     [Serializable]
