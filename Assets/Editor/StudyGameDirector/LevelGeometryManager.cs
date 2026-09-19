@@ -135,10 +135,6 @@ namespace StudyGame.Editor.Director
                     mats[1] = ceilMat;
                     renderer.sharedMaterials = mats;
                 }
-                
-                var col = pbMesh.gameObject.AddComponent<MeshCollider>();
-                col.sharedMesh = pbMesh.GetComponent<MeshFilter>().sharedMesh;
-
                 pbMesh.ToMesh();
                 pbMesh.Refresh();
             }
