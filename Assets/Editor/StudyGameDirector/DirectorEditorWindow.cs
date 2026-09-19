@@ -7,6 +7,14 @@ using System.Collections.Generic;
 
 namespace StudyGame.Editor.Director
 {
+    public enum FloorplanTool
+    {
+        None,
+        Brush,
+        Rectangle,
+        Bucket
+    }
+
     public class DirectorEditorWindow : EditorWindow
     {
         private DirectorGraphView _graphView;
@@ -30,9 +38,14 @@ namespace StudyGame.Editor.Director
 
         private string _currentSavePath = null;
         
-        private bool _isBrushMode = false;
+        private FloorplanTool _currentTool = FloorplanTool.None;
         private int _brushSize = 1;
         private LevelGeometryData _levelGeometry = new LevelGeometryData();
+
+        private Vector2Int? _rectStartCell = null;
+        private Vector2Int? _rectEndCell = null;
+        private GameObject _rectPreviewObject = null;
+        private Vector2Int? _lastPaintedCell = null;
 
         [MenuItem("StudyGame/Director Hub")]
         public static void ShowWindow()
@@ -87,10 +100,17 @@ namespace StudyGame.Editor.Director
             brushContainer.style.marginTop = 10;
             brushContainer.style.marginBottom = 10;
             
-            var brushToggle = new Toggle("🖌️ Brush Mode (Shift+Click to Erase)");
-            brushToggle.value = _isBrushMode;
-            brushToggle.RegisterValueChangedCallback(evt => _isBrushMode = evt.newValue);
-            brushContainer.Add(brushToggle);
+            var toolField = new UnityEngine.UIElements.EnumField("Active Tool", _currentTool);
+            toolField.RegisterValueChangedCallback(evt => {
+                _currentTool = (FloorplanTool)evt.newValue;
+                _lastPaintedCell = null;
+            });
+            brushContainer.Add(toolField);
+
+            var autoFillBtn = new Button(ExecuteConvexHullFill) { text = "🕳️ Fill Outer Bounds (Convex Hull)" };
+            autoFillBtn.style.marginTop = 5;
+            autoFillBtn.style.marginBottom = 5;
+            brushContainer.Add(autoFillBtn);
             
             var brushSizeField = new IntegerField("Brush Size (Cells)") { value = _brushSize };
             brushSizeField.RegisterValueChangedCallback(evt => _brushSize = Mathf.Max(1, evt.newValue));
@@ -323,8 +343,8 @@ namespace StudyGame.Editor.Director
         {
             if (!rect.Contains(e.mousePosition) && _draggingNodeId == null) return;
 
-            // Brush Mode Logic
-            if (_isBrushMode && (e.type == EventType.MouseDown || e.type == EventType.MouseDrag) && e.button == 0)
+            // Tool Logic
+            if (_currentTool != FloorplanTool.None && (e.type == EventType.MouseDown || e.type == EventType.MouseDrag || e.type == EventType.MouseUp) && e.button == 0)
             {
                 Ray ray = cam.ViewportPointToRay(new Vector3(
                     (e.mousePosition.x - rect.x) / rect.width,
@@ -337,41 +357,93 @@ namespace StudyGame.Editor.Director
                     float s = _levelGeometry.GridSize;
                     int cx = Mathf.FloorToInt(hitPoint.x / s);
                     int cz = Mathf.FloorToInt(hitPoint.z / s);
+                    Vector2Int currentCell = new Vector2Int(cx, cz);
                     
                     bool changed = false;
-                    int radius = _brushSize - 1;
-                    
-                    for (int xOffset = -radius; xOffset <= radius; xOffset++)
+
+                    if (_currentTool == FloorplanTool.Brush)
                     {
-                        for (int zOffset = -radius; zOffset <= radius; zOffset++)
+                        if (e.type == EventType.MouseDown || e.type == EventType.MouseDrag)
                         {
-                            Vector2Int cell = new Vector2Int(cx + xOffset, cz + zOffset);
-                            
-                            if (e.shift) // Erase
+                            List<Vector2Int> cellsToPaint = new List<Vector2Int>();
+                            if (e.type == EventType.MouseDown || _lastPaintedCell == null)
                             {
-                                if (_levelGeometry.FloorCells.Contains(cell))
+                                cellsToPaint.Add(currentCell);
+                            }
+                            else
+                            {
+                                cellsToPaint = GetCellsOnLine(_lastPaintedCell.Value, currentCell);
+                            }
+                            _lastPaintedCell = currentCell;
+
+                            int radius = _brushSize - 1;
+                            foreach (var c in cellsToPaint)
+                            {
+                                for (int xOffset = -radius; xOffset <= radius; xOffset++)
                                 {
-                                    _levelGeometry.FloorCells.Remove(cell);
-                                    changed = true;
+                                    for (int zOffset = -radius; zOffset <= radius; zOffset++)
+                                    {
+                                        Vector2Int cell = new Vector2Int(c.x + xOffset, c.y + zOffset);
+                                        if (e.shift) { if (_levelGeometry.FloorCells.Contains(cell)) { _levelGeometry.FloorCells.Remove(cell); changed = true; } }
+                                        else { if (!_levelGeometry.FloorCells.Contains(cell)) { _levelGeometry.FloorCells.Add(cell); changed = true; } }
+                                    }
                                 }
                             }
-                            else // Paint
-                            {
-                                if (!_levelGeometry.FloorCells.Contains(cell))
-                                {
-                                    _levelGeometry.FloorCells.Add(cell);
-                                    changed = true;
-                                }
-                            }
+                            if (changed) LevelGeometryManager.Rebuild(_levelGeometry);
+                        }
+                        else if (e.type == EventType.MouseUp)
+                        {
+                            _lastPaintedCell = null;
                         }
                     }
-
-                    if (changed)
+                    else if (_currentTool == FloorplanTool.Bucket)
                     {
-                        LevelGeometryManager.Rebuild(_levelGeometry);
+                        if (e.type == EventType.MouseDown)
+                        {
+                            ExecuteBucketFill(currentCell, !e.shift);
+                            LevelGeometryManager.Rebuild(_levelGeometry);
+                        }
+                    }
+                    else if (_currentTool == FloorplanTool.Rectangle)
+                    {
+                        if (e.type == EventType.MouseDown)
+                        {
+                            _rectStartCell = currentCell;
+                            _rectEndCell = currentCell;
+                        }
+                        else if (e.type == EventType.MouseDrag && _rectStartCell.HasValue)
+                        {
+                            _rectEndCell = currentCell;
+                        }
+                        else if (e.type == EventType.MouseUp && _rectStartCell.HasValue)
+                        {
+                            _rectEndCell = currentCell;
+                            
+                            int minX = Mathf.Min(_rectStartCell.Value.x, _rectEndCell.Value.x);
+                            int maxX = Mathf.Max(_rectStartCell.Value.x, _rectEndCell.Value.x);
+                            int minZ = Mathf.Min(_rectStartCell.Value.y, _rectEndCell.Value.y);
+                            int maxZ = Mathf.Max(_rectStartCell.Value.y, _rectEndCell.Value.y);
+
+                            for (int x = minX; x <= maxX; x++)
+                            {
+                                for (int z = minZ; z <= maxZ; z++)
+                                {
+                                    Vector2Int cell = new Vector2Int(x, z);
+                                    if (e.shift) { _levelGeometry.FloorCells.Remove(cell); }
+                                    else if (!_levelGeometry.FloorCells.Contains(cell)) { _levelGeometry.FloorCells.Add(cell); }
+                                }
+                            }
+                            LevelGeometryManager.Rebuild(_levelGeometry);
+                            _rectStartCell = null;
+                            _rectEndCell = null;
+                        }
+                        UpdateRectanglePreview();
                     }
                 }
-                e.Use();
+                
+                if (e.type != EventType.MouseMove)
+                    e.Use();
+                
                 return;
             }
 
@@ -508,7 +580,7 @@ namespace StudyGame.Editor.Director
                 if (e.type == EventType.ScrollWheel)
                 {
                     _floorplanCameraSize += e.delta.y * 0.5f;
-                    _floorplanCameraSize = Mathf.Clamp(_floorplanCameraSize, 2f, 100f);
+                    _floorplanCameraSize = Mathf.Clamp(_floorplanCameraSize, 0.5f, 1000f);
                     e.Use();
                 }
                 else if (e.type == EventType.MouseDrag && e.button == 2) // Middle click pan
@@ -589,7 +661,7 @@ namespace StudyGame.Editor.Director
                 if (e.type == EventType.ScrollWheel)
                 {
                     _masterCameraDistance += e.delta.y * 1.5f;
-                    _masterCameraDistance = Mathf.Clamp(_masterCameraDistance, 2f, 100f);
+                    _masterCameraDistance = Mathf.Clamp(_masterCameraDistance, 0.5f, 1000f);
                     e.Use();
                 }
                 else if (e.type == EventType.MouseDrag)
@@ -640,6 +712,190 @@ namespace StudyGame.Editor.Director
             GUI.Label(new Rect(10, 10, 400, 30), "<b>🎥 MASTER SCENE VIEW (우클릭:회전 | 휠버튼:패닝 | 스크롤:줌)</b>", labelStyle);
 
             DrawFloatingUI(rect, e);
+        }
+
+        private void ExecuteBucketFill(Vector2Int startCell, bool fill)
+        {
+            bool targetState = fill;
+            if (_levelGeometry.FloorCells.Contains(startCell) == targetState) return;
+
+            Queue<Vector2Int> q = new Queue<Vector2Int>();
+            HashSet<Vector2Int> visited = new HashSet<Vector2Int>();
+            q.Enqueue(startCell);
+            visited.Add(startCell);
+
+            int maxCells = 10000;
+            int filled = 0;
+
+            List<Vector2Int> toAdd = new List<Vector2Int>();
+            List<Vector2Int> toRemove = new List<Vector2Int>();
+
+            while(q.Count > 0 && filled < maxCells)
+            {
+                Vector2Int curr = q.Dequeue();
+                if (targetState) toAdd.Add(curr); else toRemove.Add(curr);
+                filled++;
+
+                Vector2Int[] dirs = { Vector2Int.up, Vector2Int.down, Vector2Int.left, Vector2Int.right };
+                foreach(var d in dirs)
+                {
+                    Vector2Int n = curr + d;
+                    if (!visited.Contains(n) && _levelGeometry.FloorCells.Contains(n) != targetState)
+                    {
+                        visited.Add(n);
+                        q.Enqueue(n);
+                    }
+                }
+            }
+
+            if (targetState && filled >= maxCells)
+            {
+                Debug.LogWarning("Bucket fill reached maximum limit! Aborting to prevent infinite fill.");
+                return; 
+            }
+
+            if (targetState)
+            {
+                foreach(var c in toAdd) _levelGeometry.FloorCells.Add(c);
+            }
+            else
+            {
+                foreach(var c in toRemove) _levelGeometry.FloorCells.Remove(c);
+            }
+        }
+
+        private void ExecuteConvexHullFill()
+        {
+            if (_levelGeometry.FloorCells.Count < 3) return;
+
+            List<Vector2Int> points = new List<Vector2Int>(_levelGeometry.FloorCells);
+            points.Sort((a, b) => a.x == b.x ? a.y.CompareTo(b.y) : a.x.CompareTo(b.x));
+
+            List<Vector2Int> lower = new List<Vector2Int>();
+            foreach (var p in points)
+            {
+                while (lower.Count >= 2 && CrossProduct(lower[lower.Count - 2], lower[lower.Count - 1], p) <= 0)
+                    lower.RemoveAt(lower.Count - 1);
+                lower.Add(p);
+            }
+
+            List<Vector2Int> upper = new List<Vector2Int>();
+            for (int i = points.Count - 1; i >= 0; i--)
+            {
+                var p = points[i];
+                while (upper.Count >= 2 && CrossProduct(upper[upper.Count - 2], upper[upper.Count - 1], p) <= 0)
+                    upper.RemoveAt(upper.Count - 1);
+                upper.Add(p);
+            }
+
+            lower.RemoveAt(lower.Count - 1);
+            upper.RemoveAt(upper.Count - 1);
+            List<Vector2Int> hull = new List<Vector2Int>(lower);
+            hull.AddRange(upper);
+
+            int minX = int.MaxValue, maxX = int.MinValue;
+            int minY = int.MaxValue, maxY = int.MinValue;
+            foreach (var p in hull)
+            {
+                if (p.x < minX) minX = p.x; if (p.x > maxX) maxX = p.x;
+                if (p.y < minY) minY = p.y; if (p.y > maxY) maxY = p.y;
+            }
+
+            bool changed = false;
+            for (int x = minX; x <= maxX; x++)
+            {
+                for (int y = minY; y <= maxY; y++)
+                {
+                    Vector2Int cell = new Vector2Int(x, y);
+                    if (!_levelGeometry.FloorCells.Contains(cell) && IsPointInPolygon(cell, hull))
+                    {
+                        _levelGeometry.FloorCells.Add(cell);
+                        changed = true;
+                    }
+                }
+            }
+            if (changed) LevelGeometryManager.Rebuild(_levelGeometry);
+        }
+
+        private int CrossProduct(Vector2Int o, Vector2Int a, Vector2Int b)
+        {
+            return (a.x - o.x) * (b.y - o.y) - (a.y - o.y) * (b.x - o.x);
+        }
+
+        private bool IsPointInPolygon(Vector2Int p, List<Vector2Int> polygon)
+        {
+            bool inside = false;
+            for (int i = 0, j = polygon.Count - 1; i < polygon.Count; j = i++)
+            {
+                if ((polygon[i].y > p.y) != (polygon[j].y > p.y) &&
+                    p.x < (polygon[j].x - polygon[i].x) * (float)(p.y - polygon[i].y) / (polygon[j].y - polygon[i].y) + polygon[i].x)
+                {
+                    inside = !inside;
+                }
+            }
+            return inside;
+        }
+
+        private List<Vector2Int> GetCellsOnLine(Vector2Int p0, Vector2Int p1)
+        {
+            List<Vector2Int> line = new List<Vector2Int>();
+            int dx = Mathf.Abs(p1.x - p0.x);
+            int dy = Mathf.Abs(p1.y - p0.y);
+            int sx = p0.x < p1.x ? 1 : -1;
+            int sy = p0.y < p1.y ? 1 : -1;
+            int err = dx - dy;
+
+            int x = p0.x;
+            int y = p0.y;
+
+            while (true)
+            {
+                line.Add(new Vector2Int(x, y));
+                if (x == p1.x && y == p1.y) break;
+                int e2 = 2 * err;
+                if (e2 > -dy) { err -= dy; x += sx; }
+                if (e2 < dx) { err += dx; y += sy; }
+            }
+            return line;
+        }
+
+        private void UpdateRectanglePreview()
+        {
+            if (_currentTool != FloorplanTool.Rectangle || !_rectStartCell.HasValue || !_rectEndCell.HasValue)
+            {
+                if (_rectPreviewObject != null) _rectPreviewObject.SetActive(false);
+                return;
+            }
+            
+            if (_rectPreviewObject == null)
+            {
+                _rectPreviewObject = GameObject.CreatePrimitive(PrimitiveType.Quad);
+                _rectPreviewObject.name = "RectPreview";
+                _rectPreviewObject.transform.rotation = Quaternion.Euler(90, 0, 0);
+                DestroyImmediate(_rectPreviewObject.GetComponent<Collider>());
+                
+                var renderer = _rectPreviewObject.GetComponent<MeshRenderer>();
+                Material previewMat = new Material(Shader.Find("Transparent/Diffuse"));
+                previewMat.color = new Color(0, 0, 1, 0.4f);
+                renderer.sharedMaterial = previewMat;
+            }
+            
+            _rectPreviewObject.SetActive(true);
+            
+            int minX = Mathf.Min(_rectStartCell.Value.x, _rectEndCell.Value.x);
+            int maxX = Mathf.Max(_rectStartCell.Value.x, _rectEndCell.Value.x);
+            int minZ = Mathf.Min(_rectStartCell.Value.y, _rectEndCell.Value.y);
+            int maxZ = Mathf.Max(_rectStartCell.Value.y, _rectEndCell.Value.y);
+            
+            float s = _levelGeometry.GridSize;
+            float width = (maxX - minX + 1) * s;
+            float height = (maxZ - minZ + 1) * s;
+            
+            _rectPreviewObject.transform.localScale = new Vector3(width, height, 1);
+            _rectPreviewObject.transform.position = new Vector3(
+                minX * s + width / 2f, 
+                0.1f, 
+                minZ * s + height / 2f);
         }
 
         private void OnDestroy()
