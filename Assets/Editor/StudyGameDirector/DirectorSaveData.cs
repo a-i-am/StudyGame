@@ -16,8 +16,19 @@ namespace StudyGame.Editor.Director
     }
 
     [Serializable]
+    public class LevelGeometryData
+    {
+        public List<Vector2Int> FloorCells = new List<Vector2Int>();
+        public float GridSize = 1.0f;
+        public float WallHeight = 3.0f;
+        public bool GenerateWalls = true;
+        public bool GenerateCeiling = false;
+    }
+
+    [Serializable]
     public class DirectorSaveData
     {
         public List<DirectorNodeData> Nodes = new List<DirectorNodeData>();
+        public LevelGeometryData LevelGeometry = new LevelGeometryData();
     }
 }

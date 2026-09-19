@@ -1,7 +1,9 @@
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
-using UnityEditor.UIElements;
+using UnityEditor.Experimental.GraphView;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace StudyGame.Editor.Director
 {
@@ -27,6 +29,9 @@ namespace StudyGame.Editor.Director
         private Vector3 _dragPlanePoint;
 
         private string _currentSavePath = null;
+        
+        private bool _isBrushMode = false;
+        private LevelGeometryData _levelGeometry = new LevelGeometryData();
 
         [MenuItem("StudyGame/Director Hub")]
         public static void ShowWindow()
@@ -73,6 +78,36 @@ namespace StudyGame.Editor.Director
             actionContainer.Add(new Button(LoadData) { text = "📂 Load" });
             titleRow.Add(actionContainer);
             paletteHeader.Add(titleRow);
+
+            var brushContainer = new VisualElement();
+            brushContainer.style.backgroundColor = new StyleColor(new Color(0.1f, 0.3f, 0.1f, 0.8f));
+            brushContainer.style.paddingLeft = 5; brushContainer.style.paddingRight = 5;
+            brushContainer.style.paddingTop = 5; brushContainer.style.paddingBottom = 5;
+            brushContainer.style.marginTop = 10;
+            brushContainer.style.marginBottom = 10;
+            
+            var brushToggle = new Toggle("🖌️ Brush Mode (Shift+Click to Erase)");
+            brushToggle.value = _isBrushMode;
+            brushToggle.RegisterValueChangedCallback(evt => _isBrushMode = evt.newValue);
+            brushContainer.Add(brushToggle);
+            
+            var gridField = new FloatField("Grid Size") { value = _levelGeometry.GridSize };
+            gridField.RegisterValueChangedCallback(evt => _levelGeometry.GridSize = evt.newValue);
+            brushContainer.Add(gridField);
+            
+            var wallToggle = new Toggle("Auto Walls") { value = _levelGeometry.GenerateWalls };
+            wallToggle.RegisterValueChangedCallback(evt => { _levelGeometry.GenerateWalls = evt.newValue; LevelGeometryManager.Rebuild(_levelGeometry); });
+            brushContainer.Add(wallToggle);
+
+            var ceilToggle = new Toggle("Auto Ceiling") { value = _levelGeometry.GenerateCeiling };
+            ceilToggle.RegisterValueChangedCallback(evt => { _levelGeometry.GenerateCeiling = evt.newValue; LevelGeometryManager.Rebuild(_levelGeometry); });
+            brushContainer.Add(ceilToggle);
+            
+            var wallHeightField = new FloatField("Wall Height") { value = _levelGeometry.WallHeight };
+            wallHeightField.RegisterValueChangedCallback(evt => { _levelGeometry.WallHeight = evt.newValue; LevelGeometryManager.Rebuild(_levelGeometry); });
+            brushContainer.Add(wallHeightField);
+
+            paletteHeader.Add(brushContainer);
 
             palettePane.Add(paletteHeader);
             
@@ -199,6 +234,8 @@ namespace StudyGame.Editor.Director
         private void SaveData(string path)
         {
             var data = new DirectorSaveData();
+            data.LevelGeometry = _levelGeometry;
+            
             foreach (var node in _graphView.nodes.ToList())
             {
                 if (node is WindowNode wNode)
@@ -227,12 +264,19 @@ namespace StudyGame.Editor.Director
 
             string json = System.IO.File.ReadAllText(path);
             var data = JsonUtility.FromJson<DirectorSaveData>(json);
+            if (data == null) return;
             
             // Clear current graph
             _graphView.DeleteElements(_graphView.nodes.ToList());
             NodeProxyManager.ClearAll();
 
             _currentSavePath = path;
+            
+            if (data.LevelGeometry != null)
+            {
+                _levelGeometry = data.LevelGeometry;
+                LevelGeometryManager.Rebuild(_levelGeometry);
+            }
 
             foreach (var n in data.Nodes)
             {
@@ -263,6 +307,49 @@ namespace StudyGame.Editor.Director
         private void HandleInteraction(Rect rect, Camera cam, Event e)
         {
             if (!rect.Contains(e.mousePosition) && _draggingNodeId == null) return;
+
+            // Brush Mode Logic
+            if (_isBrushMode && (e.type == EventType.MouseDown || e.type == EventType.MouseDrag) && e.button == 0)
+            {
+                Ray ray = cam.ViewportPointToRay(new Vector3(
+                    (e.mousePosition.x - rect.x) / rect.width,
+                    1f - (e.mousePosition.y - rect.y) / rect.height, 0));
+                
+                Plane plane = new Plane(Vector3.up, Vector3.zero);
+                if (plane.Raycast(ray, out float enter))
+                {
+                    Vector3 hitPoint = ray.GetPoint(enter);
+                    float s = _levelGeometry.GridSize;
+                    int cx = Mathf.FloorToInt(hitPoint.x / s);
+                    int cz = Mathf.FloorToInt(hitPoint.z / s);
+                    Vector2Int cell = new Vector2Int(cx, cz);
+                    
+                    bool changed = false;
+                    if (e.shift) // Erase
+                    {
+                        if (_levelGeometry.FloorCells.Contains(cell))
+                        {
+                            _levelGeometry.FloorCells.Remove(cell);
+                            changed = true;
+                        }
+                    }
+                    else // Paint
+                    {
+                        if (!_levelGeometry.FloorCells.Contains(cell))
+                        {
+                            _levelGeometry.FloorCells.Add(cell);
+                            changed = true;
+                        }
+                    }
+
+                    if (changed)
+                    {
+                        LevelGeometryManager.Rebuild(_levelGeometry);
+                    }
+                }
+                e.Use();
+                return;
+            }
 
             // Detect Hover
             if (e.type == EventType.MouseMove || e.type == EventType.MouseDrag)
@@ -319,6 +406,12 @@ namespace StudyGame.Editor.Director
                 if (plane.Raycast(ray, out float enter))
                 {
                     Vector3 newPos = ray.GetPoint(enter);
+                    
+                    // Snap to grid
+                    float s = _levelGeometry.GridSize;
+                    newPos.x = Mathf.Round(newPos.x / s) * s;
+                    newPos.z = Mathf.Round(newPos.z / s) * s;
+                    
                     var node = GetNodeById(_draggingNodeId);
                     if (node != null)
                     {
@@ -416,10 +509,38 @@ namespace StudyGame.Editor.Director
             GUI.DrawTexture(new Rect(0, 0, rect.width, rect.height), rt, ScaleMode.StretchToFill);
             RenderTexture.ReleaseTemporary(rt);
 
+            // Draw Grid Visualizer
+            Handles.BeginGUI();
+            Handles.color = new Color(1, 1, 1, 0.1f);
+            float s = Mathf.Max(0.1f, _levelGeometry.GridSize); // PREVENT INFINITE LOOP
+            Vector3 center = _floorplanCameraPivot;
+            float camSize = _floorplanCameraSize;
+            float step = s;
+            
+            // Draw vertical lines
+            for (float x = Mathf.Floor(center.x - camSize); x <= Mathf.Ceil(center.x + camSize); x += step)
+            {
+                float nx = Mathf.Round(x / s) * s;
+                Vector3 p1 = _floorplanCamera.WorldToScreenPoint(new Vector3(nx, 0, center.z - camSize));
+                Vector3 p2 = _floorplanCamera.WorldToScreenPoint(new Vector3(nx, 0, center.z + camSize));
+                p1.y = rect.height - p1.y; p2.y = rect.height - p2.y;
+                Handles.DrawLine(p1, p2);
+            }
+            // Draw horizontal lines
+            for (float z = Mathf.Floor(center.z - camSize); z <= Mathf.Ceil(center.z + camSize); z += step)
+            {
+                float nz = Mathf.Round(z / s) * s;
+                Vector3 p1 = _floorplanCamera.WorldToScreenPoint(new Vector3(center.x - camSize, 0, nz));
+                Vector3 p2 = _floorplanCamera.WorldToScreenPoint(new Vector3(center.x + camSize, 0, nz));
+                p1.y = rect.height - p1.y; p2.y = rect.height - p2.y;
+                Handles.DrawLine(p1, p2);
+            }
+            Handles.EndGUI();
+
             GUIStyle labelStyle = new GUIStyle();
             labelStyle.richText = true;
             labelStyle.normal.textColor = Color.white;
-            GUI.Label(new Rect(10, 10, 400, 30), "<b>📐 2D FLOOR PLAN (클릭:이동 | 휠버튼:패닝 | 스크롤:줌)</b>", labelStyle);
+            GUI.Label(new Rect(10, 10, 500, 30), "<b>📐 2D FLOOR PLAN (클릭:이동 | 휠버튼:패닝 | 스크롤:줌 | Shift+클릭: 지우기)</b>", labelStyle);
 
             DrawFloatingUI(rect, e);
         }
