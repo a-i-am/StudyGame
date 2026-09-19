@@ -31,7 +31,7 @@ namespace StudyGame.Editor.Director
 
             if (!_proxies.TryGetValue(nodeId, out GameObject proxy) || proxy == null)
             {
-                string prefabPath = UnityEditor.EditorPrefs.GetString("StudyGameDirector_PrefabPath", "Assets/Prefabs");
+                string prefabPath = UnityEditor.EditorPrefs.GetString($"StudyGameDirector_PrefabPath_{type}", "Assets/Prefabs");
                 string assetPath = $"{prefabPath}/{type.ToString()}.prefab";
                 
                 GameObject prefab = UnityEditor.AssetDatabase.LoadAssetAtPath<GameObject>(assetPath);

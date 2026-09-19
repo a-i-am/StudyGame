@@ -1,0 +1,180 @@
+/* Base Window Elements */
+.workspace-container {
+    flex-direction: row;
+    flex-grow: 1;
+    background-color: #1a1a1e; /* Dark slate background */
+}
+
+.workspace-panel {
+    background-color: #222226;
+    border-right-width: 1px;
+    border-color: #111111;
+}
+
+/* Titles and Headers */
+.workspace-title {
+    font-size: 14px;
+    -unity-font-style: bold;
+    color: #e0e0e0;
+    padding: 8px;
+    background-color: #2a2a30;
+    border-bottom-width: 1px;
+    border-bottom-color: #151515;
+}
+
+.workspace-section-header {
+    font-size: 12px;
+    -unity-font-style: bold;
+    color: #b0b0b8;
+    margin-top: 10px;
+    margin-bottom: 5px;
+    padding-left: 5px;
+}
+
+/* Diary Scrap Node Card (Episode Node) */
+.diary-node-main {
+    background-color: #faf8f5; /* Off-white diary paper */
+    border-radius: 12px;
+    border-width: 2px;
+    border-color: #d0c8b8;
+    width: 200px;
+    padding: 10px;
+    overflow: hidden;
+}
+
+.diary-node-main:hover {
+    border-color: #a89f91;
+    background-color: #ffffff;
+}
+
+.diary-node-main:checked {
+    border-color: #9880ff; /* Lavender selection highlight */
+    border-width: 3px;
+}
+
+.diary-node-title {
+    font-size: 14px;
+    -unity-font-style: bold;
+    color: #333333;
+    white-space: normal;
+    margin-bottom: 8px;
+}
+
+/* Pastel Badges */
+.badge-container {
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.badge {
+    border-radius: 6px;
+    padding: 3px 6px;
+    margin-right: 4px;
+    margin-bottom: 4px;
+    font-size: 10px;
+    -unity-font-style: bold;
+    color: #222;
+}
+
+.badge-doyoung { background-color: #e0b0ff; } /* Lavender */
+.badge-jimin { background-color: #b0ffd0; }   /* Mint */
+.badge-player { background-color: #b0e0ff; }  /* Light Blue */
+.badge-puzzle { background-color: #ffd0b0; }  /* Peach */
+
+/* Right Inspector Views */
+.inspector-tab-container {
+    flex-direction: row;
+    background-color: #2a2a30;
+}
+
+.inspector-tab {
+    flex-grow: 1;
+    padding: 8px;
+    -unity-text-align: middle-center;
+    background-color: transparent;
+    border-width: 0;
+    border-bottom-width: 2px;
+    border-bottom-color: transparent;
+    color: #999;
+    font-size: 12px;
+    cursor: link;
+}
+
+.inspector-tab:hover {
+    color: #ccc;
+    background-color: #33333a;
+}
+
+.inspector-tab-active {
+    color: #fff;
+    -unity-font-style: bold;
+    border-bottom-color: #9880ff;
+}
+
+.inspector-content {
+    flex-grow: 1;
+    padding: 10px;
+}
+
+/* Tikitaka Chat Blocks */
+.chat-block {
+    background-color: #2a2a30;
+    border-radius: 8px;
+    padding: 8px;
+    margin-bottom: 8px;
+    border-left-width: 4px;
+}
+
+.chat-block-doyoung { border-left-color: #e0b0ff; }
+.chat-block-jimin { border-left-color: #b0ffd0; }
+.chat-block-player { border-left-color: #b0e0ff; }
+
+.chat-header {
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 5px;
+}
+
+.chat-name {
+    -unity-font-style: bold;
+    color: #ddd;
+}
+
+/* Puzzle Slots */
+.puzzle-slot {
+    background-color: #1a1a1e;
+    border-radius: 8px;
+    border-width: 2px;
+    border-color: #444;
+    padding: 15px;
+    margin-bottom: 10px;
+    -unity-text-align: middle-center;
+}
+
+.puzzle-slot:hover {
+    border-color: #9880ff;
+    background-color: #222228;
+}
+
+.puzzle-slot-label {
+    color: #888;
+    -unity-font-style: italic;
+}
+
+.puzzle-result-success {
+    background-color: #2d4a22;
+    color: #a0ffa0;
+    padding: 10px;
+    border-radius: 5px;
+    -unity-font-style: bold;
+    -unity-text-align: middle-center;
+}
+
+.puzzle-result-nan {
+    background-color: #4a1111;
+    color: #ff6060;
+    padding: 10px;
+    border-radius: 5px;
+    -unity-font-style: bold;
+    -unity-text-align: middle-center;
+}
