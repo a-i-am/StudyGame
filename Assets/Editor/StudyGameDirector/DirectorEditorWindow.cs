@@ -65,6 +65,8 @@ namespace StudyGame.Editor.Director
             var root = rootVisualElement;
             root.focusable = true;
             root.RegisterCallback<KeyDownEvent>(OnKeyDown);
+            
+            DirectorStateManager.OnTabSwitchRequested += SwitchTab;
 
             // Global Toolbar
             var toolbar = new UnityEditor.UIElements.Toolbar();
@@ -126,12 +128,57 @@ namespace StudyGame.Editor.Director
             var explorer = new ScrollView();
             explorer.AddToClassList("workspace-panel");
             
-            // Dummy tree
-            var ep1 = new Label("▼ Ep.1 수학 (무한과 극한)");
-            ep1.AddToClassList("workspace-section-header");
-            explorer.Add(ep1);
-            explorer.Add(new Label("  - 🗣️ 도영 조우"));
-            explorer.Add(new Label("  - 🧩 보스전 (서무결)"));
+            // Dynamic Tree from Episode Assets
+            var episodeGuids = UnityEditor.AssetDatabase.FindAssets("t:WorkspaceNodeData", new[] { "Assets/Resources/Scenarios/Episodes" });
+            
+            if (episodeGuids.Length == 0)
+            {
+                explorer.Add(new Label("에피소드 에셋이 없습니다. (상단 마술봉 버튼으로 생성하세요)"));
+            }
+            else
+            {
+                var episodes = new System.Collections.Generic.List<StudyGame.Data.WorkspaceNodeData>();
+                foreach (var guid in episodeGuids)
+                {
+                    string path = UnityEditor.AssetDatabase.GUIDToAssetPath(guid);
+                    var asset = UnityEditor.AssetDatabase.LoadAssetAtPath<StudyGame.Data.WorkspaceNodeData>(path);
+                    if (asset != null) episodes.Add(asset);
+                }
+                
+                episodes.Sort((a, b) => a.name.CompareTo(b.name));
+                
+                foreach (var ep in episodes)
+                {
+                    var header = new Label($"▼ {ep.NodeTitle}");
+                    header.AddToClassList("workspace-section-header");
+                    header.RegisterCallback<MouseUpEvent>(evt => {
+                        var node = GetEpisodeNodeById(ep.NodeId);
+                        if (node != null)
+                        {
+                            _workspaceGraph.ClearSelection();
+                            _workspaceGraph.AddToSelection(node);
+                            // inspector reference will be captured below via closure, but it's not defined here yet.
+                            // wait, we can find the inspector dynamically or move inspector init up.
+                        }
+                    });
+                    explorer.Add(header);
+                    
+                    foreach (var prop in ep.Properties)
+                    {
+                        var pLabel = new Label($"  - 📜 {prop.PropertyName}");
+                        pLabel.RegisterCallback<MouseUpEvent>(evt => {
+                            var node = GetEpisodeNodeById(ep.NodeId);
+                            if (node != null)
+                            {
+                                _workspaceGraph.ClearSelection();
+                                _workspaceGraph.AddToSelection(node);
+                                DirectorStateManager.SetActiveContext(node, prop);
+                            }
+                        });
+                        explorer.Add(pLabel);
+                    }
+                }
+            }
 
             // Add Template drawer
             var drawerTitle = new Label("▼ 템플릿 서랍 (Templates)");
@@ -182,13 +229,36 @@ namespace StudyGame.Editor.Director
                 if (selection.Count > 0 && selection[0] is EpisodeNode node)
                 {
                     inspector.BindNode(node);
+                    DirectorStateManager.SetActiveContext(node, null);
                 }
             });
+            
+            // Wire up tree item clicks to inspector now that it's created
+            foreach (var lbl in explorer.Children())
+            {
+                lbl.RegisterCallback<MouseUpEvent>(evt => {
+                    if (_workspaceGraph.selection.Count > 0 && _workspaceGraph.selection[0] is EpisodeNode n)
+                    {
+                        inspector.BindNode(n);
+                    }
+                });
+            }
             
             _workspaceGraph = epGraph;
         }
 
         private EpisodeGraphView _workspaceGraph;
+
+        private EpisodeNode GetEpisodeNodeById(string id)
+        {
+            if (_workspaceGraph == null) return null;
+            foreach (var elem in _workspaceGraph.graphElements)
+            {
+                if (elem is EpisodeNode node && node.NodeId == id)
+                    return node;
+            }
+            return null;
+        }
 
         private void CreateWorkspaceNodeFromTemplate(StudyGame.Data.WorkspaceNodeData template)
         {
@@ -402,7 +472,7 @@ namespace StudyGame.Editor.Director
             }
         }
 
-        private void StartSandboxTest()
+        public void StartSandboxTest(StudyGame.Data.DynamicProperty testPhase = null)
         {
             if (EditorApplication.isPlaying) return;
             
@@ -435,15 +505,35 @@ namespace StudyGame.Editor.Director
                 }
             }
             
+            if (testPhase != null)
+            {
+                string json = JsonUtility.ToJson(testPhase);
+                EditorPrefs.SetString("StudyGame_SandboxTestPhase", json);
+            }
+            else
+            {
+                EditorPrefs.DeleteKey("StudyGame_SandboxTestPhase");
+            }
+            
             if (!UnityEditor.SceneManagement.EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
                 return;
                 
-            var newScene = UnityEditor.SceneManagement.EditorSceneManager.NewScene(UnityEditor.SceneManagement.NewSceneSetup.EmptyScene, UnityEditor.SceneManagement.NewSceneMode.Single);
+            string scenePath = "Assets/Scenes/VerificationTestScene.unity";
+            if (System.IO.File.Exists(scenePath))
+            {
+                UnityEditor.SceneManagement.EditorSceneManager.OpenScene(scenePath);
+            }
+            else
+            {
+                var newScene = UnityEditor.SceneManagement.EditorSceneManager.NewScene(UnityEditor.SceneManagement.NewSceneSetup.DefaultGameObjects, UnityEditor.SceneManagement.NewSceneMode.Single);
+                UnityEditor.SceneManagement.EditorSceneManager.SaveScene(newScene, scenePath);
+            }
             
             TestSceneSetup.SetupScene();
+            UnityEditor.SceneManagement.EditorSceneManager.SaveScene(UnityEditor.SceneManagement.EditorSceneManager.GetActiveScene());
             
-            string json = JsonUtility.ToJson(_levelGeometry);
-            EditorPrefs.SetString("StudyGame_SandboxGeometry", json);
+            string geomJson = JsonUtility.ToJson(_levelGeometry);
+            EditorPrefs.SetString("StudyGame_SandboxGeometry", geomJson);
             EditorPrefs.SetBool("StudyGame_SandboxPending", true);
             
             EditorApplication.EnterPlaymode();
@@ -480,7 +570,7 @@ namespace StudyGame.Editor.Director
             actionContainer.Add(new Button(SaveDataAs) { text = "Save As" });
             actionContainer.Add(new Button(LoadData) { text = "📂 Load" });
             
-            var sandboxBtn = new Button(StartSandboxTest) { text = "▶ 샌드박스 임시 테스트 (기존 씬 훼손 없음)" };
+            var sandboxBtn = new Button(() => StartSandboxTest()) { text = "▶ 샌드박스 임시 테스트 (기존 씬 훼손 없음)" };
             sandboxBtn.style.backgroundColor = new StyleColor(new Color(0.2f, 0.6f, 0.2f));
             sandboxBtn.style.color = Color.white;
             sandboxBtn.style.unityFontStyleAndWeight = FontStyle.Bold;
@@ -1355,6 +1445,21 @@ namespace StudyGame.Editor.Director
             };
 
             addPromptRow(); // default row
+            
+            // Check for Pending AI Prompt from State Manager
+            root.RegisterCallback<GeometryChangedEvent>(evt => {
+                if (!string.IsNullOrEmpty(DirectorStateManager.PendingAIPrompt))
+                {
+                    if (prompts.Count > 0)
+                    {
+                        var targetField = prompts[0][0] as TextField;
+                        var descField = prompts[0][1] as TextField;
+                        targetField.value = "Scenario Node: " + (DirectorStateManager.ActivePhaseProperty != null ? DirectorStateManager.ActivePhaseProperty.PropertyName : "Dialogue");
+                        descField.value = DirectorStateManager.PendingAIPrompt;
+                        DirectorStateManager.ClearPendingAIPrompt();
+                    }
+                }
+            });
 
             var btnRow = new VisualElement() { style = { flexDirection = FlexDirection.Row, marginTop = 10 } };
             var addBtn = new Button(addPromptRow) { text = "➕ 프롬프트 행 추가" };

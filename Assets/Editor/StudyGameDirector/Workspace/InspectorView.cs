@@ -212,12 +212,28 @@ namespace StudyGame.Editor.Director
                     addRowBtn.style.flexGrow = 1;
                     btnRow.Add(addRowBtn);
                     
-                    var aiBtn = new Button(() => { Debug.Log("AI 자동 연출 생성 요청됨!"); }) { text = "▶ AI 연출 생성" };
+                    var aiBtn = new Button(() => { 
+                        var sb = new System.Text.StringBuilder();
+                        sb.AppendLine($"다음 대사/상황의 연출(카메라, 애니메이션) 스크립트를 작성해줘. [Phase: {prop.PropertyName}]");
+                        foreach (var r in prop.TableRows)
+                        {
+                            if (r.Cells.Count >= 2)
+                            {
+                                sb.AppendLine($"[{r.Cells[0]}]: {r.Cells[1]}");
+                            }
+                        }
+                        DirectorStateManager.SetPendingAIPrompt(sb.ToString());
+                        DirectorStateManager.RequestTabSwitch(2);
+                    }) { text = "▶ AI 연출 생성" };
                     aiBtn.style.flexGrow = 1;
                     aiBtn.style.backgroundColor = new StyleColor(new Color(0.2f, 0.4f, 0.6f));
                     btnRow.Add(aiBtn);
 
-                    var previewBtn = new Button(() => { ShowPreview(prop); }) { text = "▶ 미리보기" };
+                    var previewBtn = new Button(() => { 
+                        DirectorStateManager.SetActiveContext(_activeNode, prop);
+                        var wnd = EditorWindow.GetWindow<DirectorEditorWindow>();
+                        if (wnd != null) wnd.StartSandboxTest(prop);
+                    }) { text = "▶ 샌드박스 미리보기" };
                     previewBtn.style.flexGrow = 1;
                     previewBtn.style.backgroundColor = new StyleColor(new Color(0.2f, 0.6f, 0.2f));
                     btnRow.Add(previewBtn);
