@@ -75,10 +75,14 @@ namespace StudyGame.Editor.Director
             var btnSaveGraph = new UnityEditor.UIElements.ToolbarButton(SaveGraph) { text = "💾 저장" };
             var btnLoadGraph = new UnityEditor.UIElements.ToolbarButton(LoadGraph) { text = "📂 로드" };
             
+            var toolsMenu = new UnityEditor.UIElements.ToolbarMenu { text = "🪄 시나리오 노드 연결" };
+            toolsMenu.menu.AppendAction("생성 및 전체 연결 (모든 에피소드)", a => AutoGenerateAndConnectEpisodes("Assets/Resources/Scenarios/Episodes"));
+
             toolbar.Add(btnWorkspace);
             toolbar.Add(btnDirector);
             toolbar.Add(btnAIConsole);
             toolbar.Add(new VisualElement() { style = { flexGrow = 1 } }); // Spacer
+            toolbar.Add(toolsMenu);
             toolbar.Add(btnSaveGraph);
             toolbar.Add(btnLoadGraph);
             root.Add(toolbar);
@@ -261,6 +265,21 @@ namespace StudyGame.Editor.Director
                 }
             }
 
+            foreach (var edge in _workspaceGraph.edges.ToList())
+            {
+                var outputNode = edge.output.node as EpisodeNode;
+                var inputNode = edge.input.node as EpisodeNode;
+                
+                if (outputNode != null && inputNode != null)
+                {
+                    graphData.NodeLinks.Add(new StudyGame.Data.NodeLinkData {
+                        BaseNodeGuid = outputNode.NodeId,
+                        PortName = edge.output.portName,
+                        TargetNodeGuid = inputNode.NodeId
+                    });
+                }
+            }
+
             string path = "Assets/Editor/StudyGameDirector/Workspace/SavedGraphs/NewEpisodeGraph.asset";
             UnityEditor.AssetDatabase.CreateAsset(graphData, path);
             UnityEditor.AssetDatabase.SaveAssets();
@@ -284,6 +303,8 @@ namespace StudyGame.Editor.Director
                 _workspaceGraph.RemoveElement(elem);
             }
 
+            var nodeDict = new Dictionary<string, EpisodeNode>();
+
             foreach (var nodeData in graphData.Nodes)
             {
                 var badges = new System.Collections.Generic.List<string>();
@@ -298,9 +319,87 @@ namespace StudyGame.Editor.Director
                 }
 
                 var node = _workspaceGraph.CreateNode(nodeData.NodeData.NodeTitle, nodeData.Position, badges.ToArray());
+                node.NodeId = nodeData.NodeGuid;
                 node.NodeData = nodeData.NodeData;
+                nodeDict[node.NodeId] = node;
+            }
+
+            foreach (var link in graphData.NodeLinks)
+            {
+                if (nodeDict.TryGetValue(link.BaseNodeGuid, out var baseNode) && 
+                    nodeDict.TryGetValue(link.TargetNodeGuid, out var targetNode))
+                {
+                    var outputPort = baseNode.outputContainer.Q<UnityEditor.Experimental.GraphView.Port>();
+                    var inputPort = targetNode.inputContainer.Q<UnityEditor.Experimental.GraphView.Port>();
+                    
+                    if (outputPort != null && inputPort != null)
+                    {
+                        var edge = outputPort.ConnectTo(inputPort);
+                        _workspaceGraph.AddElement(edge);
+                    }
+                }
             }
             Debug.Log("그래프 로드 완료!");
+        }
+
+        private void AutoGenerateAndConnectEpisodes(string folderPath)
+        {
+            if (_workspaceGraph == null) return;
+
+            var elementsToRm = _workspaceGraph.graphElements.ToList();
+            foreach (var elem in elementsToRm)
+            {
+                _workspaceGraph.RemoveElement(elem);
+            }
+
+            var guids = UnityEditor.AssetDatabase.FindAssets("t:WorkspaceNodeData", new[] { folderPath });
+            var nodesData = new List<StudyGame.Data.WorkspaceNodeData>();
+            foreach(var guid in guids)
+            {
+                string path = UnityEditor.AssetDatabase.GUIDToAssetPath(guid);
+                var asset = UnityEditor.AssetDatabase.LoadAssetAtPath<StudyGame.Data.WorkspaceNodeData>(path);
+                if (asset != null) nodesData.Add(asset);
+            }
+            
+            nodesData.Sort((a, b) => a.name.CompareTo(b.name));
+
+            var createdNodes = new List<EpisodeNode>();
+            for (int i = 0; i < nodesData.Count; i++)
+            {
+                var data = nodesData[i];
+                var badges = new List<string>();
+                foreach (var prop in data.Properties)
+                {
+                    if (prop.ShowAsBadge)
+                    {
+                        string val = prop.Type == StudyGame.Data.PropertyType.Text ? prop.StringValue : 
+                                    (prop.Type == StudyGame.Data.PropertyType.Number ? prop.FloatValue.ToString() : "...");
+                        badges.Add($"{prop.PropertyName}: {val}");
+                    }
+                }
+
+                // Spacing 800px on X axis, fixed Y position
+                Vector2 pos = new Vector2(i * 800, 300);
+                var node = _workspaceGraph.CreateNode(data.NodeTitle, pos, badges.ToArray());
+                node.NodeId = string.IsNullOrEmpty(data.NodeId) ? System.Guid.NewGuid().ToString() : data.NodeId;
+                node.NodeData = data;
+                createdNodes.Add(node);
+            }
+
+            for (int i = 0; i < createdNodes.Count - 1; i++)
+            {
+                var current = createdNodes[i];
+                var next = createdNodes[i + 1];
+
+                var outputPort = current.outputContainer.Q<UnityEditor.Experimental.GraphView.Port>();
+                var inputPort = next.inputContainer.Q<UnityEditor.Experimental.GraphView.Port>();
+                
+                if (outputPort != null && inputPort != null)
+                {
+                    var edge = outputPort.ConnectTo(inputPort);
+                    _workspaceGraph.AddElement(edge);
+                }
+            }
         }
 
         private void StartSandboxTest()

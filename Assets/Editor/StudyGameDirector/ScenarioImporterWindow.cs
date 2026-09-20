@@ -11,7 +11,7 @@ namespace StudyGame.Editor.Director
     public class ScenarioImporterWindow : EditorWindow
     {
         private TextAsset markdownFile;
-        private string outputDirectory = "Assets/Resources/Scenarios/Ep1";
+        private string outputDirectory = "Assets/Resources/Scenarios/Episodes";
 
         [MenuItem("StudyGame/Scenario Importer")]
         public static void ShowWindow()
@@ -23,6 +23,7 @@ namespace StudyGame.Editor.Director
         public static void BakeAllScenarios()
         {
             string sourceDir = "Assets/Resources/Scenarios/Sources";
+            string outDir = "Assets/Resources/Scenarios/Episodes";
             
             if (!Directory.Exists(sourceDir))
             {
@@ -36,8 +37,7 @@ namespace StudyGame.Editor.Director
                 string text = File.ReadAllText(file);
                 string filename = Path.GetFileNameWithoutExtension(file);
                 string epName = filename.Split('_')[0].ToUpper(); // e.g. EP1
-                string outDir = $"Assets/Resources/Scenarios/{epName}";
-                GenerateNodes(text, outDir, true);
+                GenerateEpisodeNode(text, outDir, epName, true);
             }
             Debug.Log($"Baked {files.Length} scenarios successfully.");
         }
@@ -55,7 +55,7 @@ namespace StudyGame.Editor.Director
             {
                 if (markdownFile != null)
                 {
-                    GenerateNodes(markdownFile.text, outputDirectory);
+                    GenerateEpisodeNode(markdownFile.text, outputDirectory, markdownFile.name.Split('_')[0].ToUpper());
                 }
                 else
                 {
@@ -64,7 +64,7 @@ namespace StudyGame.Editor.Director
             }
         }
 
-        public static void GenerateNodes(string markdown, string outDir, bool silent = false)
+        public static void GenerateEpisodeNode(string markdown, string outDir, string epName, bool silent = false)
         {
             // Ensure directory exists in the physical file system
             string fullPath = Path.Combine(Application.dataPath, outDir.Replace("Assets/", ""));
@@ -74,6 +74,11 @@ namespace StudyGame.Editor.Director
                 AssetDatabase.Refresh();
             }
 
+            WorkspaceNodeData episodeNode = ScriptableObject.CreateInstance<WorkspaceNodeData>();
+            episodeNode.NodeId = System.Guid.NewGuid().ToString();
+            episodeNode.NodeTitle = epName;
+            episodeNode.TemplateType = "에피소드";
+
             // Match all phases starting with '## [Phase' until the next '## [Phase' or end of string
             MatchCollection phaseMatches = Regex.Matches(markdown, @"## \[Phase(.*?)(?=(?:## \[Phase)|\z)", RegexOptions.Singleline);
             
@@ -81,29 +86,27 @@ namespace StudyGame.Editor.Director
             foreach (Match match in phaseMatches)
             {
                 string fullPhase = match.Value.Trim();
-                ParsePhaseToNode(fullPhase, outDir, phaseIndex);
+                ParsePhaseToProperties(fullPhase, episodeNode, phaseIndex);
                 phaseIndex++;
             }
+
+            string assetPath = $"{outDir}/{epName}.asset";
+            StudyGame.Editor.Utils.AssetHelper.CreateOrOverwriteAsset(episodeNode, assetPath);
 
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
             
             if (!silent)
             {
-                EditorUtility.DisplayDialog("Success", $"Successfully generated {phaseIndex} nodes in {outDir}", "OK");
+                EditorUtility.DisplayDialog("Success", $"Successfully generated {epName} node in {outDir}", "OK");
             }
         }
 
-        private static void ParsePhaseToNode(string phaseContent, string outDir, int index)
+        private static void ParsePhaseToProperties(string phaseContent, WorkspaceNodeData episodeNode, int index)
         {
             // 1. Extract Title
             string titleLine = phaseContent.Substring(0, phaseContent.IndexOf('\n')).Trim();
             string title = titleLine.Replace("## ", "");
-
-            WorkspaceNodeData nodeData = ScriptableObject.CreateInstance<WorkspaceNodeData>();
-            nodeData.NodeId = System.Guid.NewGuid().ToString();
-            nodeData.NodeTitle = title;
-            nodeData.TemplateType = "일반";
 
             // 2. Parse Dialogues (- **Speaker**: "Text")
             Regex dialogRegex = new Regex(@"- \*\*(.*?)\*\*: ""(.*?)""");
@@ -111,10 +114,9 @@ namespace StudyGame.Editor.Director
 
             if (dialogMatches.Count > 0)
             {
-                nodeData.TemplateType = "다이얼로그";
                 DynamicProperty dialogProp = new DynamicProperty
                 {
-                    PropertyName = "Dialogues",
+                    PropertyName = $"{title} (Dialogues)",
                     Type = PropertyType.Table,
                     TableColumns = new List<string> { "화자", "대사" }
                 };
@@ -126,7 +128,7 @@ namespace StudyGame.Editor.Director
                     row.Cells.Add(m.Groups[2].Value);
                     dialogProp.TableRows.Add(row);
                 }
-                nodeData.Properties.Add(dialogProp);
+                episodeNode.Properties.Add(dialogProp);
             }
 
             // 3. Parse SNS Feeds (- 💬 **@User**: "Text")
@@ -134,11 +136,9 @@ namespace StudyGame.Editor.Director
             MatchCollection snsMatches = snsRegex.Matches(phaseContent);
             if (snsMatches.Count > 0)
             {
-                // If it already has dialogues, we keep it as general or composite, but let's override to SNS if SNS exists.
-                nodeData.TemplateType = "SNS";
                 DynamicProperty snsProp = new DynamicProperty
                 {
-                    PropertyName = "SNS Feed",
+                    PropertyName = $"{title} (SNS)",
                     Type = PropertyType.Table,
                     TableColumns = new List<string> { "계정명", "내용" }
                 };
@@ -150,17 +150,21 @@ namespace StudyGame.Editor.Director
                     row.Cells.Add(m.Groups[2].Value);
                     snsProp.TableRows.Add(row);
                 }
-                nodeData.Properties.Add(snsProp);
+                episodeNode.Properties.Add(snsProp);
             }
-
-            // 4. Save Asset
-            // Sanitize filename
-            string safeTitle = string.Join("_", title.Split(Path.GetInvalidFileNameChars()));
-            safeTitle = safeTitle.Replace("[", "").Replace("]", "").Replace(" ", "_");
             
-            string assetPath = $"{outDir}/Node_{index}_{safeTitle}.asset";
-            
-            StudyGame.Editor.Utils.AssetHelper.CreateOrOverwriteAsset(nodeData, assetPath);
+            // 4. 일반 텍스트 이벤트 처리
+            if (dialogMatches.Count == 0 && snsMatches.Count == 0)
+            {
+                DynamicProperty textProp = new DynamicProperty
+                {
+                    PropertyName = title,
+                    Type = PropertyType.Text,
+                    StringValue = "이벤트 상호작용 및 지문 처리",
+                    ShowAsBadge = true
+                };
+                episodeNode.Properties.Add(textProp);
+            }
         }
     }
 }
