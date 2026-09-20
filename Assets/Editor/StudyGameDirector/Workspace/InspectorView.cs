@@ -136,6 +136,15 @@ namespace StudyGame.Editor.Director
             });
             row.Add(badgeToggle);
 
+            var nameField = new TextField { value = prop.PropertyName };
+            nameField.style.width = 120;
+            nameField.RegisterValueChangedCallback(e => { 
+                prop.PropertyName = e.newValue; 
+                EditorUtility.SetDirty(data); 
+                UpdateNodeBadges(); 
+            });
+            row.Add(nameField);
+
             var fieldContainer = new VisualElement();
             fieldContainer.style.flexGrow = 1;
             fieldContainer.style.marginLeft = 5;
@@ -143,27 +152,27 @@ namespace StudyGame.Editor.Director
             switch (prop.Type)
             {
                 case PropertyType.Text:
-                    var txt = new TextField(prop.PropertyName) { value = prop.StringValue, multiline = true };
+                    var txt = new TextField() { value = prop.StringValue, multiline = true };
                     txt.RegisterValueChangedCallback(e => { prop.StringValue = e.newValue; EditorUtility.SetDirty(data); UpdateNodeBadges(); });
                     fieldContainer.Add(txt);
                     break;
                 case PropertyType.Number:
-                    var num = new FloatField(prop.PropertyName) { value = prop.FloatValue };
+                    var num = new FloatField() { value = prop.FloatValue };
                     num.RegisterValueChangedCallback(e => { prop.FloatValue = e.newValue; EditorUtility.SetDirty(data); UpdateNodeBadges(); });
                     fieldContainer.Add(num);
                     break;
                 case PropertyType.Color:
-                    var col = new ColorField(prop.PropertyName) { value = prop.ColorValue };
+                    var col = new ColorField() { value = prop.ColorValue };
                     col.RegisterValueChangedCallback(e => { prop.ColorValue = e.newValue; EditorUtility.SetDirty(data); UpdateNodeBadges(); });
                     fieldContainer.Add(col);
                     break;
                 case PropertyType.Asset:
-                    var obj = new ObjectField(prop.PropertyName) { value = prop.AssetValue, objectType = typeof(UnityEngine.Object) };
+                    var obj = new ObjectField() { value = prop.AssetValue, objectType = typeof(UnityEngine.Object) };
                     obj.RegisterValueChangedCallback(e => { prop.AssetValue = e.newValue; EditorUtility.SetDirty(data); UpdateNodeBadges(); });
                     fieldContainer.Add(obj);
                     break;
                 case PropertyType.Dropdown:
-                    var drop = new TextField(prop.PropertyName) { value = prop.StringValue };
+                    var drop = new TextField() { value = prop.StringValue };
                     drop.RegisterValueChangedCallback(e => { prop.StringValue = e.newValue; EditorUtility.SetDirty(data); UpdateNodeBadges(); });
                     fieldContainer.Add(drop);
                     break;

@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 0}
+  m_Name: "\uB300\uD654_\uC7AC\uC0DD_(Dialogue)_Template"
+  m_EditorClassIdentifier: Assembly-CSharp:StudyGame.Data:WorkspaceNodeData
+  NodeId: 
+  NodeTitle: "\uB300\uD654 \uC7AC\uC0DD (Dialogue)"
+  TemplateType: "\uB300\uD654 \uC7AC\uC0DD (Dialogue)"
+  ThemeColorHex: '#ffffff'
+  ThemeIcon: "\U0001F4DD"
+  Properties:
+  - PropertyName: "\uB300\uD654 \U0001F5E3\uFE0F"
+    Type: 0
+    StringValue: 
+    FloatValue: 0
+    ColorValue: {r: 1, g: 1, b: 1, a: 1}
+    AssetValue: {fileID: 0}
+    ShowAsBadge: 1
+  - PropertyName: "\uD654\uC790: \uBBF8\uC9C0\uC815"
+    Type: 0
+    StringValue: 
+    FloatValue: 0
+    ColorValue: {r: 1, g: 1, b: 1, a: 1}
+    AssetValue: {fileID: 0}
+    ShowAsBadge: 1
