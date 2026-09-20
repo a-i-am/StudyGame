@@ -176,6 +176,8 @@ test_nim.py
 
 .ua/
 ua_readme.md
+temp_tools.jsonl
+
 
 
 # Resources folder ignored as per project requirement
