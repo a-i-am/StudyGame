@@ -6,6 +6,24 @@ namespace StudyGame.Editor.Director
 {
     public static class LevelGeometryManager
     {
+        public static LevelGeometryData CreateDefault20x20Grid()
+        {
+            var data = new LevelGeometryData();
+            data.GridSize = 1.0f;
+            data.WallHeight = 3.0f;
+            data.GenerateWalls = true;
+            data.GenerateCeiling = false;
+
+            for (int x = -10; x < 10; x++)
+            {
+                for (int z = -10; z < 10; z++)
+                {
+                    data.FloorCells.Add(new Vector2Int(x, z));
+                }
+            }
+            return data;
+        }
+
         /*
          * [CRITICAL MESH GENERATION RULES]
          * 1. DO NOT make faces double-sided to "fix" backface culling.
@@ -137,6 +155,11 @@ namespace StudyGame.Editor.Director
                 }
                 pbMesh.ToMesh();
                 pbMesh.Refresh();
+                
+                // Add MeshCollider for physics
+                var collider = pbMesh.gameObject.GetComponent<MeshCollider>();
+                if (collider == null) collider = pbMesh.gameObject.AddComponent<MeshCollider>();
+                collider.sharedMesh = pbMesh.GetComponent<MeshFilter>().sharedMesh;
             }
         }
     }

@@ -7,7 +7,7 @@ namespace StudyGame.Editor.Director
 {
     public class EpisodeNode : Node
     {
-        public string NodeId { get; private set; }
+        public string NodeId { get; set; }
         public WorkspaceNodeData NodeData;
 
         public EpisodeNode(string title)

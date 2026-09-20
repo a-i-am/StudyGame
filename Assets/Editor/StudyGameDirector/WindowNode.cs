@@ -149,8 +149,12 @@ namespace StudyGame.Editor.Director
             UpdateCameraPosition();
         }
 
+        private double _lastRepaintTime = 0;
         private void RepaintNode()
         {
+            if (EditorApplication.timeSinceStartup - _lastRepaintTime < 0.033) return;
+            _lastRepaintTime = EditorApplication.timeSinceStartup;
+
             if (this.panel != null && _cctvViewport != null)
             {
                 _cctvViewport.MarkDirtyRepaint();

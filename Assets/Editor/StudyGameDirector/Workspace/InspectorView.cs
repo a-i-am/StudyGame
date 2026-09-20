@@ -217,6 +217,11 @@ namespace StudyGame.Editor.Director
                     aiBtn.style.backgroundColor = new StyleColor(new Color(0.2f, 0.4f, 0.6f));
                     btnRow.Add(aiBtn);
 
+                    var previewBtn = new Button(() => { ShowPreview(prop); }) { text = "▶ 미리보기" };
+                    previewBtn.style.flexGrow = 1;
+                    previewBtn.style.backgroundColor = new StyleColor(new Color(0.2f, 0.6f, 0.2f));
+                    btnRow.Add(previewBtn);
+
                     tableBox.Add(btnRow);
                     fieldContainer.Add(tableBox);
                     break;
@@ -224,6 +229,62 @@ namespace StudyGame.Editor.Director
 
             row.Add(fieldContainer);
             _contentContainer.Add(row);
+        }
+
+        private VisualElement _previewContainer;
+
+        private void ShowPreview(DynamicProperty prop)
+        {
+            if (_previewContainer != null && _contentContainer.Contains(_previewContainer))
+                _contentContainer.Remove(_previewContainer);
+
+            _previewContainer = new VisualElement();
+            _previewContainer.style.marginTop = 15;
+            _previewContainer.style.backgroundColor = new StyleColor(new Color(0.1f, 0.1f, 0.1f));
+            _previewContainer.style.paddingTop = _previewContainer.style.paddingBottom = 10;
+            _previewContainer.style.paddingLeft = _previewContainer.style.paddingRight = 10;
+            _previewContainer.style.borderTopLeftRadius = 5; _previewContainer.style.borderTopRightRadius = 5;
+            _previewContainer.style.borderBottomLeftRadius = 5; _previewContainer.style.borderBottomRightRadius = 5;
+
+            var title = new Label("📺 미리보기 (Preview)");
+            title.style.unityFontStyleAndWeight = FontStyle.Bold;
+            title.style.marginBottom = 10;
+            title.style.color = new Color(0.6f, 1f, 0.6f);
+            _previewContainer.Add(title);
+
+            var scroll = new ScrollView();
+            scroll.style.height = 300;
+
+            foreach(var row in prop.TableRows)
+            {
+                if (row.Cells.Count >= 2)
+                {
+                    string speaker = row.Cells[0];
+                    string text = row.Cells[1];
+                    
+                    var bubble = new VisualElement();
+                    bubble.style.backgroundColor = new StyleColor(new Color(0.25f, 0.25f, 0.3f));
+                    bubble.style.paddingTop = bubble.style.paddingBottom = 8;
+                    bubble.style.paddingLeft = bubble.style.paddingRight = 10;
+                    bubble.style.marginBottom = 8;
+                    bubble.style.borderTopLeftRadius = 5; bubble.style.borderTopRightRadius = 5;
+                    bubble.style.borderBottomLeftRadius = 5; bubble.style.borderBottomRightRadius = 5;
+
+                    var nameLabel = new Label(speaker);
+                    nameLabel.style.unityFontStyleAndWeight = FontStyle.Bold;
+                    nameLabel.style.color = new Color(0.8f, 0.8f, 1f);
+                    nameLabel.style.marginBottom = 4;
+                    bubble.Add(nameLabel);
+
+                    var textLabel = new Label(text);
+                    textLabel.style.whiteSpace = WhiteSpace.Normal;
+                    bubble.Add(textLabel);
+
+                    scroll.Add(bubble);
+                }
+            }
+            _previewContainer.Add(scroll);
+            _contentContainer.Add(_previewContainer);
         }
 
         private void RenderDNAPreview()

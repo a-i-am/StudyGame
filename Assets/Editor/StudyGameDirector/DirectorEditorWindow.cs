@@ -269,7 +269,7 @@ namespace StudyGame.Editor.Director
 
         private void LoadGraph()
         {
-            string path = UnityEditor.EditorUtility.OpenFilePanel("로드할 에피소드 그래프 선택", "Assets/Editor/StudyGameDirector/Workspace/SavedGraphs", "asset");
+            string path = UnityEditor.EditorUtility.OpenFilePanel("로드할 에피소드 그래프 선택", "Assets/Resources/Scenarios", "asset");
             if (string.IsNullOrEmpty(path)) return;
             
             path = path.Substring(path.IndexOf("Assets/"));
@@ -303,6 +303,53 @@ namespace StudyGame.Editor.Director
             Debug.Log("그래프 로드 완료!");
         }
 
+        private void StartSandboxTest()
+        {
+            if (EditorApplication.isPlaying) return;
+            
+            if (_workspaceGraph != null)
+            {
+                int nodeCount = _workspaceGraph.graphElements.ToList().OfType<EpisodeNode>().Count();
+                if (nodeCount > 0)
+                {
+                    string path = "Assets/Resources/Scenarios/EpisodeGraph.asset";
+                    
+                    var graphData = ScriptableObject.CreateInstance<StudyGame.Data.EpisodeGraphData>();
+                    foreach (var elem in _workspaceGraph.graphElements)
+                    {
+                        if (elem is EpisodeNode node)
+                        {
+                            graphData.Nodes.Add(new StudyGame.Data.EpisodeNodeSaveData {
+                                NodeGuid = node.NodeId,
+                                Position = node.GetPosition().position,
+                                NodeData = node.NodeData
+                            });
+                        }
+                    }
+                    
+                    StudyGame.Editor.Utils.AssetHelper.CreateOrOverwriteAsset(graphData, path);
+                    Debug.Log($"[Sandbox] 그래프 저장 완료! {path}");
+                }
+                else
+                {
+                    Debug.LogWarning("[Sandbox] 워크스페이스에 노드가 없어 기존 에피소드 데이터를 유지합니다.");
+                }
+            }
+            
+            if (!UnityEditor.SceneManagement.EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
+                return;
+                
+            var newScene = UnityEditor.SceneManagement.EditorSceneManager.NewScene(UnityEditor.SceneManagement.NewSceneSetup.EmptyScene, UnityEditor.SceneManagement.NewSceneMode.Single);
+            
+            TestSceneSetup.SetupScene();
+            
+            string json = JsonUtility.ToJson(_levelGeometry);
+            EditorPrefs.SetString("StudyGame_SandboxGeometry", json);
+            EditorPrefs.SetBool("StudyGame_SandboxPending", true);
+            
+            EditorApplication.EnterPlaymode();
+        }
+
         private void BuildDirectorHubUI(VisualElement root)
         {
             var mainSplitView = new TwoPaneSplitView(0, 200, TwoPaneSplitViewOrientation.Horizontal);
@@ -333,6 +380,18 @@ namespace StudyGame.Editor.Director
             actionContainer.Add(new Button(QuickSaveData) { text = "💾 Save" });
             actionContainer.Add(new Button(SaveDataAs) { text = "Save As" });
             actionContainer.Add(new Button(LoadData) { text = "📂 Load" });
+            
+            var sandboxBtn = new Button(StartSandboxTest) { text = "▶ 샌드박스 임시 테스트 (기존 씬 훼손 없음)" };
+            sandboxBtn.style.backgroundColor = new StyleColor(new Color(0.2f, 0.6f, 0.2f));
+            sandboxBtn.style.color = Color.white;
+            sandboxBtn.style.unityFontStyleAndWeight = FontStyle.Bold;
+            
+            var headerLeft = new VisualElement();
+            headerLeft.style.flexDirection = FlexDirection.Row;
+            headerLeft.Add(paletteTitle);
+            headerLeft.Add(sandboxBtn);
+            
+            titleRow.Add(headerLeft);
             titleRow.Add(actionContainer);
             paletteHeader.Add(titleRow);
 
@@ -585,6 +644,8 @@ namespace StudyGame.Editor.Director
             return null;
         }
 
+        private bool _needsRebuild = false;
+
         private void HandleInteraction(Rect rect, Camera cam, Event e)
         {
             if (!rect.Contains(e.mousePosition) && _draggingNodeId == null) return;
@@ -635,7 +696,7 @@ namespace StudyGame.Editor.Director
                                     }
                                 }
                             }
-                            if (changed) LevelGeometryManager.Rebuild(_levelGeometry);
+                            if (changed) _needsRebuild = true;
                         }
                         else if (e.type == EventType.MouseUp)
                         {
@@ -647,7 +708,7 @@ namespace StudyGame.Editor.Director
                         if (e.type == EventType.MouseDown)
                         {
                             ExecuteBucketFill(currentCell, !e.shift);
-                            LevelGeometryManager.Rebuild(_levelGeometry);
+                            _needsRebuild = true;
                         }
                     }
                     else if (_currentTool == FloorplanTool.Rectangle)
@@ -675,15 +736,24 @@ namespace StudyGame.Editor.Director
                                 for (int z = minZ; z <= maxZ; z++)
                                 {
                                     Vector2Int cell = new Vector2Int(x, z);
-                                    if (e.shift) { _levelGeometry.FloorCells.Remove(cell); }
-                                    else if (!_levelGeometry.FloorCells.Contains(cell)) { _levelGeometry.FloorCells.Add(cell); }
+                                    if (e.shift) { _levelGeometry.FloorCells.Remove(cell); changed = true; }
+                                    else if (!_levelGeometry.FloorCells.Contains(cell)) { _levelGeometry.FloorCells.Add(cell); changed = true; }
                                 }
                             }
-                            LevelGeometryManager.Rebuild(_levelGeometry);
+                            if (changed) _needsRebuild = true;
                             _rectStartCell = null;
                             _rectEndCell = null;
                         }
                         UpdateRectanglePreview();
+                    }
+                }
+                
+                if (e.type == EventType.MouseUp)
+                {
+                    if (_needsRebuild)
+                    {
+                        LevelGeometryManager.Rebuild(_levelGeometry);
+                        _needsRebuild = false;
                     }
                 }
                 
@@ -1235,6 +1305,43 @@ namespace StudyGame.Editor.Director
             EditorApplication.update -= RepaintMonitors;
             if (_proxyCamera != null) DestroyImmediate(_proxyCamera.gameObject);
             if (_floorplanCamera != null) DestroyImmediate(_floorplanCamera.gameObject);
+        }
+    }
+
+    [InitializeOnLoad]
+    public static class SandboxTestRunner
+    {
+        static SandboxTestRunner()
+        {
+            EditorApplication.playModeStateChanged += OnPlayModeStateChanged;
+        }
+
+        private static void OnPlayModeStateChanged(PlayModeStateChange state)
+        {
+            if (state == PlayModeStateChange.EnteredPlayMode)
+            {
+                if (EditorPrefs.GetBool("StudyGame_SandboxPending", false))
+                {
+                    EditorPrefs.SetBool("StudyGame_SandboxPending", false);
+                    string json = EditorPrefs.GetString("StudyGame_SandboxGeometry", "");
+                    if (!string.IsNullOrEmpty(json))
+                    {
+                        var data = JsonUtility.FromJson<LevelGeometryData>(json);
+                        LevelGeometryManager.Rebuild(data);
+                    }
+
+                    var player = Object.FindFirstObjectByType<StudyGame.Player.PlayerController>(FindObjectsInactive.Include);
+                    if (player != null)
+                    {
+                        player.SetMovementEnabled(true);
+                        Debug.Log("[SandboxTestRunner] Player movement enabled for sandbox testing.");
+                    }
+
+                    var simulatorGo = new GameObject("GameViewInputSimulator");
+                    var simulator = simulatorGo.AddComponent<StudyGame.Testing.GameViewInputSimulator>();
+                    simulator.RunTestSequence();
+                }
+            }
         }
     }
 }

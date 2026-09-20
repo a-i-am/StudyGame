@@ -26,6 +26,35 @@ namespace StudyGame.Editor.Director
             {
                 styleSheets.Add(styleSheet);
             }
+
+            RegisterCallback<DragUpdatedEvent>(OnDragUpdated);
+            RegisterCallback<DragPerformEvent>(OnDragPerform);
+        }
+
+        private void OnDragUpdated(DragUpdatedEvent evt)
+        {
+            if (UnityEditor.DragAndDrop.objectReferences.Length > 0)
+            {
+                UnityEditor.DragAndDrop.visualMode = UnityEditor.DragAndDropVisualMode.Copy;
+            }
+        }
+
+        private void OnDragPerform(DragPerformEvent evt)
+        {
+            if (UnityEditor.DragAndDrop.objectReferences.Length > 0)
+            {
+                Vector2 localMousePos = contentViewContainer.WorldToLocal(evt.mousePosition);
+                foreach (var obj in UnityEditor.DragAndDrop.objectReferences)
+                {
+                    if (obj is StudyGame.Data.WorkspaceNodeData nodeData)
+                    {
+                        var node = new ScenarioSequenceNode(nodeData);
+                        node.SetPosition(new Rect(localMousePos, new Vector2(200, 150)));
+                        AddElement(node);
+                        localMousePos += new Vector2(20, 20); // offset if multiple
+                    }
+                }
+            }
         }
 
         public void SetOverlayMode(bool isOverlay)

@@ -12,8 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb44066881f2ada4b844c56500f8d06d, type: 3}
   m_Name: NewEpisodeGraph
   m_EditorClassIdentifier: 
-  Nodes:
-  - NodeGuid: 3d8005cc-181c-4254-879e-2cdb0ef2a795
-    Position: {x: 93.600006, y: 96}
-    NodeData: {fileID: 0}
+  Nodes: []
   NodeLinks: []

@@ -19,6 +19,29 @@ namespace StudyGame.Editor.Director
             GetWindow<ScenarioImporterWindow>("Scenario Importer");
         }
 
+        [MenuItem("StudyGame/Bake All Scenarios (Auto)")]
+        public static void BakeAllScenarios()
+        {
+            string sourceDir = "Assets/Resources/Scenarios/Sources";
+            
+            if (!Directory.Exists(sourceDir))
+            {
+                Debug.LogError("Source directory not found!");
+                return;
+            }
+
+            string[] files = Directory.GetFiles(sourceDir, "*.md");
+            foreach (var file in files)
+            {
+                string text = File.ReadAllText(file);
+                string filename = Path.GetFileNameWithoutExtension(file);
+                string epName = filename.Split('_')[0].ToUpper(); // e.g. EP1
+                string outDir = $"Assets/Resources/Scenarios/{epName}";
+                GenerateNodes(text, outDir, true);
+            }
+            Debug.Log($"Baked {files.Length} scenarios successfully.");
+        }
+
         private void OnGUI()
         {
             GUILayout.Label("Markdown to Node Parser", EditorStyles.boldLabel);
@@ -41,7 +64,7 @@ namespace StudyGame.Editor.Director
             }
         }
 
-        private void GenerateNodes(string markdown, string outDir)
+        public static void GenerateNodes(string markdown, string outDir, bool silent = false)
         {
             // Ensure directory exists in the physical file system
             string fullPath = Path.Combine(Application.dataPath, outDir.Replace("Assets/", ""));
@@ -51,25 +74,27 @@ namespace StudyGame.Editor.Director
                 AssetDatabase.Refresh();
             }
 
-            // Split markdown by Phase
-            string[] phases = markdown.Split(new string[] { "## [Phase" }, System.StringSplitOptions.RemoveEmptyEntries);
+            // Match all phases starting with '## [Phase' until the next '## [Phase' or end of string
+            MatchCollection phaseMatches = Regex.Matches(markdown, @"## \[Phase(.*?)(?=(?:## \[Phase)|\z)", RegexOptions.Singleline);
             
             int phaseIndex = 0;
-            foreach (string phaseContent in phases)
+            foreach (Match match in phaseMatches)
             {
-                if (!phaseContent.Contains("]")) continue;
-                
-                string fullPhase = "## [Phase" + phaseContent;
+                string fullPhase = match.Value.Trim();
                 ParsePhaseToNode(fullPhase, outDir, phaseIndex);
                 phaseIndex++;
             }
 
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
-            EditorUtility.DisplayDialog("Success", $"Successfully generated {phaseIndex} nodes in {outDir}", "OK");
+            
+            if (!silent)
+            {
+                EditorUtility.DisplayDialog("Success", $"Successfully generated {phaseIndex} nodes in {outDir}", "OK");
+            }
         }
 
-        private void ParsePhaseToNode(string phaseContent, string outDir, int index)
+        private static void ParsePhaseToNode(string phaseContent, string outDir, int index)
         {
             // 1. Extract Title
             string titleLine = phaseContent.Substring(0, phaseContent.IndexOf('\n')).Trim();
@@ -135,13 +160,7 @@ namespace StudyGame.Editor.Director
             
             string assetPath = $"{outDir}/Node_{index}_{safeTitle}.asset";
             
-            // Delete existing if any
-            if (AssetDatabase.LoadAssetAtPath<WorkspaceNodeData>(assetPath) != null)
-            {
-                AssetDatabase.DeleteAsset(assetPath);
-            }
-
-            AssetDatabase.CreateAsset(nodeData, assetPath);
+            StudyGame.Editor.Utils.AssetHelper.CreateOrOverwriteAsset(nodeData, assetPath);
         }
     }
 }
