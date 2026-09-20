@@ -174,6 +174,10 @@ search_log.py
 search_results.txt
 test_nim.py
 
+.ua/
+ua_readme.md
+
+
 # Resources folder ignored as per project requirement
 Assets/Resources/
 
