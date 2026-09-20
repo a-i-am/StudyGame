@@ -58,6 +58,8 @@ namespace StudyGame.Editor.Director
         private VisualElement _workspaceContainer;
         private VisualElement _directorHubContainer;
 
+        private VisualElement _aiConsoleContainer;
+
         public void CreateGUI()
         {
             var root = rootVisualElement;
@@ -66,12 +68,16 @@ namespace StudyGame.Editor.Director
 
             // Global Toolbar
             var toolbar = new UnityEditor.UIElements.Toolbar();
-            var btnWorkspace = new UnityEditor.UIElements.ToolbarButton(() => SwitchTab(0)) { text = "📝 서사/데이터 워크스페이스" };
-            var btnDirector = new UnityEditor.UIElements.ToolbarButton(() => SwitchTab(1)) { text = "🏗️ 맵 디렉터 허브" };
-            var btnSaveGraph = new UnityEditor.UIElements.ToolbarButton(SaveGraph) { text = "💾 워크스페이스 저장" };
+            var btnWorkspace = new UnityEditor.UIElements.ToolbarButton(() => SwitchTab(0)) { text = "📝 워크스페이스" };
+            var btnDirector = new UnityEditor.UIElements.ToolbarButton(() => SwitchTab(1)) { text = "🏗️ 디렉터 허브" };
+            var btnAIConsole = new UnityEditor.UIElements.ToolbarButton(() => SwitchTab(2)) { text = "🧠 AI 에디터 확장 콘솔" };
+            
+            var btnSaveGraph = new UnityEditor.UIElements.ToolbarButton(SaveGraph) { text = "💾 저장" };
             var btnLoadGraph = new UnityEditor.UIElements.ToolbarButton(LoadGraph) { text = "📂 로드" };
+            
             toolbar.Add(btnWorkspace);
             toolbar.Add(btnDirector);
+            toolbar.Add(btnAIConsole);
             toolbar.Add(new VisualElement() { style = { flexGrow = 1 } }); // Spacer
             toolbar.Add(btnSaveGraph);
             toolbar.Add(btnLoadGraph);
@@ -87,6 +93,11 @@ namespace StudyGame.Editor.Director
             BuildDirectorHubUI(_directorHubContainer);
             root.Add(_directorHubContainer);
 
+            _aiConsoleContainer = new VisualElement();
+            _aiConsoleContainer.style.flexGrow = 1;
+            BuildAIConsoleUI(_aiConsoleContainer);
+            root.Add(_aiConsoleContainer);
+
             SwitchTab(0); // Default to Workspace
             EditorApplication.update += RepaintMonitors;
         }
@@ -95,6 +106,7 @@ namespace StudyGame.Editor.Director
         {
             _workspaceContainer.style.display = index == 0 ? DisplayStyle.Flex : DisplayStyle.None;
             _directorHubContainer.style.display = index == 1 ? DisplayStyle.Flex : DisplayStyle.None;
+            _aiConsoleContainer.style.display = index == 2 ? DisplayStyle.Flex : DisplayStyle.None;
         }
 
         private void BuildWorkspaceUI(VisualElement root)
@@ -1130,6 +1142,92 @@ namespace StudyGame.Editor.Director
                 minX * s + width / 2f, 
                 0.1f, 
                 minZ * s + height / 2f);
+        }
+
+        private void BuildAIConsoleUI(VisualElement root)
+        {
+            root.style.paddingTop = root.style.paddingBottom = root.style.paddingLeft = root.style.paddingRight = 20;
+
+            var title = new Label("🧠 AI 에디터 확장 콘솔 (Meta-Editor Prompts)");
+            title.style.fontSize = 20;
+            title.style.unityFontStyleAndWeight = FontStyle.Bold;
+            title.style.marginBottom = 20;
+            root.Add(title);
+
+            var desc = new Label("여기에 에디터 개조(C# 스크립트 수정, UI 신설 등)를 위한 프롬프트를 표 형태로 작성하세요.\n작성 후 [▶ MCP에 전송] 버튼을 누르면 AI가 이를 읽고 즉시 에디터를 업데이트합니다.");
+            desc.style.marginBottom = 20;
+            root.Add(desc);
+
+            var tableContainer = new ScrollView();
+            tableContainer.style.flexGrow = 1;
+            tableContainer.style.backgroundColor = new StyleColor(new Color(0.15f, 0.15f, 0.15f));
+            tableContainer.style.paddingTop = tableContainer.style.paddingBottom = tableContainer.style.paddingLeft = tableContainer.style.paddingRight = 10;
+            root.Add(tableContainer);
+
+            // Mockup of a Table
+            var headerRow = new VisualElement() { style = { flexDirection = FlexDirection.Row, marginBottom = 10 } };
+            headerRow.Add(new Label("개조 대상 (Target)") { style = { flexGrow = 1, unityFontStyleAndWeight = FontStyle.Bold } });
+            headerRow.Add(new Label("요청 내용 (Prompt)") { style = { flexGrow = 3, unityFontStyleAndWeight = FontStyle.Bold } });
+            headerRow.Add(new Label("우선순위 (Priority)") { style = { flexGrow = 1, unityFontStyleAndWeight = FontStyle.Bold } });
+            tableContainer.Add(headerRow);
+
+            var prompts = new System.Collections.Generic.List<VisualElement>();
+
+            System.Action addPromptRow = () => {
+                var dataRow = new VisualElement() { style = { flexDirection = FlexDirection.Row, marginBottom = 5 } };
+                var targetInput = new TextField() { value = "DirectorEditorWindow.cs", style = { flexGrow = 1 } };
+                var descInput = new TextField() { value = "예: 툴바 우측에 [로그 초기화] 추가", style = { flexGrow = 3 } };
+                var prioInput = new TextField() { value = "High", style = { flexGrow = 1 } };
+                dataRow.Add(targetInput);
+                dataRow.Add(descInput);
+                dataRow.Add(prioInput);
+                prompts.Add(dataRow);
+                tableContainer.Add(dataRow);
+            };
+
+            addPromptRow(); // default row
+
+            var btnRow = new VisualElement() { style = { flexDirection = FlexDirection.Row, marginTop = 10 } };
+            var addBtn = new Button(addPromptRow) { text = "➕ 프롬프트 행 추가" };
+            addBtn.style.flexGrow = 1;
+            btnRow.Add(addBtn);
+            tableContainer.Add(btnRow);
+
+            var sendBtn = new Button(() => { 
+                var exportList = new System.Collections.Generic.List<string>();
+                foreach(var row in prompts)
+                {
+                    if (row.childCount >= 3)
+                    {
+                        var t = (row[0] as TextField).value;
+                        var d = (row[1] as TextField).value;
+                        var p = (row[2] as TextField).value;
+                        exportList.Add($"Target: {t} | Prompt: {d} | Priority: {p}");
+                    }
+                }
+                System.Text.StringBuilder promptBuilder = new System.Text.StringBuilder();
+                promptBuilder.AppendLine("<에디터 개조 요청>");
+                foreach (var item in exportList)
+                {
+                    promptBuilder.AppendLine(item);
+                }
+                
+                string finalPrompt = promptBuilder.ToString();
+                
+                // 클립보드에 복사
+                EditorGUIUtility.systemCopyBuffer = finalPrompt;
+                
+                // 유저에게 안내 팝업
+                EditorUtility.DisplayDialog("MCP 개조 요청", 
+                    "요청 프롬프트가 클립보드에 복사되었습니다!\n\nGemini(Antigravity) 채팅창에 붙여넣기(Ctrl+V) 한 후 전송하시면, AI가 즉시 개조를 시작합니다.", 
+                    "확인");
+                    
+                Debug.Log("MCP에 전송할 프롬프트가 클립보드에 복사되었습니다."); 
+            }) { text = "▶ MCP(AI)에게 에디터 개조 요청하기" };
+            sendBtn.style.marginTop = 20;
+            sendBtn.style.height = 40;
+            sendBtn.style.backgroundColor = new StyleColor(new Color(0.2f, 0.6f, 0.2f));
+            root.Add(sendBtn);
         }
 
         private void OnDestroy()

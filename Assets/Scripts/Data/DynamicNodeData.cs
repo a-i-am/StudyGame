@@ -10,7 +10,14 @@ namespace StudyGame.Data
         Number,
         Color,
         Asset,
-        Dropdown
+        Dropdown,
+        Table
+    }
+
+    [Serializable]
+    public class TableRowData
+    {
+        public List<string> Cells = new List<string>();
     }
 
     [Serializable]
@@ -24,6 +31,10 @@ namespace StudyGame.Data
         public float FloatValue = 0f;
         public Color ColorValue = Color.white;
         public UnityEngine.Object AssetValue;
+        
+        // For Table Type
+        public List<string> TableColumns = new List<string> { "화자", "대사" };
+        public List<TableRowData> TableRows = new List<TableRowData>();
         
         public bool ShowAsBadge = false;
     }

@@ -176,6 +176,50 @@ namespace StudyGame.Editor.Director
                     drop.RegisterValueChangedCallback(e => { prop.StringValue = e.newValue; EditorUtility.SetDirty(data); UpdateNodeBadges(); });
                     fieldContainer.Add(drop);
                     break;
+                case PropertyType.Table:
+                    var tableBox = new VisualElement();
+                    tableBox.style.flexDirection = FlexDirection.Column;
+                    tableBox.style.marginTop = 10;
+                    
+                    var headerRow = new VisualElement() { style = { flexDirection = FlexDirection.Row, marginBottom = 5 } };
+                    foreach(var colName in prop.TableColumns)
+                    {
+                        var colLabel = new Label(colName) { style = { flexGrow = 1, unityFontStyleAndWeight = FontStyle.Bold, unityTextAlign = TextAnchor.MiddleCenter } };
+                        headerRow.Add(colLabel);
+                    }
+                    tableBox.Add(headerRow);
+
+                    foreach(var rowData in prop.TableRows)
+                    {
+                        var dataRow = new VisualElement() { style = { flexDirection = FlexDirection.Row, marginBottom = 2 } };
+                        for(int i=0; i<prop.TableColumns.Count; i++)
+                        {
+                            if(i >= rowData.Cells.Count) rowData.Cells.Add("");
+                            int colIdx = i;
+                            var cellField = new TextField() { value = rowData.Cells[colIdx] };
+                            cellField.style.flexGrow = 1;
+                            cellField.RegisterValueChangedCallback(e => { rowData.Cells[colIdx] = e.newValue; EditorUtility.SetDirty(data); });
+                            dataRow.Add(cellField);
+                        }
+                        var delRowBtn = new Button(() => { prop.TableRows.Remove(rowData); EditorUtility.SetDirty(data); RenderDynamicProperties(); }) { text = "X" };
+                        delRowBtn.style.width = 20;
+                        dataRow.Add(delRowBtn);
+                        tableBox.Add(dataRow);
+                    }
+
+                    var btnRow = new VisualElement() { style = { flexDirection = FlexDirection.Row, marginTop = 5 } };
+                    var addRowBtn = new Button(() => { prop.TableRows.Add(new TableRowData()); EditorUtility.SetDirty(data); RenderDynamicProperties(); }) { text = "+ 행 추가 (Row)" };
+                    addRowBtn.style.flexGrow = 1;
+                    btnRow.Add(addRowBtn);
+                    
+                    var aiBtn = new Button(() => { Debug.Log("AI 자동 연출 생성 요청됨!"); }) { text = "▶ AI 연출 생성" };
+                    aiBtn.style.flexGrow = 1;
+                    aiBtn.style.backgroundColor = new StyleColor(new Color(0.2f, 0.4f, 0.6f));
+                    btnRow.Add(aiBtn);
+
+                    tableBox.Add(btnRow);
+                    fieldContainer.Add(tableBox);
+                    break;
             }
 
             row.Add(fieldContainer);
