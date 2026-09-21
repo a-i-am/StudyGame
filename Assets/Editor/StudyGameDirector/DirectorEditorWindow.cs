@@ -123,13 +123,15 @@ namespace StudyGame.Editor.Director
 
             var mainSplit = new TwoPaneSplitView(0, 260, TwoPaneSplitViewOrientation.Horizontal);
             root.Add(mainSplit);
+            
+            InspectorView inspector = null;
 
             // Left Explorer
             var explorer = new ScrollView();
             explorer.AddToClassList("workspace-panel");
             
             // Dynamic Tree from Episode Assets
-            var episodeGuids = UnityEditor.AssetDatabase.FindAssets("t:WorkspaceNodeData", new[] { "Assets/Resources/Scenarios/Episodes" });
+            var episodeGuids = UnityEditor.AssetDatabase.FindAssets("t:WorkspaceNodeData", new[] { "Assets/Resources/Scenarios/Episodes", "Assets/Resources/Scenarios/Anomalies" });
             
             if (episodeGuids.Length == 0)
             {
@@ -152,14 +154,7 @@ namespace StudyGame.Editor.Director
                     var header = new Label($"▼ {ep.NodeTitle}");
                     header.AddToClassList("workspace-section-header");
                     header.RegisterCallback<MouseUpEvent>(evt => {
-                        var node = GetEpisodeNodeById(ep.NodeId);
-                        if (node != null)
-                        {
-                            _workspaceGraph.ClearSelection();
-                            _workspaceGraph.AddToSelection(node);
-                            // inspector reference will be captured below via closure, but it's not defined here yet.
-                            // wait, we can find the inspector dynamically or move inspector init up.
-                        }
+                        SelectOrSpawnNode(ep, inspector);
                     });
                     explorer.Add(header);
                     
@@ -167,13 +162,9 @@ namespace StudyGame.Editor.Director
                     {
                         var pLabel = new Label($"  - 📜 {prop.PropertyName}");
                         pLabel.RegisterCallback<MouseUpEvent>(evt => {
+                            SelectOrSpawnNode(ep, inspector);
                             var node = GetEpisodeNodeById(ep.NodeId);
-                            if (node != null)
-                            {
-                                _workspaceGraph.ClearSelection();
-                                _workspaceGraph.AddToSelection(node);
-                                DirectorStateManager.SetActiveContext(node, prop);
-                            }
+                            if (node != null) DirectorStateManager.SetActiveContext(node, prop);
                         });
                         explorer.Add(pLabel);
                     }
@@ -220,7 +211,7 @@ namespace StudyGame.Editor.Director
             rightSplit.Add(canvasContainer);
 
             // Right Inspector
-            var inspector = new InspectorView();
+            inspector = new InspectorView();
             rightSplit.Add(inspector);
 
             // Bind selection
@@ -258,6 +249,31 @@ namespace StudyGame.Editor.Director
                     return node;
             }
             return null;
+        }
+
+        private void SelectOrSpawnNode(StudyGame.Data.WorkspaceNodeData ep, InspectorView inspector)
+        {
+            if (_workspaceGraph == null) return;
+            var node = GetEpisodeNodeById(ep.NodeId);
+            if (node == null)
+            {
+                var badges = new System.Collections.Generic.List<string>();
+                foreach (var prop in ep.Properties)
+                {
+                    if (prop.ShowAsBadge)
+                    {
+                        string val = prop.Type == StudyGame.Data.PropertyType.Text ? prop.StringValue : 
+                                    (prop.Type == StudyGame.Data.PropertyType.Number ? prop.FloatValue.ToString() : "...");
+                        badges.Add($"{prop.PropertyName}: {val}");
+                    }
+                }
+                node = _workspaceGraph.CreateNode(ep.NodeTitle, new Vector2(300, 300), badges.ToArray());
+                node.NodeId = ep.NodeId;
+                node.NodeData = ep;
+            }
+            _workspaceGraph.ClearSelection();
+            _workspaceGraph.AddToSelection(node);
+            if (inspector != null) inspector.BindNode(node);
         }
 
         private void CreateWorkspaceNodeFromTemplate(StudyGame.Data.WorkspaceNodeData template)
