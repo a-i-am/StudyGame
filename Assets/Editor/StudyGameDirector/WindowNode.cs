@@ -168,6 +168,7 @@ namespace StudyGame.Editor.Director
                 var go = new GameObject($"CCTV_{WindowTitle}");
                 go.hideFlags = HideFlags.HideAndDontSave;
                 _cctvCamera = go.AddComponent<Camera>();
+                go.AddComponent<UnityEngine.Rendering.Universal.UniversalAdditionalCameraData>();
                 _cctvCamera.clearFlags = CameraClearFlags.Skybox;
                 _cctvCamera.fieldOfView = 60f;
             }

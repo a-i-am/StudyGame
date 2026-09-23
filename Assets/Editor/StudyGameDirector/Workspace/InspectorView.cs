@@ -245,7 +245,7 @@ namespace StudyGame.Editor.Director
                     var previewBtn = new Button(() =>
                     {
                         DirectorStateManager.SetActiveContext(_activeNode, prop);
-                        var wnd = EditorWindow.GetWindow<DirectorEditorWindow>();
+                        var wnd = EditorWindow.GetWindow<WorkspaceNodeWindow>();
                         if (wnd != null) wnd.StartSandboxTest(prop);
                     })
                     { text = "▶ 샌드박스 미리보기" };

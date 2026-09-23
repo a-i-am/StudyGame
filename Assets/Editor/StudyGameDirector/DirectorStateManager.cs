@@ -11,35 +11,14 @@ namespace StudyGame.Editor.Director
     {
         public static EpisodeNode ActiveEpisodeNode { get; private set; }
         public static DynamicProperty ActivePhaseProperty { get; private set; }
-        public static string PendingAIPrompt { get; private set; }
-
         public delegate void StateChangedHandler();
         public static event StateChangedHandler OnStateChanged;
-        
-        public delegate void TabSwitchHandler(int tabIndex);
-        public static event TabSwitchHandler OnTabSwitchRequested;
 
         public static void SetActiveContext(EpisodeNode node, DynamicProperty phase = null)
         {
             ActiveEpisodeNode = node;
             ActivePhaseProperty = phase;
             OnStateChanged?.Invoke();
-        }
-
-        public static void SetPendingAIPrompt(string prompt)
-        {
-            PendingAIPrompt = prompt;
-            OnStateChanged?.Invoke();
-        }
-
-        public static void ClearPendingAIPrompt()
-        {
-            PendingAIPrompt = null;
-        }
-
-        public static void RequestTabSwitch(int tabIndex)
-        {
-            OnTabSwitchRequested?.Invoke(tabIndex);
         }
     }
 }
