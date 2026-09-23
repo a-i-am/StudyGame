@@ -1,7 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
-using UnityEditor.UIElements;
+using UnityEditor.UIElements; // EnumField 사용을 위해 필요
 using StudyGame.Data;
 using System.Linq;
 
@@ -11,6 +11,7 @@ namespace StudyGame.Editor.Director
     {
         private VisualElement _contentContainer;
         private EpisodeNode _activeNode;
+        private VisualElement _previewContainer;
 
         public InspectorView()
         {
@@ -21,7 +22,7 @@ namespace StudyGame.Editor.Director
             var titleRow = new VisualElement();
             titleRow.style.flexDirection = FlexDirection.Row;
             titleRow.style.justifyContent = Justify.SpaceBetween;
-            
+
             var title = new Label("동적 작업대 (Inspector)");
             title.AddToClassList("workspace-title");
             titleRow.Add(title);
@@ -32,7 +33,7 @@ namespace StudyGame.Editor.Director
 
             _contentContainer = new VisualElement();
             _contentContainer.AddToClassList("inspector-content");
-            
+
             var scroll = new ScrollView();
             scroll.Add(_contentContainer);
             Add(scroll);
@@ -65,19 +66,44 @@ namespace StudyGame.Editor.Director
             _contentContainer.Add(header);
 
             var titleField = new TextField("노드 제목") { value = data.NodeTitle };
-            titleField.RegisterValueChangedCallback(evt => {
+            titleField.RegisterValueChangedCallback(evt =>
+            {
                 data.NodeTitle = evt.newValue;
                 _activeNode.title = data.NodeTitle;
                 EditorUtility.SetDirty(data);
             });
             _contentContainer.Add(titleField);
 
+            var sysHeader = new Label("▼ 시스템 속성 (System Properties)");
+            sysHeader.AddToClassList("workspace-section-header");
+            sysHeader.style.marginTop = 15;
+            _contentContainer.Add(sysHeader);
+
+            // NodeType EnumField
+            var nodeTypeField = new EnumField("노드 타입 (Node Type)", _activeNode.SaveData.NodeType);
+            nodeTypeField.RegisterValueChangedCallback(evt =>
+            {
+                _activeNode.SaveData.NodeType = (EpisodeNodeType)evt.newValue;
+                UpdateNodeBadges(); // 뱃지 업데이트 트리거
+            });
+            _contentContainer.Add(nodeTypeField);
+
+            // DominantSubject EnumField
+            var subjectLockField = new EnumField("지배 과목 (Subject Lock)", _activeNode.SaveData.SubjectLock);
+            subjectLockField.RegisterValueChangedCallback(evt =>
+            {
+                _activeNode.SaveData.SubjectLock = (DominantSubject)evt.newValue;
+                UpdateNodeBadges(); // 뱃지 업데이트 트리거
+            });
+            _contentContainer.Add(subjectLockField);
+            // ==========================================
+
             // Job-Specific Smart Viewers
-            if (data.TemplateType.Contains("캐릭터 DNA"))
+            if (data.TemplateType != null && data.TemplateType.Contains("캐릭터 DNA"))
             {
                 RenderDNAPreview();
             }
-            else if (data.TemplateType.Contains("보스 퍼즐"))
+            else if (data.TemplateType != null && data.TemplateType.Contains("보스 퍼즐"))
             {
                 RenderPuzzleSimulator();
             }
@@ -97,7 +123,7 @@ namespace StudyGame.Editor.Director
             var addBtnContainer = new VisualElement();
             addBtnContainer.style.flexDirection = FlexDirection.Row;
             addBtnContainer.style.marginTop = 20;
-            
+
             var addBtn = new Button(() => ShowAddPropertyMenu(data)) { text = "➕ 속성 추가 (Add Property)" };
             addBtn.style.flexGrow = 1;
             addBtn.style.height = 30;
@@ -118,18 +144,21 @@ namespace StudyGame.Editor.Director
             row.style.borderBottomRightRadius = 5;
 
             // Delete Btn
-            var delBtn = new Button(() => {
+            var delBtn = new Button(() =>
+            {
                 data.Properties.Remove(prop);
                 EditorUtility.SetDirty(data);
                 RenderDynamicProperties();
                 UpdateNodeBadges();
-            }) { text = "X" };
+            })
+            { text = "X" };
             delBtn.style.width = 20;
             row.Add(delBtn);
 
             // Badge Toggle
             var badgeToggle = new Toggle("★") { value = prop.ShowAsBadge, tooltip = "노드 캔버스에 뱃지로 표출" };
-            badgeToggle.RegisterValueChangedCallback(evt => {
+            badgeToggle.RegisterValueChangedCallback(evt =>
+            {
                 prop.ShowAsBadge = evt.newValue;
                 EditorUtility.SetDirty(data);
                 UpdateNodeBadges();
@@ -138,10 +167,11 @@ namespace StudyGame.Editor.Director
 
             var nameField = new TextField { value = prop.PropertyName };
             nameField.style.width = 120;
-            nameField.RegisterValueChangedCallback(e => { 
-                prop.PropertyName = e.newValue; 
-                EditorUtility.SetDirty(data); 
-                UpdateNodeBadges(); 
+            nameField.RegisterValueChangedCallback(e =>
+            {
+                prop.PropertyName = e.newValue;
+                EditorUtility.SetDirty(data);
+                UpdateNodeBadges();
             });
             row.Add(nameField);
 
@@ -180,21 +210,21 @@ namespace StudyGame.Editor.Director
                     var tableBox = new VisualElement();
                     tableBox.style.flexDirection = FlexDirection.Column;
                     tableBox.style.marginTop = 10;
-                    
+
                     var headerRow = new VisualElement() { style = { flexDirection = FlexDirection.Row, marginBottom = 5 } };
-                    foreach(var colName in prop.TableColumns)
+                    foreach (var colName in prop.TableColumns)
                     {
                         var colLabel = new Label(colName) { style = { flexGrow = 1, unityFontStyleAndWeight = FontStyle.Bold, unityTextAlign = TextAnchor.MiddleCenter } };
                         headerRow.Add(colLabel);
                     }
                     tableBox.Add(headerRow);
 
-                    foreach(var rowData in prop.TableRows)
+                    foreach (var rowData in prop.TableRows)
                     {
                         var dataRow = new VisualElement() { style = { flexDirection = FlexDirection.Row, marginBottom = 2 } };
-                        for(int i=0; i<prop.TableColumns.Count; i++)
+                        for (int i = 0; i < prop.TableColumns.Count; i++)
                         {
-                            if(i >= rowData.Cells.Count) rowData.Cells.Add("");
+                            if (i >= rowData.Cells.Count) rowData.Cells.Add("");
                             int colIdx = i;
                             var cellField = new TextField() { value = rowData.Cells[colIdx] };
                             cellField.style.flexGrow = 1;
@@ -212,11 +242,13 @@ namespace StudyGame.Editor.Director
                     addRowBtn.style.flexGrow = 1;
                     btnRow.Add(addRowBtn);
 
-                    var previewBtn = new Button(() => { 
+                    var previewBtn = new Button(() =>
+                    {
                         DirectorStateManager.SetActiveContext(_activeNode, prop);
                         var wnd = EditorWindow.GetWindow<DirectorEditorWindow>();
                         if (wnd != null) wnd.StartSandboxTest(prop);
-                    }) { text = "▶ 샌드박스 미리보기" };
+                    })
+                    { text = "▶ 샌드박스 미리보기" };
                     previewBtn.style.flexGrow = 1;
                     previewBtn.style.backgroundColor = new StyleColor(new Color(0.2f, 0.6f, 0.2f));
                     btnRow.Add(previewBtn);
@@ -229,8 +261,6 @@ namespace StudyGame.Editor.Director
             row.Add(fieldContainer);
             _contentContainer.Add(row);
         }
-
-        private VisualElement _previewContainer;
 
         private void ShowPreview(DynamicProperty prop)
         {
@@ -254,13 +284,13 @@ namespace StudyGame.Editor.Director
             var scroll = new ScrollView();
             scroll.style.height = 300;
 
-            foreach(var row in prop.TableRows)
+            foreach (var row in prop.TableRows)
             {
                 if (row.Cells.Count >= 2)
                 {
                     string speaker = row.Cells[0];
                     string text = row.Cells[1];
-                    
+
                     var bubble = new VisualElement();
                     bubble.style.backgroundColor = new StyleColor(new Color(0.25f, 0.25f, 0.3f));
                     bubble.style.paddingTop = bubble.style.paddingBottom = 8;
@@ -331,7 +361,8 @@ namespace StudyGame.Editor.Director
             var menu = new GenericMenu();
             foreach (PropertyType type in System.Enum.GetValues(typeof(PropertyType)))
             {
-                menu.AddItem(new GUIContent(type.ToString()), false, () => {
+                menu.AddItem(new GUIContent(type.ToString()), false, () =>
+                {
                     data.Properties.Add(new DynamicProperty { Type = type, PropertyName = $"New {type}" });
                     EditorUtility.SetDirty(data);
                     RenderDynamicProperties();
@@ -343,17 +374,18 @@ namespace StudyGame.Editor.Director
         private void SaveAsTemplate()
         {
             if (_activeNode == null || _activeNode.NodeData == null) return;
-            
+
             var sourceData = _activeNode.NodeData;
             var newTemplate = ScriptableObject.CreateInstance<WorkspaceNodeData>();
             newTemplate.NodeTitle = sourceData.NodeTitle;
             newTemplate.TemplateType = sourceData.NodeTitle; // Use title as template type name
             newTemplate.ThemeColorHex = sourceData.ThemeColorHex;
             newTemplate.ThemeIcon = sourceData.ThemeIcon;
-            
+
             foreach (var prop in sourceData.Properties)
             {
-                newTemplate.Properties.Add(new DynamicProperty {
+                newTemplate.Properties.Add(new DynamicProperty
+                {
                     PropertyName = prop.PropertyName,
                     Type = prop.Type,
                     StringValue = prop.StringValue,
@@ -366,7 +398,7 @@ namespace StudyGame.Editor.Director
 
             string safeName = sourceData.NodeTitle.Replace(" ", "_").Replace(":", "_");
             string path = $"Assets/Editor/StudyGameDirector/Workspace/Templates/{safeName}_Template.asset";
-            
+
             AssetDatabase.CreateAsset(newTemplate, path);
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
@@ -378,12 +410,21 @@ namespace StudyGame.Editor.Director
         {
             if (_activeNode != null && _activeNode.NodeData != null)
             {
-                var badges = _activeNode.NodeData.Properties
+                var badgesList = _activeNode.NodeData.Properties
                     .Where(p => p.ShowAsBadge)
                     .Select(p => $"{p.PropertyName}: {GetPropertyValueAsString(p)}")
-                    .ToArray();
-                
-                _activeNode.SetBadges(badges);
+                    .ToList();
+
+                if (_activeNode.SaveData != null)
+                {
+                    badgesList.Add($"Type: {_activeNode.SaveData.NodeType}");
+                    if (_activeNode.SaveData.SubjectLock != DominantSubject.None)
+                    {
+                        badgesList.Add($"Lock: {_activeNode.SaveData.SubjectLock}");
+                    }
+                }
+
+                _activeNode.SetBadges(badgesList.ToArray());
             }
         }
 

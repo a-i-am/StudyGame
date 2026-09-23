@@ -12,13 +12,13 @@ public class CreateFreshTMPFont
         if (font == null) return;
 
         string fontAssetPath = "Assets/Resources/StudyGame-Art/Fonts/KoPubWorld Batang Bold.asset";
-        
+
         TMP_FontAsset fontAsset = TMP_FontAsset.CreateFontAsset(font, 90, 9, UnityEngine.TextCore.LowLevel.GlyphRenderMode.SDFAA, 1024, 1024, AtlasPopulationMode.Dynamic);
-        
+
         if (fontAsset != null)
         {
             AssetDatabase.CreateAsset(fontAsset, fontAssetPath);
-            
+
             Shader tmpShader = Shader.Find("TextMeshPro/Distance Field");
             if (tmpShader != null)
             {
@@ -33,14 +33,14 @@ public class CreateFreshTMPFont
             AssetDatabase.Refresh();
         }
 
-        TextMeshProUGUI[] tmpTexts = Object.FindObjectsOfType<TextMeshProUGUI>(true);
+        TextMeshProUGUI[] tmpTexts = Object.FindObjectsByType<TextMeshProUGUI>(FindObjectsInactive.Include, FindObjectsSortMode.None);
         foreach (TextMeshProUGUI tmp in tmpTexts)
         {
             tmp.font = fontAsset;
             EditorUtility.SetDirty(tmp);
         }
 
-        QuestionManager qm = Object.FindObjectOfType<QuestionManager>();
+        QuestionManager qm = Object.FindFirstObjectByType<QuestionManager>();
         if (qm != null)
         {
             qm.BuildLinkedText();

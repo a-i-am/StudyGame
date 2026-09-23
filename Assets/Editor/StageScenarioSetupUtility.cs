@@ -98,86 +98,86 @@ public static class StageScenarioSetupUtility
         {
             StageScenarioData scenario = GenerateVerticalSliceScenario();
 
-        string saveFilePath = Path.Combine(Application.persistentDataPath, "unlocked_concepts.json");
-        if (File.Exists(saveFilePath))
-        {
-            File.Delete(saveFilePath);
-        }
+            string saveFilePath = Path.Combine(Application.persistentDataPath, "unlocked_concepts.json");
+            if (File.Exists(saveFilePath))
+            {
+                File.Delete(saveFilePath);
+            }
 
-        PanelSettings panelSettings = AssetDatabase.LoadAssetAtPath<PanelSettings>("Assets/UI Toolkit/PanelSettings.asset");
+            PanelSettings panelSettings = AssetDatabase.LoadAssetAtPath<PanelSettings>("Assets/UI Toolkit/PanelSettings.asset");
 
-        Scene newScene = EditorSceneManager.NewScene(NewSceneSetup.DefaultGameObjects, NewSceneMode.Single);
+            Scene newScene = EditorSceneManager.NewScene(NewSceneSetup.DefaultGameObjects, NewSceneMode.Single);
 
-        // 1. Core Managers
-        GameObject managersObj = new GameObject("@Managers");
-        managersObj.AddComponent<ConceptArchiveManager>();
-        managersObj.AddComponent<DeductionRuleEngine>();
-        managersObj.AddComponent<LLMStreamSender>();
-        managersObj.AddComponent<StageRunnerController>();
+            // 1. Core Managers
+            GameObject managersObj = new GameObject("@Managers");
+            managersObj.AddComponent<ConceptArchiveManager>();
+            managersObj.AddComponent<DeductionRuleEngine>();
+            managersObj.AddComponent<LLMStreamSender>();
+            managersObj.AddComponent<StageRunnerController>();
 
-        // 2. UI Systems
-        VisualTreeAsset toastAsset = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/UI/ConceptToastView.uxml");
-        GameObject toastObj = new GameObject("UI_Toast");
-        UIDocument toastDocument = toastObj.AddComponent<UIDocument>();
-        BindUIDocument(toastDocument, panelSettings, toastAsset);
-        toastObj.AddComponent<UIConceptToastController>();
+            // 2. UI Systems
+            VisualTreeAsset toastAsset = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/UI/ConceptToastView.uxml");
+            GameObject toastObj = new GameObject("UI_Toast");
+            UIDocument toastDocument = toastObj.AddComponent<UIDocument>();
+            BindUIDocument(toastDocument, panelSettings, toastAsset);
+            toastObj.AddComponent<UIConceptToastController>();
 
-        VisualTreeAsset deductionModalAsset = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/UI/DeductionModalView.uxml");
-        GameObject deductionObj = new GameObject("UI_DeductionModal");
-        UIDocument deductionDocument = deductionObj.AddComponent<UIDocument>();
-        BindUIDocument(deductionDocument, panelSettings, deductionModalAsset);
-        deductionObj.AddComponent<UIDeductionModalController>();
+            VisualTreeAsset deductionModalAsset = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/UI/DeductionModalView.uxml");
+            GameObject deductionObj = new GameObject("UI_DeductionModal");
+            UIDocument deductionDocument = deductionObj.AddComponent<UIDocument>();
+            BindUIDocument(deductionDocument, panelSettings, deductionModalAsset);
+            deductionObj.AddComponent<UIDeductionModalController>();
 
-        VisualTreeAsset dialogueAsset = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/UI/DialogueView.uxml");
-        GameObject dialogueObj = new GameObject("UI_Dialogue");
-        UIDocument dialogueDocument = dialogueObj.AddComponent<UIDocument>();
-        BindUIDocument(dialogueDocument, panelSettings, dialogueAsset);
-        dialogueObj.SetActive(false);
+            VisualTreeAsset dialogueAsset = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/UI/DialogueView.uxml");
+            GameObject dialogueObj = new GameObject("UI_Dialogue");
+            UIDocument dialogueDocument = dialogueObj.AddComponent<UIDocument>();
+            BindUIDocument(dialogueDocument, panelSettings, dialogueAsset);
+            dialogueObj.SetActive(false);
 
-        UIDialogueController dialogueController = dialogueObj.AddComponent<UIDialogueController>();
-        NPCData activeNPC = AssetDatabase.LoadAssetAtPath<NPCData>("Assets/ScriptableObjects/TestNPCs/NPC_INTP.asset");
-        if (activeNPC != null && dialogueController != null)
-        {
-            dialogueController.SetActiveNPC(activeNPC);
-        }
+            UIDialogueController dialogueController = dialogueObj.AddComponent<UIDialogueController>();
+            NPCData activeNPC = AssetDatabase.LoadAssetAtPath<NPCData>("Assets/ScriptableObjects/TestNPCs/NPC_INTP.asset");
+            if (activeNPC != null && dialogueController != null)
+            {
+                dialogueController.SetActiveNPC(activeNPC);
+            }
 
-        VisualTreeAsset skillDeckAsset = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/UI/SkillDeckView.uxml");
-        if (skillDeckAsset != null)
-        {
-            GameObject skillDeckObj = new GameObject("UI_SkillDeck");
-            UIDocument skillDeckDocument = skillDeckObj.AddComponent<UIDocument>();
-            BindUIDocument(skillDeckDocument, panelSettings, skillDeckAsset);
-            skillDeckObj.AddComponent<StudyGame.Combat.UISkillDeckController>();
-        }
+            VisualTreeAsset skillDeckAsset = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/UI/SkillDeckView.uxml");
+            if (skillDeckAsset != null)
+            {
+                GameObject skillDeckObj = new GameObject("UI_SkillDeck");
+                UIDocument skillDeckDocument = skillDeckObj.AddComponent<UIDocument>();
+                BindUIDocument(skillDeckDocument, panelSettings, skillDeckAsset);
+                skillDeckObj.AddComponent<StudyGame.Combat.UISkillDeckController>();
+            }
 
-        // 3. Environment Chamber & JSON Anomaly Creatures
-        GameObject envObj = new GameObject("WireframeEnvironment");
-        WireframeEnvironmentBuilder envBuilder = envObj.AddComponent<WireframeEnvironmentBuilder>();
-        envBuilder.BuildWireframeChamber();
+            // 3. Environment Chamber & JSON Anomaly Creatures
+            GameObject envObj = new GameObject("WireframeEnvironment");
+            WireframeEnvironmentBuilder envBuilder = envObj.AddComponent<WireframeEnvironmentBuilder>();
+            envBuilder.BuildWireframeChamber();
 
-        // 4. Launcher Setup
-        if (scenario != null)
-        {
-            scenario.mapEnvironmentPrefab = null;
-            scenario.anomalyMonsterPrefab = null;
-        }
+            // 4. Launcher Setup
+            if (scenario != null)
+            {
+                scenario.mapEnvironmentPrefab = null;
+                scenario.anomalyMonsterPrefab = null;
+            }
 
-        GameObject launcherObj = new GameObject("StageRunnerLauncher");
-        ExplorationStageRunnerLauncher launcher = launcherObj.AddComponent<ExplorationStageRunnerLauncher>();
-        launcher.targetScenario = scenario;
-        EditorUtility.SetDirty(launcher);
+            GameObject launcherObj = new GameObject("StageRunnerLauncher");
+            ExplorationStageRunnerLauncher launcher = launcherObj.AddComponent<ExplorationStageRunnerLauncher>();
+            launcher.targetScenario = scenario;
+            EditorUtility.SetDirty(launcher);
 
-        string scenePath = "Assets/Scenes/Scene_WireframeChamber.unity";
-        if (!Directory.Exists("Assets/Scenes"))
-        {
-            Directory.CreateDirectory("Assets/Scenes");
-        }
-        EditorSceneManager.MarkSceneDirty(newScene);
-        EditorSceneManager.SaveScene(newScene, scenePath);
-        AssetDatabase.Refresh();
+            string scenePath = "Assets/Scenes/Scene_WireframeChamber.unity";
+            if (!Directory.Exists("Assets/Scenes"))
+            {
+                Directory.CreateDirectory("Assets/Scenes");
+            }
+            EditorSceneManager.MarkSceneDirty(newScene);
+            EditorSceneManager.SaveScene(newScene, scenePath);
+            AssetDatabase.Refresh();
 
-        AddSceneToBuildSettings(scenePath);
-        Debug.Log("[StageScenarioSetupUtility] Scene_WireframeChamber setup completed successfully!");
+            AddSceneToBuildSettings(scenePath);
+            Debug.Log("[StageScenarioSetupUtility] Scene_WireframeChamber setup completed successfully!");
         }
         catch (System.Exception ex)
         {
@@ -296,7 +296,7 @@ public static class StageScenarioSetupUtility
         {
             AssetDatabase.CreateFolder("Assets", "Prefabs");
         }
-        
+
         Material playerMat = CreateOrUpdateMaterialAsset("Assets/Materials/Material_Player.mat", new Color(0.1f, 0.5f, 0.95f));
         Material partnerMat = CreateOrUpdateMaterialAsset("Assets/Materials/Material_Partner.mat", new Color(0.8f, 0.3f, 0.9f));
         Material playerWeaponMat = CreateOrUpdateMaterialAsset("Assets/Materials/Material_PlayerWeapon.mat", new Color(0.2f, 0.9f, 1.0f));
@@ -378,7 +378,7 @@ public static class StageScenarioSetupUtility
         }
 
         tempMonster.AddComponent<StudyGame.Combat.AnomalyTrigger>();
-        
+
         MathGimmick gimmick = tempMonster.AddComponent<MathGimmick>();
         gimmick.minScaleLimit = 0.2f;
 
@@ -423,7 +423,7 @@ public static class StageScenarioSetupUtility
         Object.DestroyImmediate(tempMap.GetComponent<Collider>()); // Remove default SphereCollider
         MeshCollider mc = tempMap.AddComponent<MeshCollider>();
         mc.sharedMesh = filter.sharedMesh;
-        
+
         GameObject mapPrefab = PrefabUtility.SaveAsPrefabAsset(tempMap, "Assets/Prefabs/Map_HollowSphere.prefab");
         Object.DestroyImmediate(tempMap);
 
@@ -431,13 +431,13 @@ public static class StageScenarioSetupUtility
         StageScenarioData scenarioGeomLimit = CreateOrLoadAsset<StageScenarioData>($"{basePath}/Scenario_GeomLimit.asset");
         scenarioGeomLimit.scenarioId = "SCENARIO_MATH_GEOM_01";
         scenarioGeomLimit.title = "격리 구역 04호: 수렴의 경계";
-        scenarioGeomLimit.subject = SubjectType.SequenceLimit;
+        scenarioGeomLimit.dominantSubject = DominantSubject.Math;
         scenarioGeomLimit.targetConcept = conceptGeomLimit;
         scenarioGeomLimit.startingAP = 8;
         scenarioGeomLimit.candidatePool = new List<ConceptData> { conceptRatio, conceptLimit, conceptGeomLimit };
         scenarioGeomLimit.dialogueGraph = graphGeomLimit;
         scenarioGeomLimit.playerPrefab = playerPrefab;
-        scenarioGeomLimit.partnerPrefab = partnerPrefab;
+        scenarioGeomLimit.rescuedPartnerPrefab = partnerPrefab;
         scenarioGeomLimit.anomalyMonsterPrefab = anomalyPrefab;
         scenarioGeomLimit.mapEnvironmentPrefab = mapPrefab;
         EditorUtility.SetDirty(scenarioGeomLimit);

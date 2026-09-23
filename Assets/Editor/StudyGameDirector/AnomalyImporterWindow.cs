@@ -48,10 +48,11 @@ namespace StudyGame.Editor.Director
             {
                 string jsonText = File.ReadAllText(file);
                 string fileName = Path.GetFileNameWithoutExtension(file);
-                
+
                 string subjectFolder = "Explore";
                 string themeIcon = "🔮";
                 string themeColor = "#A020F0"; // Purple
+                string subjectLockStr = "None";
 
                 if (fileName.Contains("수학")) { subjectFolder = "Math"; themeIcon = "📐"; themeColor = "#3366FF"; }
                 else if (fileName.Contains("국어")) { subjectFolder = "Korean"; themeIcon = "📖"; themeColor = "#FF3366"; }
@@ -59,7 +60,7 @@ namespace StudyGame.Editor.Director
                 else if (fileName.Contains("윤리") || fileName.Contains("지리") || fileName.Contains("역사") || fileName.Contains("사회")) { subjectFolder = "Social"; themeIcon = "⚖️"; themeColor = "#FF9933"; }
 
                 string outDir = Path.Combine(outputAssetDirectory, subjectFolder).Replace("\\", "/");
-                
+
                 // 디렉토리가 없으면 생성 (물리 파일 시스템 기준)
                 string fullPath = Path.Combine(Application.dataPath, outDir.Replace("Assets/", ""));
                 if (!Directory.Exists(fullPath))
@@ -74,26 +75,43 @@ namespace StudyGame.Editor.Director
                     {
                         string monsterId = item["monster_id"]?.ToString() ?? System.Guid.NewGuid().ToString();
                         string originalFormula = item["original_formula"]?.ToString() ?? "Unknown Question";
-                        
+
                         // WorkspaceNodeData 에셋 생성
                         WorkspaceNodeData node = ScriptableObject.CreateInstance<WorkspaceNodeData>();
                         node.NodeId = monsterId;
-                        
+
                         // 노드 타이틀 요약 (UI 렌더링용)
                         string title = originalFormula;
                         if (title.Length > 25) title = title.Substring(0, 25) + "...";
-                        
+
                         node.NodeTitle = $"[{subjectFolder}] {title}";
                         node.TemplateType = "기믹 (Anomaly)";
                         node.ThemeIcon = themeIcon;
                         node.ThemeColorHex = themeColor;
-                        
+
+                        node.Properties.Add(new DynamicProperty
+                        {
+                            PropertyName = "Type",
+                            Type = PropertyType.Dropdown,
+                            StringValue = "AnomalyEncounter", // EpisodeNodeType 매핑
+                            ShowAsBadge = true
+                        });
+
+                        node.Properties.Add(new DynamicProperty
+                        {
+                            PropertyName = "Lock",
+                            Type = PropertyType.Dropdown,
+                            StringValue = subjectLockStr, // DominantSubject 매핑
+                            ShowAsBadge = true
+                        });
+
                         // 원본 지문/수식 프로퍼티
-                        node.Properties.Add(new DynamicProperty { 
-                            PropertyName = "Original Formula", 
-                            Type = PropertyType.Text, 
-                            StringValue = originalFormula, 
-                            ShowAsBadge = false 
+                        node.Properties.Add(new DynamicProperty
+                        {
+                            PropertyName = "Original Formula",
+                            Type = PropertyType.Text,
+                            StringValue = originalFormula,
+                            ShowAsBadge = false
                         });
 
                         // 개별 기믹(Behavior) 프로퍼티 매핑
@@ -105,16 +123,16 @@ namespace StudyGame.Editor.Director
                             {
                                 string behavior = n["Behavior"]?.ToString() ?? "";
                                 string constraint = n["Constraint"]?.ToString() ?? "";
-                                
+
                                 // 노드 요약 배지로 렌더링되게 설정
-                                node.Properties.Add(new DynamicProperty 
-                                { 
-                                    PropertyName = $"🎯 기믹 {idx}: {behavior}", 
-                                    Type = PropertyType.Text, 
-                                    StringValue = $"약점: {constraint}", 
-                                    ShowAsBadge = true 
+                                node.Properties.Add(new DynamicProperty
+                                {
+                                    PropertyName = $"🎯 기믹 {idx}: {behavior}",
+                                    Type = PropertyType.Text,
+                                    StringValue = $"약점: {constraint}",
+                                    ShowAsBadge = true
                                 });
-                                
+
                                 idx++;
                             }
                         }
@@ -122,7 +140,7 @@ namespace StudyGame.Editor.Director
                         // 파일명 안전 규칙 적용 및 에셋 저장
                         string safeName = string.Join("_", monsterId.Split(Path.GetInvalidFileNameChars()));
                         string assetPath = $"{outDir}/{safeName}.asset";
-                        
+
                         StudyGame.Editor.Utils.AssetHelper.CreateOrOverwriteAsset(node, assetPath);
                         bakedCount++;
                     }
@@ -135,7 +153,7 @@ namespace StudyGame.Editor.Director
 
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
-            
+
             EditorUtility.DisplayDialog("Bake Complete", $"Successfully baked {bakedCount} Anomaly nodes into {outputAssetDirectory}", "OK");
         }
     }
