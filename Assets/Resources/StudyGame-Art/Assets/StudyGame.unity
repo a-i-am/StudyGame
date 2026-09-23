@@ -13,7 +13,7 @@ OcclusionCullingSettings:
 --- !u!104 &2
 RenderSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 9
+  serializedVersion: 10
   m_Fog: 0
   m_FogColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   m_FogMode: 3
@@ -42,8 +42,8 @@ RenderSettings:
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 12
-  m_GIWorkflowMode: 1
+  serializedVersion: 13
+  m_BakeOnSceneLoad: 0
   m_GISettings:
     serializedVersion: 2
     m_BounceScale: 1
@@ -66,9 +66,6 @@ LightmapSettings:
     m_LightmapParameters: {fileID: 0}
     m_LightmapsBakeMode: 1
     m_TextureCompression: 1
-    m_FinalGather: 0
-    m_FinalGatherFiltering: 1
-    m_FinalGatherRayCount: 256
     m_ReflectionCompression: 2
     m_MixedBakeMode: 2
     m_BakeBackend: 1
@@ -96,7 +93,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 0}
+  m_LightingDataAsset: {fileID: 20201, guid: 0000000000000000f000000000000000, type: 0}
   m_LightingSettings: {fileID: 0}
 --- !u!196 &4
 NavMeshSettings:
@@ -562,9 +559,8 @@ Light:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1632499479}
   m_Enabled: 1
-  serializedVersion: 10
+  serializedVersion: 11
   m_Type: 1
-  m_Shape: 0
   m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
   m_Intensity: 1
   m_Range: 10
@@ -614,8 +610,12 @@ Light:
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
+  m_ForceVisible: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+  m_LightUnit: 1
+  m_LuxAtDistance: 1
+  m_EnableSpotReflector: 1
 --- !u!4 &1632499481
 Transform:
   m_ObjectHideFlags: 0
@@ -692,7 +692,8 @@ MonoBehaviour:
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_fontSharedMaterials: []
+  m_fontSharedMaterials:
+  - {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
@@ -731,15 +732,17 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 0
+  m_TextWrappingMode: 0
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
+  m_ActiveFontFeatures: 
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
+  m_EmojiFallbackSupport: 1
   m_parseCtrlCharacters: 1
   m_isOrthographic: 1
   m_isCullingEnabled: 0
@@ -894,7 +897,8 @@ MonoBehaviour:
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 38179579c059ab4488e13fb011451694, type: 2}
   m_sharedMaterial: {fileID: 4799016788592477211, guid: 38179579c059ab4488e13fb011451694, type: 2}
-  m_fontSharedMaterials: []
+  m_fontSharedMaterials:
+  - {fileID: 4799016788592477211, guid: 38179579c059ab4488e13fb011451694, type: 2}
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
@@ -933,15 +937,17 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_TextWrappingMode: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
+  m_ActiveFontFeatures: 6e72656b
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
+  m_EmojiFallbackSupport: 1
   m_parseCtrlCharacters: 1
   m_isOrthographic: 1
   m_isCullingEnabled: 0
@@ -1025,13 +1031,14 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uB098\uB294 \uACE0\uAC1C\uB3C4 \uB3CC\uB9AC\uC9C0 \uC54A\uACE0 \uC77C\uD558\uB358
-    \uC190\uC73C\uB85C \uADF8 \uAC10\uC790\uB97C \uB3C4\uB85C \uC5B4\uAE68 \uB108\uBA38\uB85C
-    \uC465 \uBC00\uC5B4 \uBC84\uB838\uB2E4."
+  m_text: "<link=\"0\">1994\uB144 \uC5B4\uB290 \uB0A0\uC774\uC5C8\uB2E4.</link> <link=\"1\">\uADF8\uB294
+    \uB9D0\uD588\uB2E4.</link> <link=\"2\">'\uC774\uAC83\uC740 \uC5C4\uCCAD\uB09C
+    \uBC1C\uACAC\uC774\uB2E4!'</link> "
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: dae9b8f34fed8364b99d1ed7c738f85e, type: 2}
   m_sharedMaterial: {fileID: -195593282055239164, guid: dae9b8f34fed8364b99d1ed7c738f85e, type: 2}
-  m_fontSharedMaterials: []
+  m_fontSharedMaterials:
+  - {fileID: -195593282055239164, guid: dae9b8f34fed8364b99d1ed7c738f85e, type: 2}
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
@@ -1070,15 +1077,17 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_TextWrappingMode: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
+  m_ActiveFontFeatures: 6e72656b
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
+  m_EmojiFallbackSupport: 1
   m_parseCtrlCharacters: 1
   m_isOrthographic: 1
   m_isCullingEnabled: 0
@@ -1123,14 +1132,17 @@ MonoBehaviour:
       \uC810\uC131\uC774 \uC9C0\uB098\uCE58\uAC8C \uB192\uC73C\uBA74\xB7\xB7\xB7
       \uACF5\uBA85 \uD604\uC0C1 \uC790\uCCB4\uAC00 \uC5B5\uC81C\uB41C\uB2E4."
     correctKeyword: 
+    sentenceScores: 
   - passageId: P_002
     contentText: "1994\uB144 \uC5B4\uB290 \uB0A0\uC774\uC5C8\uB2E4. \uADF8\uB294
       \uB9D0\uD588\uB2E4. '\uC774\uAC83\uC740 \uC5C4\uCCAD\uB09C \uBC1C\uACAC\uC774\uB2E4!'"
     correctKeyword: 
+    sentenceScores: 
   - passageId: P_003
     contentText: "\uC218\uD5D8\uD45C\uB97C \uBCF4\uC5EC\uC8FC\uC2DC\uACA0\uC5B4\uC694?
       ...\uC544, \uC218\uD5D8\uD45C\uAC00 \uC5C6\uC73C\uC2DC\uAD70\uC694. \uB3CC\uC544\uAC00\uC138\uC694."
     correctKeyword: 
+    sentenceScores: 
   - passageId: P_004
     contentText: "\uB8E8\uBBF8\uB098 \uACF5\uBA85(Lumina Resonance)\uC740 \uD2B9\uC815
       \uC8FC\uD30C\uC218\uC758 \uC74C\uD30C\uAC00 \uD22C\uBA85\uD55C \uC561\uCCB4
@@ -1153,6 +1165,7 @@ MonoBehaviour:
       \uC804\uB2EC\uB418\uC9C0 \uBABB\uD558\uBBC0\uB85C \uACF5\uBA85 \uD604\uC0C1
       \uC790\uCCB4\uAC00 \uC5B5\uC81C\uB41C\uB2E4."
     correctKeyword: 
+    sentenceScores: 
   - passageId: P_005
     contentText: "\uB098\uB294 \uACE0\uAC1C\uB3C4 \uB3CC\uB9AC\uC9C0 \uC54A\uACE0
       \uC77C\uD558\uB358 \uC190\uC73C\uB85C \uADF8 \uAC10\uC790\uB97C \uB3C4\uB85C
@@ -1174,8 +1187,11 @@ MonoBehaviour:
       \uC5CE\uC5B4\uC9C8 \uB4EF \uC790\uBE60\uC9C8 \uB4EF \uB17C\uB451\uC73C\uB85C
       \uD6A1\uD558\uAC8C \uB2EC\uC544\uB098\uB294 \uAC83\uC774\uB2E4."
     correctKeyword: 
-  passageText: {fileID: 1992561650}
+    sentenceScores: 
   testIndex: 1
+  passageText: {fileID: 1992561650}
+  scoreText: {fileID: 0}
+  currentHighlightMode: 1
 --- !u!1 &2140493021
 GameObject:
   m_ObjectHideFlags: 0
