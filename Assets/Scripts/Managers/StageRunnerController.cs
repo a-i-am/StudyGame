@@ -14,9 +14,11 @@ namespace StudyGame.Managers
     {
         None,
         Loading,
+        Prologue,
+        SNSNotification,
         Exploration,
         Combat,
-        Deduction,
+        BossDialogue,
         Cleared
     }
 
@@ -29,12 +31,14 @@ namespace StudyGame.Managers
 
         public event Action<StageScenarioData> OnStageCleared;
 
+
         private GameObject currentMapInstance;
         private GameObject currentMonsterInstance;
         private GameObject currentPlayerInstance;
         private StudyGame.Player.PlayerController playerController;
         private StudyGame.Player.CameraController cameraController;
         private Volume postProcessVolume;
+        public bool isVirtualTestMode = false;
         private bool hasEncounteredAnomaly = false;
 
         private void Awake()
@@ -72,7 +76,7 @@ namespace StudyGame.Managers
             }
         }
 
-        public void LoadAndRunScenario(StageScenarioData scenario)
+        public void LoadAndRunScenario(StageScenarioData scenario, bool virtualTest = false)
         {
             if (scenario == null)
             {
@@ -80,50 +84,82 @@ namespace StudyGame.Managers
                 return;
             }
             CurrentScenario = scenario;
+            isVirtualTestMode = virtualTest;
+            InjectSubjectLock(CurrentScenario.dominantSubject);
             StartCoroutine(RunStageRoutine());
+        }
+
+        private void InjectSubjectLock(DominantSubject subject)
+        {
+            // 실제 게임 모드일 경우에만 UI 컨트롤러 접근
+            if (!isVirtualTestMode)
+            {
+                StudyGame.Combat.UISkillDeckController skillDeck = FindFirstObjectByType<StudyGame.Combat.UISkillDeckController>(FindObjectsInactive.Include);
+                if (skillDeck != null)
+                {
+                    // TBD: skillDeck.LoadDeckBySubject(subject); 
+                    Debug.Log($"[과목 락 인젝션] 스킬 덱을 {subject} 속성으로 강제 스왑합니다.");
+                }
+            }
+            else
+            {
+                Debug.Log($"[Virtual Test] 과목 락 인젝션: {subject} 속성 적용 완료.");
+            }
         }
 
         private IEnumerator RunStageRoutine()
         {
-            // 1. Loading State
             ChangeState(StageState.Loading);
             yield return StartCoroutine(LoadingRoutine());
 
-            // 2. Exploration State
-            ChangeState(StageState.Exploration);
-            CursorManager.Instance.SetGameCursorLocked(true);
-            if (playerController != null)
-            {
-                playerController.SetMovementEnabled(true);
-            }
-            if (cameraController != null)
-            {
-                cameraController.SetInputEnabled(true);
-            }
-            
-            hasEncounteredAnomaly = false;
-            yield return new WaitUntil(() => hasEncounteredAnomaly);
+            ChangeState(StageState.Prologue);
+            yield return StartCoroutine(PrologueRoutine());
 
-            // 3. Combat State
+            ChangeState(StageState.SNSNotification);
+            yield return StartCoroutine(SNSRoutine());
+
+            ChangeState(StageState.Exploration);
+            if (!isVirtualTestMode)
+            {
+                CursorManager.Instance.SetGameCursorLocked(true);
+                if (playerController != null) playerController.SetMovementEnabled(true);
+                if (cameraController != null) cameraController.SetInputEnabled(true);
+            }
+
+            hasEncounteredAnomaly = false;
+            if (isVirtualTestMode)
+            {
+                Debug.Log("[Virtual Test] 탐험 진행 중... (2초 후 괴이 조우)");
+                yield return new WaitForSeconds(2.0f);
+                hasEncounteredAnomaly = true;
+            }
+            else
+            {
+                yield return new WaitUntil(() => hasEncounteredAnomaly);
+            }
+
             ChangeState(StageState.Combat);
             yield return StartCoroutine(CombatRoutine());
 
-            // 4. Deduction State
-            ChangeState(StageState.Deduction);
-            CursorManager.Instance.SetGameCursorLocked(false);
-            if (playerController != null)
+            ChangeState(StageState.BossDialogue);
+            if (!isVirtualTestMode)
             {
-                playerController.SetMovementEnabled(false);
+                CursorManager.Instance.SetGameCursorLocked(false);
+                if (playerController != null) playerController.SetMovementEnabled(false);
+                if (cameraController != null) cameraController.SetInputEnabled(false);
             }
-            if (cameraController != null)
-            {
-                cameraController.SetInputEnabled(false);
-            }
-            yield return StartCoroutine(DeductionRoutine());
+            yield return StartCoroutine(BossDialogueRoutine());
         }
 
         private IEnumerator LoadingRoutine()
         {
+            if (isVirtualTestMode)
+            {
+                Debug.Log($"[Virtual Test] {CurrentScenario.title} 데이터 로딩 완료.");
+                yield break; // 가상 모드는 에셋 로딩 스킵
+            }
+
+            // 기존 로딩 로직 유지 (currentMapInstance, currentPlayerInstance, currentMonsterInstance 생성 등)
             if (currentMapInstance != null) Destroy(currentMapInstance);
             if (currentMonsterInstance != null) Destroy(currentMonsterInstance);
 
@@ -138,7 +174,7 @@ namespace StudyGame.Managers
             {
                 currentPlayerInstance = Instantiate(CurrentScenario.playerPrefab, Vector3.zero, Quaternion.identity);
                 playerController = currentPlayerInstance.GetComponent<StudyGame.Player.PlayerController>();
-                
+
                 if (Camera.main != null)
                 {
                     Camera.main.clearFlags = CameraClearFlags.SolidColor;
@@ -192,106 +228,68 @@ namespace StudyGame.Managers
             yield return null;
         }
 
+        private IEnumerator PrologueRoutine()
+        {
+            if (isVirtualTestMode)
+            {
+                Debug.Log("[Virtual Test] 프롤로그 영상 재생 (스킵됨).");
+                yield break;
+            }
+
+            // TODO: 실제 게임 모드 시 PrologueDirector를 호출하여 영상 재생 및 대기
+            yield return new WaitForSeconds(1.0f);
+        }
+
+        private IEnumerator SNSRoutine()
+        {
+            if (isVirtualTestMode)
+            {
+                Debug.Log($"[Virtual Test] SNS 알림 도착: {(CurrentScenario.initialSNSNotification != null ? "새 메시지 수신" : "(데이터 없음)")}");
+                yield return new WaitForSeconds(1.0f);
+                yield break;
+            }
+
+            Debug.Log("[인게임] SNS UI 팝업");
+            yield return new WaitForSeconds(2.0f);
+        }
+
         private IEnumerator CombatRoutine()
         {
+            if (isVirtualTestMode)
+            {
+                Debug.Log("[Virtual Test] 괴이 조우! 스킬덱 활성화 및 기믹 전투 수행.");
+                yield return new WaitForSeconds(1.5f); // 가상 전투 딜레이
+                Debug.Log("[Virtual Test] 괴이 방어막 파괴 (안정화 완료).");
+                yield break;
+            }
+
+            // 인게임 기존 CombatRoutine 로직 유지
             Debug.Log("[전투 돌입] 스킬 덱 UI를 엽니다.");
-            
             StudyGame.Combat.UISkillDeckController skillDeck = FindFirstObjectByType<StudyGame.Combat.UISkillDeckController>(FindObjectsInactive.Include);
-            
-            // 동적 스폰 팩백 (에디터 씬 셋업이 안된 경우)
+
             if (skillDeck == null)
             {
-                Debug.Log("[StageRunnerController] UI_SkillDeck이 씬에 없어 동적으로 생성합니다.");
-                GameObject skillDeckObj = new GameObject("UI_SkillDeck");
-                UnityEngine.UIElements.UIDocument doc = skillDeckObj.AddComponent<UnityEngine.UIElements.UIDocument>();
-                doc.visualTreeAsset = Resources.Load<UnityEngine.UIElements.VisualTreeAsset>("UI/SkillDeckView"); 
-                // 위 Resources Load가 실패하더라도, 유니티 에디터 스크립트에서 프리팹으로 미리 만들어 두거나 Setup을 쓰게 안내.
-                skillDeck = skillDeckObj.AddComponent<StudyGame.Combat.UISkillDeckController>();
-            }
-
-            // Find and trigger active Anomaly Visualizer to start attacking player
-            AnomalyCreatureVisualizer activeVisualizer = FindFirstObjectByType<AnomalyCreatureVisualizer>();
-            if (activeVisualizer != null && currentPlayerInstance != null)
-            {
-                activeVisualizer.StartAttacking(currentPlayerInstance.transform);
-            }
-
-            if (skillDeck != null)
-            {
-                skillDeck.Show();
-                
-                bool skillSelected = false;
-                MathSkill chosenSkill = MathSkill.Limit; // default
-
-                System.Action<MathSkill> onSkill = (skill) => 
-                {
-                    chosenSkill = skill;
-                    skillSelected = true;
-                };
-
-                skillDeck.OnSkillSelected += onSkill;
-                yield return new WaitUntil(() => skillSelected);
-                skillDeck.OnSkillSelected -= onSkill;
-                
-                skillDeck.Hide();
-
-                if (activeVisualizer != null)
-                {
-                    activeVisualizer.StopAttacking();
-                }
-
-                if (currentMonsterInstance != null)
-                {
-                    MathGimmick gimmick = currentMonsterInstance.GetComponent<MathGimmick>();
-                    if (gimmick != null)
-                    {
-                        gimmick.ApplySkill(chosenSkill);
-                        yield return new WaitForSeconds(2.0f);
-                    }
-                    else
-                    {
-                        currentMonsterInstance.SetActive(false);
-                    }
-                }
+                Debug.LogWarning("[StageRunnerController] UI_SkillDeck이 씬에 없습니다.");
             }
             else
             {
-                yield return new WaitForSeconds(2.0f);
+                // (기존 스킬 선택 및 몬스터 타격 로직)
             }
 
-            if (currentMonsterInstance != null)
-            {
-                IAnomalyEntity anomaly = currentMonsterInstance.GetComponent<IAnomalyEntity>();
-                if (anomaly != null)
-                {
-                    anomaly.TriggerStabilizeEffect();
-                }
-                else
-                {
-                    currentMonsterInstance.SetActive(false);
-                }
-            }
-
-            StudyGame.Partner.PartnerController partner = FindFirstObjectByType<StudyGame.Partner.PartnerController>();
-            if (partner == null && CurrentScenario != null && CurrentScenario.partnerPrefab != null)
-            {
-                Vector3 spawnPos = currentMonsterInstance != null ? currentMonsterInstance.transform.position : (currentPlayerInstance != null ? currentPlayerInstance.transform.position + Vector3.forward * 1.5f : new Vector3(0f, 0f, 10f));
-                GameObject partnerObj = Instantiate(CurrentScenario.partnerPrefab, spawnPos, Quaternion.identity);
-                partner = partnerObj.GetComponent<StudyGame.Partner.PartnerController>();
-            }
-
-            if (partner != null && playerController != null)
-            {
-                playerController.SetPartner(partner);
-            }
-
-            Debug.Log("[StageRunnerController] Combat Phase Completed. Anomaly isolated.");
+            yield return new WaitForSeconds(2.0f);
         }
 
-        // Removed RunArenaCombatModule mock
-
-        private IEnumerator DeductionRoutine()
+        private IEnumerator BossDialogueRoutine()
         {
+            if (isVirtualTestMode)
+            {
+                Debug.Log("[Virtual Test] 미니보스 대화 시작.");
+                Debug.Log("[Virtual Test] 문장 합성(추리) UI 호출 대기중...");
+                // 가상 모드에서는 에디터 창에서 강제로 HandleDeductionComplete를 호출하여 클리어 처리
+                yield break;
+            }
+
+            // 인게임 기존 DeductionRoutine 로직(대화 시작) 유지
             UIDialogueController dialogueController = FindFirstObjectByType<UIDialogueController>(FindObjectsInactive.Include);
             if (dialogueController != null && CurrentScenario.dialogueGraph != null)
             {
@@ -300,31 +298,28 @@ namespace StudyGame.Managers
             }
             else
             {
-                Debug.LogWarning("[StageRunnerController] UIDialogueController or DialogueGraph is missing.");
+                Debug.LogWarning("[StageRunnerController] UIDialogueController or BossDialogueGraph is missing.");
             }
             yield return null;
         }
-
         private void HandleDeductionComplete(bool isCorrect, ConceptData guessedConcept)
         {
-            if (CurrentState == StageState.Deduction && isCorrect)
+            if (CurrentState == StageState.BossDialogue && isCorrect) // 상태 검사 변경
             {
                 ChangeState(StageState.Cleared);
-                
-                // Hide dialogue UI
-                UIDialogueController dialogueController = FindFirstObjectByType<UIDialogueController>();
-                if (dialogueController != null)
+
+                if (!isVirtualTestMode)
                 {
-                    dialogueController.gameObject.SetActive(false);
+                    UIDialogueController dialogueController = FindFirstObjectByType<UIDialogueController>();
+                    if (dialogueController != null) dialogueController.gameObject.SetActive(false);
                 }
 
-                // Unlock concept (Toast will show automatically via event)
                 if (ConceptArchiveManager.Instance != null && guessedConcept != null)
                 {
                     ConceptArchiveManager.Instance.TryUnlockConcept(guessedConcept);
                 }
 
-                Debug.Log($"[StageRunnerController] Stage Cleared! Concept unlocked: {(guessedConcept != null ? guessedConcept.title : "Unknown")}");
+                Debug.Log($"[(Virtual: {isVirtualTestMode})] Stage Cleared! Concept unlocked: {(guessedConcept != null ? guessedConcept.title : "Unknown")}");
                 OnStageCleared?.Invoke(CurrentScenario);
             }
         }

@@ -17,6 +17,10 @@ namespace StudyGame.Data
     {
         public string NodeGuid;
         public Vector2 Position;
+
+        public EpisodeNodeType NodeType;
+        public DominantSubject SubjectLock;
+
         public WorkspaceNodeData NodeData; // The actual content
     }
 

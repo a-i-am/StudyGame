@@ -31,7 +31,7 @@ public class DraggableWindow : MonoBehaviour, IDragHandler, IBeginDragHandler, I
         {
             dragOffset = localMousePos - rectTransform.anchoredPosition;
         }
-    }
+     }
 
     public void OnDrag(PointerEventData eventData)
     {

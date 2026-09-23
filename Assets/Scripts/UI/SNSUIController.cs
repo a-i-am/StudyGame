@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace StudyGame.Runtime.UI
+namespace StudyGame.UI
 {
     public class SNSUIController : MonoBehaviour
     {
@@ -22,7 +22,7 @@ namespace StudyGame.Runtime.UI
         {
             Debug.Log($"[SNS] {sender} : {message}");
             gameObject.SetActive(true);
-            
+
             if (senderText) senderText.text = sender;
             if (messageText) messageText.text = message;
         }

@@ -29,8 +29,10 @@ namespace StudyGame.UI
         private QuestionSynthesizerValidator validator = new QuestionSynthesizerValidator();
         private List<GenericDragAndDropHandler<SentenceItemData>> activeDragHandlers = new List<GenericDragAndDropHandler<SentenceItemData>>();
 
-        public event Action<SynthesisResult> OnSynthesisSubmitted;
+        public event Action<SynthesisResult, int> OnSynthesisSubmittedWithDamage;
 
+        // 보스의 현재 약점 키워드 (데미지 배율 계산용)
+        private string currentBossConstraint = "";
         private void Awake()
         {
             EnsureUIInitialized();
@@ -87,7 +89,21 @@ namespace StudyGame.UI
                 btnClose.clicked += HideModal;
             }
         }
+        public void SetBossConstraint(string constraint)
+        {
+            currentBossConstraint = constraint;
+        }
 
+        // [추가됨] 가상 시퀀스 러너용: UI 조작 없이 코드로 직접 문장을 합성하고 결과를 반환
+        public void ForceSynthesizeVirtual(SentenceItemData subject, SentenceItemData op, SentenceItemData target)
+        {
+            selectedSubject = subject;
+            selectedOperator = op;
+            selectedTarget = target;
+
+            Debug.Log($"[Virtual Test] 가상 문장 합성 시도: [{subject?.displayText}] + [{op?.displayText}] + [{target?.displayText}]");
+            OnSynthesizeClicked();
+        }
         public void PopulateInventory(List<SentenceItemData> items)
         {
             if (items != null)
@@ -221,7 +237,7 @@ namespace StudyGame.UI
 
             List<SentenceItemData> items = new List<SentenceItemData> { selectedSubject, selectedOperator, selectedTarget };
             SynthesisResult result = validator.ValidateSynthesis(currentRule, items);
-            
+
             if (lblFeedback != null)
             {
                 lblFeedback.text = result.feedbackMessage;
@@ -238,11 +254,22 @@ namespace StudyGame.UI
 
             List<SentenceItemData> items = new List<SentenceItemData> { selectedSubject, selectedOperator, selectedTarget };
             SynthesisResult result = validator.ValidateSynthesis(currentRule, items);
-            
+
             if (result.isValid)
             {
-                OnSynthesisSubmitted?.Invoke(result);
-                HideModal();
+                // [추가됨] 데미지 연산 로직: 조합된 문장이 보스의 현재 약점과 얼마나 일치하는지 평가
+                int calculatedDamage = CalculateDamage(items, currentBossConstraint);
+
+                Debug.Log($"[추리 엔진] 문장 조합 성공! 데미지: {calculatedDamage}");
+
+                // 확장된 이벤트 호출
+                OnSynthesisSubmittedWithDamage?.Invoke(result, calculatedDamage);
+
+                // 가상 모드가 아닐 때만 모달 닫기
+                if (rootVisualElement != null && rootVisualElement.style.display == DisplayStyle.Flex)
+                {
+                    HideModal();
+                }
             }
             else
             {
@@ -250,9 +277,31 @@ namespace StudyGame.UI
                 {
                     lblFeedback.text = result.feedbackMessage;
                 }
+                Debug.Log($"[추리 엔진] 문장 조합 실패: {result.feedbackMessage}");
             }
         }
+        private int CalculateDamage(List<SentenceItemData> items, string bossConstraint)
+        {
+            int baseDamage = 10;
+            int multiplier = 1;
 
+            if (string.IsNullOrEmpty(bossConstraint)) return baseDamage;
+
+            // 예시: 조합된 문장의 아이템 태그 중 보스의 약점(Constraint) 키워드가 포함되어 있다면 데미지 3배
+            foreach (var item in items)
+            {
+                if (item != null)
+                {
+                    string tag = item.tags.ToString();
+                    if (!string.IsNullOrEmpty(tag) && bossConstraint.Contains(tag))
+                    {
+                        multiplier += 2;
+                    }
+                }
+            }
+
+            return baseDamage * multiplier;
+        }
         public void ShowModal()
         {
             EnsureUIInitialized();

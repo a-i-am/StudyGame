@@ -26,13 +26,13 @@ namespace StudyGame.Tests
         private void Start()
         {
             // Auto-detect targets if they exist in the scene
-            var portal = FindObjectOfType<PortalTrigger>();
+            var portal = FindFirstObjectByType<PortalTrigger>();
             if (portal != null)
             {
                 labels.Add(new FloatingLabel { target = portal.transform, text = "🚪 [포탈]\n닿으면 아지트로 이동" });
             }
 
-            var pickup = FindObjectOfType<SentenceItemPickup>();
+            var pickup = FindFirstObjectByType<SentenceItemPickup>();
             if (pickup != null)
             {
                 labels.Add(new FloatingLabel { target = pickup.transform, text = "✨ [아이템]\n가까이 가면 획득" });
@@ -139,7 +139,7 @@ namespace StudyGame.Tests
             GUI.Box(new Rect(x, y, width, height), "", hudStyle);
 
             GUILayout.BeginArea(new Rect(x + 15, y + 15, width - 30, height - 30));
-            
+
             GUILayout.Label("🎮 수직 슬라이스 테스트 컨트롤 HUD", titleStyle);
             GUILayout.Space(10);
 
@@ -151,11 +151,11 @@ namespace StudyGame.Tests
             GUILayout.Label($"<b>🎒 인벤토리:</b> 아이템 {invCount}개 소지중");
             GUILayout.Label($"<b>📻 아지트(도영):</b> 호감도 {rapport}");
             GUILayout.Label($"<b>🃏 로드아웃:</b> 덱에 스킬 {deckCount}장 편성됨");
-            
+
             GUILayout.Space(15);
             GUILayout.Label("<color=#aaaaaa>아래 숫자 키를 눌러 백엔드 시스템을 테스트하세요:</color>");
             GUILayout.Space(5);
-            
+
             GUILayout.Label("<b>[ 1 ]</b> 가상의 단서 아이템 루팅 (Inventory)");
             GUILayout.Label("<b>[ 2 ]</b> 도영과 대화하여 호감도 상승 (Rapport)");
             GUILayout.Label("<b>[ 3 ]</b> 랜덤 스킬 카드 덱에 추가 (Loadout)");
@@ -174,19 +174,19 @@ namespace StudyGame.Tests
                 if (label.target == null) continue;
 
                 Vector3 worldPos = label.target.position + label.offset;
-                
+
                 // Only draw if in front of camera
                 Vector3 viewportPos = cam.WorldToViewportPoint(worldPos);
                 if (viewportPos.z > 0 && viewportPos.x > 0 && viewportPos.x < 1 && viewportPos.y > 0 && viewportPos.y < 1)
                 {
                     Vector3 screenPos = cam.WorldToScreenPoint(worldPos);
-                    
+
                     GUIContent content = new GUIContent(label.text);
                     Vector2 size = labelStyle.CalcSize(content);
-                    
+
                     // Invert Y because GUI Y is top-down
                     Rect rect = new Rect(screenPos.x - (size.x / 2) - 5, Screen.height - screenPos.y - size.y - 5, size.x + 10, size.y + 10);
-                    
+
                     GUI.Label(rect, content, labelStyle);
                 }
             }
