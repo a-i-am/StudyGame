@@ -299,16 +299,23 @@ namespace StudyGame.Editor
             if (previewUtility != null)
             {
                 previewUtility.BeginPreview(previewRect, GUIStyle.none);
+                var renderer = previewCharacter.GetComponent<Renderer>();
+                var propBlock = new MaterialPropertyBlock();
+                renderer.GetPropertyBlock(propBlock);
+
                 if (isCharging)
                 {
-                    previewCharacter.GetComponent<Renderer>().sharedMaterial.color = Color.red;
+                    propBlock.SetColor("_BaseColor", Color.red);
+                    propBlock.SetColor("_Color", Color.red);
                     previewCharacter.transform.Rotate(Vector3.up, 2f);
                 }
                 else
                 {
-                    previewCharacter.GetComponent<Renderer>().sharedMaterial.color = Color.white;
+                    propBlock.SetColor("_BaseColor", Color.white);
+                    propBlock.SetColor("_Color", Color.white);
                     previewCharacter.transform.rotation = Quaternion.identity;
                 }
+                renderer.SetPropertyBlock(propBlock);
                 previewUtility.camera.Render();
                 Texture previewTexture = previewUtility.EndPreview();
                 GUI.DrawTexture(previewRect, previewTexture, ScaleMode.StretchToFill, false);
