@@ -183,7 +183,6 @@ temp_tools.jsonl
 # Resources folder ignored as per project requirement
 Assets/Resources/
 
-.gemini/rules.md
 
 # Private Vault for AI and sensitive docs
 .PrivateVault/
