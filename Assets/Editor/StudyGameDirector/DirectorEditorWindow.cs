@@ -82,12 +82,39 @@ namespace StudyGame.Editor.Director
             }
         }
 
+        private float DrawWhiteSlider(string label, float value, float min, float max)
+        {
+            EditorGUILayout.BeginHorizontal();
+            GUILayout.Label(label, _whiteLabel, GUILayout.Width(EditorGUIUtility.labelWidth - 4));
+            float result = EditorGUILayout.Slider("", value, min, max);
+            EditorGUILayout.EndHorizontal();
+            return result;
+        }
+
+        private int DrawWhiteIntSlider(string label, int value, int min, int max)
+        {
+            EditorGUILayout.BeginHorizontal();
+            GUILayout.Label(label, _whiteLabel, GUILayout.Width(EditorGUIUtility.labelWidth - 4));
+            int result = EditorGUILayout.IntSlider("", value, min, max);
+            EditorGUILayout.EndHorizontal();
+            return result;
+        }
+
+        private bool DrawWhiteToggle(string label, bool value)
+        {
+            EditorGUILayout.BeginHorizontal();
+            GUILayout.Label(label, _whiteLabel, GUILayout.Width(EditorGUIUtility.labelWidth - 4));
+            bool result = EditorGUILayout.Toggle("", value);
+            EditorGUILayout.EndHorizontal();
+            return result;
+        }
+
         [MenuItem("StudyGame/Director Hub (Master)")]
         public static void ShowWindow()
         {
             DirectorEditorWindow wnd = GetWindow<DirectorEditorWindow>();
             wnd.titleContent = new GUIContent("Director Hub");
-            wnd.minSize = new Vector2(900, 400);
+            wnd.minSize = new Vector2(400, 200);
         }
 
         private void OnEnable()
@@ -424,15 +451,40 @@ namespace StudyGame.Editor.Director
                                 GUILayout.Label("Room Size (W x H x L)", _whiteLabel, GUILayout.Width(EditorGUIUtility.labelWidth - 4));
                                 levelSettings.RoomSize = EditorGUILayout.Vector3Field("", levelSettings.RoomSize);
                                 EditorGUILayout.EndHorizontal();
+                                
+                                levelSettings.IsHollow = DrawWhiteToggle("Is Hollow (Room)", levelSettings.IsHollow);
                             }
                             else if (levelSettings.GeneratorType == LevelGeneratorType.MultiStoryBuilding)
                             {
-                                levelSettings.FloorCount = EditorGUILayout.IntSlider("Floor Count", levelSettings.FloorCount, 1, 50);
-                                levelSettings.FloorHeight = EditorGUILayout.Slider("Floor Height", levelSettings.FloorHeight, 2f, 50f);
-                                levelSettings.BuildingWidth = EditorGUILayout.Slider("Width (X)", levelSettings.BuildingWidth, 5f, 200f);
-                                levelSettings.BuildingLength = EditorGUILayout.Slider("Length (Z)", levelSettings.BuildingLength, 5f, 200f);
-                                levelSettings.IncludeStairs = EditorGUILayout.Toggle("Include Stairs", levelSettings.IncludeStairs);
-                                levelSettings.IncludePillars = EditorGUILayout.Toggle("Include Pillars", levelSettings.IncludePillars);
+                                levelSettings.FloorCount = DrawWhiteIntSlider("Floor Count", levelSettings.FloorCount, 1, 50);
+                                levelSettings.FloorHeight = DrawWhiteSlider("Floor Height", levelSettings.FloorHeight, 2f, 50f);
+                                levelSettings.BuildingWidth = DrawWhiteSlider("Width (X)", levelSettings.BuildingWidth, 5f, 200f);
+                                levelSettings.BuildingLength = DrawWhiteSlider("Length (Z)", levelSettings.BuildingLength, 5f, 200f);
+                                
+                                GUILayout.Space(5);
+                                levelSettings.IncludeOuterWalls = DrawWhiteToggle("Include Outer Walls", levelSettings.IncludeOuterWalls);
+                                if (levelSettings.IncludeOuterWalls)
+                                {
+                                    levelSettings.WallThickness = DrawWhiteSlider("  └ Wall Thickness", levelSettings.WallThickness, 0.1f, 5f);
+                                }
+                                
+                                GUILayout.Space(5);
+                                levelSettings.IncludePillars = DrawWhiteToggle("Include Pillars", levelSettings.IncludePillars);
+                                if (levelSettings.IncludePillars)
+                                {
+                                    levelSettings.PillarThickness = DrawWhiteSlider("  └ Pillar Thickness", levelSettings.PillarThickness, 0.1f, 10f);
+                                }
+                                
+                                GUILayout.Space(5);
+                                levelSettings.IncludeStairs = DrawWhiteToggle("Include Stairs", levelSettings.IncludeStairs);
+                                if (levelSettings.IncludeStairs)
+                                {
+                                    levelSettings.StairSteps = DrawWhiteIntSlider("  └ Stair Steps", levelSettings.StairSteps, 2, 50);
+                                    levelSettings.StairTreadDepth = DrawWhiteSlider("  └ Tread Depth", levelSettings.StairTreadDepth, 0.2f, 2f);
+                                    levelSettings.StairWidth = DrawWhiteSlider("  └ Stair Width", levelSettings.StairWidth, 1f, 20f);
+                                    levelSettings.StairOffsetX = DrawWhiteSlider("  └ Stair Offset X", levelSettings.StairOffsetX, -50f, 50f);
+                                    levelSettings.StairOffsetZ = DrawWhiteSlider("  └ Stair Offset Z", levelSettings.StairOffsetZ, -50f, 50f);
+                                }
                             }
 
                             if (EditorGUI.EndChangeCheck()) 

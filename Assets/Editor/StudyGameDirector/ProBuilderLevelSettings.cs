@@ -24,7 +24,18 @@ namespace StudyGame.Editor.Director
         public float BuildingWidth = 15f;
         public float BuildingLength = 15f;
         public float FloorThickness = 0.5f;
-        public bool IncludeStairs = true;
+        
         public bool IncludePillars = true;
+        public float PillarThickness = 1f;
+        
+        public bool IncludeStairs = true;
+        public int StairSteps = 10;
+        public float StairWidth = 3f;
+        public float StairTreadDepth = 0.5f; // 발 디딤판 깊이 (StairLength = Steps * TreadDepth)
+        public float StairOffsetX = 0f;
+        public float StairOffsetZ = 0f;
+        
+        public bool IncludeOuterWalls = false;
+        public float WallThickness = 0.5f;
     }
 }

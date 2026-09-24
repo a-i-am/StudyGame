@@ -42,7 +42,7 @@ namespace StudyGame.Editor.Director
                     // Pillars
                     if (settings.IncludePillars && i < settings.FloorCount - 1)
                     {
-                        float pWidth = 1f;
+                        float pWidth = settings.PillarThickness;
                         float px = (settings.BuildingWidth / 2f) - (pWidth / 2f);
                         float pz = (settings.BuildingLength / 2f) - (pWidth / 2f);
                         Vector3[] positions = {
@@ -62,14 +62,51 @@ namespace StudyGame.Editor.Director
                         }
                     }
 
+                    // Outer Walls
+                    if (settings.IncludeOuterWalls)
+                    {
+                        float t = settings.WallThickness;
+                        float w = settings.BuildingWidth;
+                        float l = settings.BuildingLength;
+                        float h = settings.FloorHeight;
+                        
+                        // North Wall
+                        var nWall = ShapeGenerator.GenerateCube(PivotLocation.Center, new Vector3(w, h, t));
+                        nWall.gameObject.name = "Wall_North";
+                        nWall.transform.SetParent(floorRoot.transform, false);
+                        nWall.transform.localPosition = new Vector3(0, h/2f, l/2f - t/2f);
+                        ApplyMaterialAndFinalize(nWall, mat);
+                        
+                        // South Wall
+                        var sWall = ShapeGenerator.GenerateCube(PivotLocation.Center, new Vector3(w, h, t));
+                        sWall.gameObject.name = "Wall_South";
+                        sWall.transform.SetParent(floorRoot.transform, false);
+                        sWall.transform.localPosition = new Vector3(0, h/2f, -l/2f + t/2f);
+                        ApplyMaterialAndFinalize(sWall, mat);
+                        
+                        // East Wall
+                        var eWall = ShapeGenerator.GenerateCube(PivotLocation.Center, new Vector3(t, h, l - t*2));
+                        eWall.gameObject.name = "Wall_East";
+                        eWall.transform.SetParent(floorRoot.transform, false);
+                        eWall.transform.localPosition = new Vector3(w/2f - t/2f, h/2f, 0);
+                        ApplyMaterialAndFinalize(eWall, mat);
+                        
+                        // West Wall
+                        var wWall = ShapeGenerator.GenerateCube(PivotLocation.Center, new Vector3(t, h, l - t*2));
+                        wWall.gameObject.name = "Wall_West";
+                        wWall.transform.SetParent(floorRoot.transform, false);
+                        wWall.transform.localPosition = new Vector3(-w/2f + t/2f, h/2f, 0);
+                        ApplyMaterialAndFinalize(wWall, mat);
+                    }
+
                     // Stairs (simple ramp for now, connecting to next floor)
                     if (settings.IncludeStairs && i < settings.FloorCount - 1)
                     {
-                        var stair = ShapeGenerator.GenerateStair(PivotLocation.Center, new Vector3(3f, settings.FloorHeight, 6f), 10, true);
+                        float stairLength = settings.StairTreadDepth * settings.StairSteps;
+                        var stair = ShapeGenerator.GenerateStair(PivotLocation.Center, new Vector3(settings.StairWidth, settings.FloorHeight, stairLength), settings.StairSteps, true);
                         stair.gameObject.name = "Stairs";
                         stair.transform.SetParent(floorRoot.transform, false);
-                        // Place stairs roughly in the center or side
-                        stair.transform.localPosition = new Vector3(0, settings.FloorHeight / 2f, 0);
+                        stair.transform.localPosition = new Vector3(settings.StairOffsetX, settings.FloorHeight / 2f, settings.StairOffsetZ);
                         ApplyMaterialAndFinalize(stair, mat);
                     }
                 }
