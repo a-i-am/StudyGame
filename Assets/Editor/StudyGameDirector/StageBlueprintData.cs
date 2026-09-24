@@ -28,6 +28,7 @@ namespace StudyGame.Editor.Director
         public string CameraPresetKey;
         public string FactoryMenuCommand;
         public string DataAssetPath;
+        public string SceneObjectName;
         public string ScenePath;
 
         public string SerializedPayload;

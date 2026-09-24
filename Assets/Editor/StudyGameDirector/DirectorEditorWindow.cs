@@ -42,11 +42,14 @@ namespace StudyGame.Editor.Director
         private string _yarnScriptContent = "";
         private Vector2 _yarnScrollPos;
 
-        private const float TRACK_HEADER_WIDTH = 140f;
+        private float _trackHeaderWidth = 140f;
         private const float TRACK_HEIGHT = 48f;
         private const float RULER_HEIGHT = 28f;
         private const float TOOLBAR_HEIGHT = 32f;
-        private const float INSPECTOR_WIDTH = 280f;
+        private float _inspectorWidth = 280f;
+
+        private bool _isResizingTrackHeader = false;
+        private bool _isResizingInspector = false;
 
         private bool _cameraPrefsLoaded = false;
         private Vector3 _hubBackOffset = new Vector3(0, 2.5f, -5f);
@@ -171,6 +174,48 @@ namespace StudyGame.Editor.Director
             DrawTimeline();
             DrawInspector();
             HandleTimelineInput();
+            DrawSplitters();
+        }
+
+        private void DrawSplitters()
+        {
+            Rect inspectorSplitter = new Rect(position.width - _inspectorWidth - 2, TOOLBAR_HEIGHT, 5, position.height - TOOLBAR_HEIGHT);
+            UnityEditor.EditorGUIUtility.AddCursorRect(inspectorSplitter, UnityEditor.MouseCursor.ResizeHorizontal);
+            if (Event.current.type == EventType.MouseDown && inspectorSplitter.Contains(Event.current.mousePosition))
+            {
+                _isResizingInspector = true;
+                Event.current.Use();
+            }
+            if (_isResizingInspector && Event.current.type == EventType.MouseDrag)
+            {
+                _inspectorWidth = Mathf.Clamp(position.width - Event.current.mousePosition.x, 200f, 600f);
+                Event.current.Use();
+            }
+            if (_isResizingInspector && (Event.current.type == EventType.MouseUp || Event.current.rawType == EventType.MouseUp))
+            {
+                _isResizingInspector = false;
+            }
+
+            float headerSplitterX = _trackHeaderWidth - _timelineScroll.x;
+            if (headerSplitterX > 0)
+            {
+                Rect headerSplitter = new Rect(headerSplitterX - 2, TOOLBAR_HEIGHT, 5, position.height - TOOLBAR_HEIGHT);
+                UnityEditor.EditorGUIUtility.AddCursorRect(headerSplitter, UnityEditor.MouseCursor.ResizeHorizontal);
+                if (Event.current.type == EventType.MouseDown && headerSplitter.Contains(Event.current.mousePosition))
+                {
+                    _isResizingTrackHeader = true;
+                    Event.current.Use();
+                }
+            }
+            if (_isResizingTrackHeader && Event.current.type == EventType.MouseDrag)
+            {
+                _trackHeaderWidth = Mathf.Clamp(Event.current.mousePosition.x + _timelineScroll.x, 100f, 400f);
+                Event.current.Use();
+            }
+            if (_isResizingTrackHeader && (Event.current.type == EventType.MouseUp || Event.current.rawType == EventType.MouseUp))
+            {
+                _isResizingTrackHeader = false;
+            }
         }
 
         private void DrawToolbar()
@@ -222,9 +267,9 @@ namespace StudyGame.Editor.Director
         {
             float startY = TOOLBAR_HEIGHT;
             float totalHeight = position.height - startY;
-            float totalWidth = position.width - INSPECTOR_WIDTH;
+            float totalWidth = position.width - _inspectorWidth;
 
-            float contentWidth = TRACK_HEADER_WIDTH + _timelineLength * _pixelsPerSecond;
+            float contentWidth = _trackHeaderWidth + _timelineLength * _pixelsPerSecond;
             float contentHeight = RULER_HEIGHT + _blueprintAsset.Blueprint.Tracks.Count * TRACK_HEIGHT + 20;
 
             _timelineScroll = GUI.BeginScrollView(
@@ -245,14 +290,14 @@ namespace StudyGame.Editor.Director
         private void DrawRuler()
         {
             float rulerY = 0;
-            Rect rulerRect = new Rect(TRACK_HEADER_WIDTH, rulerY, _timelineLength * _pixelsPerSecond, RULER_HEIGHT);
+            Rect rulerRect = new Rect(_trackHeaderWidth, rulerY, _timelineLength * _pixelsPerSecond, RULER_HEIGHT);
             EditorGUI.DrawRect(rulerRect, new Color(0.12f, 0.12f, 0.12f));
 
             GUIStyle tickStyle = new GUIStyle(EditorStyles.miniLabel) { normal = { textColor = new Color(0.6f, 0.6f, 0.6f) } };
 
             for (float t = 0; t <= _timelineLength; t += 1f)
             {
-                float x = TRACK_HEADER_WIDTH + t * _pixelsPerSecond;
+                float x = _trackHeaderWidth + t * _pixelsPerSecond;
                 EditorGUI.DrawRect(new Rect(x, rulerY + RULER_HEIGHT - 8, 1, 8), new Color(0.4f, 0.4f, 0.4f));
 
                 if (t % 5 == 0)
@@ -266,7 +311,7 @@ namespace StudyGame.Editor.Director
         private void DrawInspector()
         {
             InitStyles();
-            Rect inspectorRect = new Rect(position.width - INSPECTOR_WIDTH, TOOLBAR_HEIGHT, INSPECTOR_WIDTH, position.height - TOOLBAR_HEIGHT);
+            Rect inspectorRect = new Rect(position.width - _inspectorWidth, TOOLBAR_HEIGHT, _inspectorWidth, position.height - TOOLBAR_HEIGHT);
             EditorGUI.DrawRect(inspectorRect, new Color(0.2f, 0.2f, 0.2f));
 
             GUILayout.BeginArea(new Rect(inspectorRect.x + 10, inspectorRect.y + 10, inspectorRect.width - 20, inspectorRect.height - 20));
@@ -349,27 +394,52 @@ namespace StudyGame.Editor.Director
                             EditorGUILayout.EndHorizontal();
                             if (EditorGUI.EndChangeCheck()) { Undo.RecordObject(_blueprintAsset, "Modify Environment"); _selectedClip.Label = newTemplate; }
                             
-                            Vector2 size = new Vector2(10, 10);
+                            ProBuilderLevelSettings levelSettings = new ProBuilderLevelSettings();
                             if (!string.IsNullOrEmpty(_selectedClip.FloorplanJsonPath))
                             {
-                                string[] parts = _selectedClip.FloorplanJsonPath.Split(',');
-                                if (parts.Length == 2)
+                                if (_selectedClip.FloorplanJsonPath.StartsWith("{"))
                                 {
-                                    float.TryParse(parts[0], out size.x);
-                                    float.TryParse(parts[1], out size.y);
+                                    try { levelSettings = JsonUtility.FromJson<ProBuilderLevelSettings>(_selectedClip.FloorplanJsonPath); } catch {}
+                                }
+                                else
+                                {
+                                    string[] parts = _selectedClip.FloorplanJsonPath.Split(',');
+                                    if (parts.Length >= 2) { float.TryParse(parts[0], out levelSettings.RoomSize.x); float.TryParse(parts[1], out levelSettings.RoomSize.z); }
+                                    if (parts.Length >= 3) { float.TryParse(parts[2], out levelSettings.RoomSize.y); }
+                                    _selectedClip.FloorplanJsonPath = JsonUtility.ToJson(levelSettings);
                                 }
                             }
+                            if (levelSettings == null) levelSettings = new ProBuilderLevelSettings();
                             
                             EditorGUI.BeginChangeCheck();
+                            
                             EditorGUILayout.BeginHorizontal();
-                            GUILayout.Label("Room Size (W x L)", _whiteLabel, GUILayout.Width(EditorGUIUtility.labelWidth - 4));
-                            size = EditorGUILayout.Vector2Field("", size);
+                            GUILayout.Label("Generator Type", _whiteLabel, GUILayout.Width(EditorGUIUtility.labelWidth - 4));
+                            levelSettings.GeneratorType = (LevelGeneratorType)EditorGUILayout.EnumPopup(levelSettings.GeneratorType);
                             EditorGUILayout.EndHorizontal();
+
+                            if (levelSettings.GeneratorType == LevelGeneratorType.BasicRoom)
+                            {
+                                EditorGUILayout.BeginHorizontal();
+                                GUILayout.Label("Room Size (W x H x L)", _whiteLabel, GUILayout.Width(EditorGUIUtility.labelWidth - 4));
+                                levelSettings.RoomSize = EditorGUILayout.Vector3Field("", levelSettings.RoomSize);
+                                EditorGUILayout.EndHorizontal();
+                            }
+                            else if (levelSettings.GeneratorType == LevelGeneratorType.MultiStoryBuilding)
+                            {
+                                levelSettings.FloorCount = EditorGUILayout.IntSlider("Floor Count", levelSettings.FloorCount, 1, 50);
+                                levelSettings.FloorHeight = EditorGUILayout.Slider("Floor Height", levelSettings.FloorHeight, 2f, 50f);
+                                levelSettings.BuildingWidth = EditorGUILayout.Slider("Width (X)", levelSettings.BuildingWidth, 5f, 200f);
+                                levelSettings.BuildingLength = EditorGUILayout.Slider("Length (Z)", levelSettings.BuildingLength, 5f, 200f);
+                                levelSettings.IncludeStairs = EditorGUILayout.Toggle("Include Stairs", levelSettings.IncludeStairs);
+                                levelSettings.IncludePillars = EditorGUILayout.Toggle("Include Pillars", levelSettings.IncludePillars);
+                            }
+
                             if (EditorGUI.EndChangeCheck()) 
                             { 
                                 Undo.RecordObject(_blueprintAsset, "Modify Environment"); 
-                                _selectedClip.FloorplanJsonPath = $"{size.x},{size.y}"; 
-                                BuildProBuilderRoom(_selectedClip, size, _selectedClip.DataAssetPath, false); // Real-time rebuild
+                                _selectedClip.FloorplanJsonPath = JsonUtility.ToJson(levelSettings); 
+                                BuildProBuilderRoom(_selectedClip, levelSettings, _selectedClip.DataAssetPath, false); // Real-time rebuild
                             }
                             
                             EditorGUI.BeginChangeCheck();
@@ -404,13 +474,13 @@ namespace StudyGame.Editor.Director
                                 {
                                     _selectedClip.DataAssetPath = "";
                                 }
-                                BuildProBuilderRoom(_selectedClip, size, _selectedClip.DataAssetPath, false);
+                                BuildProBuilderRoom(_selectedClip, levelSettings, _selectedClip.DataAssetPath, false);
                             }
 
                             GUILayout.Space(10);
                             if (GUILayout.Button("🔨 Build ProBuilder Mesh in Scene", GUILayout.Height(30)))
                             {
-                                BuildProBuilderRoom(_selectedClip, size, _selectedClip.DataAssetPath, true);
+                                BuildProBuilderRoom(_selectedClip, levelSettings, _selectedClip.DataAssetPath, true);
                             }
                             break;
 
@@ -516,7 +586,7 @@ namespace StudyGame.Editor.Director
             GUI.contentColor = originalContentColor;
             GUILayout.EndArea();
 
-            EditorGUI.DrawRect(new Rect(position.width - INSPECTOR_WIDTH, TOOLBAR_HEIGHT, 1, position.height - TOOLBAR_HEIGHT), Color.black);
+            EditorGUI.DrawRect(new Rect(position.width - _inspectorWidth, TOOLBAR_HEIGHT, 1, position.height - TOOLBAR_HEIGHT), Color.black);
         }
 
         private void DrawTrack(int index, CompositionTrack track)
@@ -524,17 +594,17 @@ namespace StudyGame.Editor.Director
             float trackY = RULER_HEIGHT + index * TRACK_HEIGHT;
 
             Color bgColor = index % 2 == 0 ? new Color(0.2f, 0.2f, 0.2f) : new Color(0.22f, 0.22f, 0.22f);
-            EditorGUI.DrawRect(new Rect(0, trackY, TRACK_HEADER_WIDTH + _timelineLength * _pixelsPerSecond, TRACK_HEIGHT), bgColor);
+            EditorGUI.DrawRect(new Rect(0, trackY, _trackHeaderWidth + _timelineLength * _pixelsPerSecond, TRACK_HEIGHT), bgColor);
 
-            Rect headerRect = new Rect(0, trackY, TRACK_HEADER_WIDTH, TRACK_HEIGHT);
+            Rect headerRect = new Rect(0, trackY, _trackHeaderWidth, TRACK_HEIGHT);
             EditorGUI.DrawRect(headerRect, new Color(0.15f, 0.15f, 0.15f));
 
             EditorGUI.DrawRect(new Rect(0, trackY, 4, TRACK_HEIGHT), track.TrackColor);
 
             GUIStyle headerStyle = new GUIStyle(EditorStyles.boldLabel) { normal = { textColor = Color.white }, fontSize = 11 };
-            GUI.Label(new Rect(10, trackY + 4, TRACK_HEADER_WIDTH - 40, 20), track.TrackName, headerStyle);
+            GUI.Label(new Rect(10, trackY + 4, _trackHeaderWidth - 40, 20), track.TrackName, headerStyle);
 
-            if (GUI.Button(new Rect(TRACK_HEADER_WIDTH - 28, trackY + 14, 20, 20), "+"))
+            if (GUI.Button(new Rect(_trackHeaderWidth - 28, trackY + 14, 20, 20), "+"))
             {
                 AddClipToTrack(track);
             }
@@ -547,7 +617,7 @@ namespace StudyGame.Editor.Director
 
         private void DrawClip(float trackY, CompositionClip clip, CompositionTrack track)
         {
-            float clipX = TRACK_HEADER_WIDTH + clip.TimeStart * _pixelsPerSecond;
+            float clipX = _trackHeaderWidth + clip.TimeStart * _pixelsPerSecond;
             float clipW = Mathf.Max(clip.Duration * _pixelsPerSecond, 30f);
             float clipY = trackY + 4;
             float clipH = TRACK_HEIGHT - 8;
@@ -698,7 +768,7 @@ namespace StudyGame.Editor.Director
 
                 foreach (var clip in _blueprintAsset.Blueprint.Tracks[i].Clips)
                 {
-                    float clipX = TRACK_HEADER_WIDTH + clip.TimeStart * _pixelsPerSecond;
+                    float clipX = _trackHeaderWidth + clip.TimeStart * _pixelsPerSecond;
                     float clipW = Mathf.Max(clip.Duration * _pixelsPerSecond, 30f);
                     if (pos.x >= clipX && pos.x <= clipX + clipW)
                         return clip;
@@ -717,7 +787,7 @@ namespace StudyGame.Editor.Director
 
                 foreach (var clip in _blueprintAsset.Blueprint.Tracks[i].Clips)
                 {
-                    float clipX = TRACK_HEADER_WIDTH + clip.TimeStart * _pixelsPerSecond;
+                    float clipX = _trackHeaderWidth + clip.TimeStart * _pixelsPerSecond;
                     float clipW = Mathf.Max(clip.Duration * _pixelsPerSecond, 30f);
                     handleRect = new Rect(clipX + clipW - 8, trackY + 4, 8, TRACK_HEIGHT - 8);
                     if (handleRect.Contains(pos))
@@ -824,7 +894,7 @@ namespace StudyGame.Editor.Director
             menu.ShowAsContext();
         }
 
-        private void BuildProBuilderRoom(CompositionClip clip, Vector2 size, string materialPath, bool selectObject = false)
+        private void BuildProBuilderRoom(CompositionClip clip, ProBuilderLevelSettings settings, string materialPath, bool selectObject = false)
         {
             string sandboxPath = "Assets/Scenes/Sandbox.unity";
             if (UnityEditor.SceneManagement.EditorSceneManager.GetActiveScene().path != sandboxPath)
@@ -843,23 +913,24 @@ namespace StudyGame.Editor.Director
             }
 
             string templateName = string.IsNullOrEmpty(clip.Label) ? "New Map" : clip.Label;
-            string roomName = $"Level_[{clip.ClipId}] {templateName}";
+            string roomName = $"Level_{templateName}";
             
             // Delete old objects belonging to this clip
+            var toDestroy = new System.Collections.Generic.List<GameObject>();
             foreach (var go in UnityEngine.Object.FindObjectsByType<GameObject>(FindObjectsSortMode.None))
             {
-                if (go.name.StartsWith($"Level_[{clip.ClipId}]"))
+                if (go != null && ((!string.IsNullOrEmpty(clip.SceneObjectName) && go.name == clip.SceneObjectName) ||
+                    go.name.StartsWith($"Level_[{clip.ClipId}]")))
+                {
+                    toDestroy.Add(go);
+                }
+            }
+            foreach (var go in toDestroy)
+            {
+                if (go != null)
                 {
                     DestroyImmediate(go);
                 }
-            }
-
-            var shape = UnityEngine.ProBuilder.ShapeGenerator.GenerateCube(UnityEngine.ProBuilder.PivotLocation.Center, new Vector3(size.x, 3f, size.y));
-            shape.gameObject.name = roomName;
-            
-            foreach (var face in shape.faces)
-            {
-                face.Reverse();
             }
 
             Material mat = null;
@@ -873,20 +944,17 @@ namespace StudyGame.Editor.Director
             {
                 mat = UnityEngine.ProBuilder.BuiltinMaterials.defaultMaterial;
             }
-                
-            if (mat != null)
+
+            GameObject root = ProceduralLevelGenerator.GenerateLevel(roomName, settings, mat);
+            clip.SceneObjectName = roomName;
+            
+            // Note: NavigationStatic is obsolete, use NavMeshBuildMarkup if needed. We'll just use ContributeGI.
+            foreach (Transform child in root.GetComponentsInChildren<Transform>(true))
             {
-                shape.GetComponent<MeshRenderer>().sharedMaterial = mat;
-                shape.SetMaterial(shape.faces, mat);
+                GameObjectUtility.SetStaticEditorFlags(child.gameObject, StaticEditorFlags.ContributeGI | StaticEditorFlags.OccludeeStatic | StaticEditorFlags.OccluderStatic);
             }
 
-            shape.ToMesh();
-            shape.Refresh();
-
-            shape.gameObject.AddComponent<MeshCollider>();
-            GameObjectUtility.SetStaticEditorFlags(shape.gameObject, StaticEditorFlags.ContributeGI | StaticEditorFlags.NavigationStatic | StaticEditorFlags.OccludeeStatic | StaticEditorFlags.OccluderStatic);
-
-            if (selectObject) Selection.activeGameObject = shape.gameObject;
+            if (selectObject) Selection.activeGameObject = root;
             UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(UnityEditor.SceneManagement.EditorSceneManager.GetActiveScene());
         }
 
