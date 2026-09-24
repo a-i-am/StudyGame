@@ -184,3 +184,6 @@ temp_tools.jsonl
 Assets/Resources/
 
 .gemini/rules.md
+
+# Private Vault for AI and sensitive docs
+.PrivateVault/
