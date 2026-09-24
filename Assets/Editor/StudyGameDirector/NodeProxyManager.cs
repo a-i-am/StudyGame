@@ -67,10 +67,12 @@ namespace StudyGame.Editor.Director
             if (renderer != null && renderer.sharedMaterial != null)
             {
                 // We shouldn't modify actual prefab materials permanently, so create an instance for the proxy
-                if (proxy.GetComponent<MeshFilter>() != null) // It's the fallback capsule
+                if (proxy.GetComponent<MeshFilter>() != null)
                 {
-                    var mat = new Material(Shader.Find("Standard"));
-                    mat.color = color;
+                    Shader safeShader = Shader.Find("Universal Render Pipeline/Lit") ?? Shader.Find("Standard") ?? Shader.Find("Diffuse");
+                    var mat = new Material(safeShader);
+                    if (mat.HasProperty("_BaseColor")) mat.SetColor("_BaseColor", color);
+                    if (mat.HasProperty("_Color")) mat.SetColor("_Color", color);
                     renderer.material = mat;
                 }
             }
