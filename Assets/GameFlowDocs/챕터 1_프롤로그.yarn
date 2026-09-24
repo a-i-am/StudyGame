@@ -1,0 +1,43 @@
+title: Prologue_Start
+---
+// 학교 홍보 영상 재생
+<<play_video UI_VideoPlayer 라미고교_홍보영상>>
+
+// 교실 씬 전환
+<<load_level Level_Environment 교실_책상>>
+
+// 핸드폰 알림 연출
+<<play_haptic UI_Phone Vibrate>>
+<<play_sound UI_Phone SNS_알림음>>
+
+// SNS 힌트 게시물 팝업
+<<open_ui UI_SNS 튜토리얼_게시물>>
+// 게시물 내용에 Bold 힌트 포함 (UI 내부 로직 처리)
+<<wait_ui_close UI_SNS>>
+
+// 서술형 나레이션
+<<open_ui UI_Dialogue>>
+System: 책상에 엎드려 잠들어 있던 당신은 날카로운 알림 소리에 눈을 떴다.
+System: 익숙해야 할 교실의 풍경은 온데간데없이 사라졌고...
+System: 눈앞에는 기이하고 뒤틀린 형상의 공간이 끝없이 펼쳐져 있다.
+
+// 기이한 필드로 전환 및 플레이어 컨트롤 부여
+<<load_level Level_Environment 기이한_탐험_필드>>
+<<enable_control Player_Controller>>
+===
+
+title: Tutorial_Encounter
+---
+// 엑스트라 구출 및 괴이 조우 시 호출
+System: 저 멀리 기이한 형상에 사로잡힌 누군가가 보인다.
+<<open_ui UI_Deckbuilding>>
+System: 머릿속에 기묘한 공식들이 떠오른다. 이것들을 엮어 대응할 수 있을 것 같다.
+===
+
+title: Boss_Battle
+---
+// 보스 조우 시 호출
+System: 공간 전체를 짓누르는 압도적인 존재감이 느껴진다.
+<<start_combat Enemy_Boss_AI>>
+// 이후 Combat_KeywordSystem에 의해 단어 조합 기믹 진행
+===
