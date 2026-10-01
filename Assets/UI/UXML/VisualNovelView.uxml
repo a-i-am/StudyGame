@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <ui:VisualElement name="Root" class="w-full h-full bg-transparent">
+        <ui:VisualElement name="DialogFrame" class="absolute bottom-4 right-4 z-10 w-3/4 ds-panel bg-slate-800/90 p-6 rounded-lg border-2 border-cyan-400">
+            <ui:Label name="Label_Speaker" text="Speaker" class="text-cyan-400 text-2xl font-bold ds-text-h2 mb-2" />
+            <ui:Label name="Label_Dialog" text="This is a neo-punk visual novel dialog." class="text-white text-xl ds-text-body ds-font-serif" />
+            <ui:Button name="Button_Next" text="Next >" class="ds-btn ds-btn-primary absolute bottom-2 right-2" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

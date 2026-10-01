@@ -22,18 +22,8 @@ public class PhoneUIDocumentController : MonoBehaviour
 
     private void Awake()
     {
-        uiDocument = GetComponent<UIDocument>();
-        if (uiDocument != null)
-        {
-            if (panelSettings != null)
-            {
-                uiDocument.panelSettings = panelSettings;
-            }
-            if (uxmlDocument != null)
-            {
-                uiDocument.visualTreeAsset = uxmlDocument;
-            }
-        }
+        EnsureDocumentConfigured();
+        InitializeUI();
     }
 
     private void OnEnable()
@@ -60,9 +50,65 @@ public class PhoneUIDocumentController : MonoBehaviour
         messageScroll = uiDocument.rootVisualElement.Q<ScrollView>("MessageScroll");
     }
 
+    private void EnsureDocumentConfigured()
+    {
+        if (uiDocument == null)
+        {
+            uiDocument = GetComponent<UIDocument>();
+        }
+
+        if (uiDocument != null)
+        {
+            if (panelSettings != null)
+            {
+                uiDocument.panelSettings = panelSettings;
+            }
+            if (uxmlDocument != null)
+            {
+                uiDocument.visualTreeAsset = uxmlDocument;
+            }
+        }
+    }
+
+    public void SetVisible(bool visible)
+    {
+        if (phoneFrame != null)
+        {
+            phoneFrame.style.display = visible ? DisplayStyle.Flex : DisplayStyle.None;
+        }
+        else if (uiDocument != null && uiDocument.rootVisualElement != null)
+        {
+            uiDocument.rootVisualElement.style.display = visible ? DisplayStyle.Flex : DisplayStyle.None;
+        }
+    }
+
+    public void SetSender(string name, Sprite profileSprite)
+    {
+        if (senderName != null)
+        {
+            senderName.text = name;
+        }
+
+        if (profileImage != null)
+        {
+            profileImage.style.backgroundImage = profileSprite != null ? new StyleBackground(profileSprite) : new StyleBackground(StyleKeyword.None);
+        }
+    }
+
+    public void ClearMessages()
+    {
+        if (messageScroll != null)
+        {
+            messageScroll.Clear();
+        }
+    }
+
     public void AddMessage(string messageText)
     {
-        if (messageScroll == null) return;
+        if (messageScroll == null)
+        {
+            return;
+        }
 
         VisualElement bubble = new VisualElement();
         bubble.AddToClassList("sns-bubble");
@@ -72,5 +118,6 @@ public class PhoneUIDocumentController : MonoBehaviour
         bubble.Add(label);
 
         messageScroll.Add(bubble);
+        messageScroll.ScrollTo(bubble);
     }
 }

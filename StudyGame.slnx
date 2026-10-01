@@ -6,13 +6,17 @@
   <Project Path="PPv2URPConverters.csproj" />
   <Project Path="Assembly-CSharp.csproj" />
   <Project Path="Unity.RenderPipelines.Universal.Runtime.csproj" />
+  <Project Path="UnityUIToolkitExtensions.csproj" />
   <Project Path="Assembly-CSharp-Editor.csproj" />
   <Project Path="R3.Unity.csproj" />
   <Project Path="Unity.RenderPipelines.Universal.Editor.Tests.csproj" />
+  <Project Path="DesignSystem.Runtime.csproj" />
   <Project Path="R3.Unity.Editor.csproj" />
+  <Project Path="DesignSystem.Editor.csproj" />
   <Project Path="R3.Unity.TextMeshPro.csproj" />
   <Project Path="Unity.RenderPipelines.Universal.Runtime.Tests.csproj" />
   <Project Path="Unity.RenderPipeline.Universal.ShaderLibrary.csproj" />
+  <Project Path="UnityUIToolkitExtensions.Editor.csproj" />
   <Project Path="R3.Unity.XRInteractionToolkit.csproj" />
   <Project Path="Unity.RenderPipelines.Universal.Shaders.csproj" />
 </Solution>

@@ -38,6 +38,7 @@ public static class UIGallerySceneBuilder
 
         var director = galleryGo.AddComponent<UIGalleryDirector>();
         director.PopulateAllUxml();
+        galleryGo.AddComponent<UILayoutCustomizer>();
 
         string scenePath = "Assets/Scenes/UIGalleryScene.unity";
         EditorSceneManager.SaveScene(scene, scenePath);

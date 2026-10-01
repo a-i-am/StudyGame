@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <ui:VisualElement name="Root" class="flex-col w-full h-full ds-panel-glassmorphism justify-end pb-8">
+        <ui:ScrollView name="ScrollView_Chat" class="w-full h-1/2 bg-transparent p-4 flex-col">
+            <!-- Dynamic elements will be inserted here -->
+        </ui:ScrollView>
+        <ui:VisualElement class="flex-row w-full p-4 bg-black/50">
+            <ui:Label name="Label_StreamingText" text="Waiting for LLM..." class="text-white text-lg ds-text-body flex-grow" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

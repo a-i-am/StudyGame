@@ -1,3 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xmlns:ext="Unity.UI.Extensions" editor-extension-mode="False">
+    <ui:VisualElement name="Root" class="flex-col w-full h-full bg-slate-900 ds-panel">
+        <ui:VisualElement class="flex-row justify-between w-full p-4 mt-2">
+            <ui:Label name="Label_PlayerLevel" text="Lv.99 Player" class="text-white text-lg font-bold ds-text-h2" />
+            <ui:Button name="Button_Settings" text="Settings" class="ds-btn ds-btn-secondary" />
+        </ui:VisualElement>
+        
+        <ui:VisualElement class="flex-grow items-center justify-center">
+            <ui:Label text="Anime Lobby" class="text-white text-4xl ds-text-h1 ds-font-serif" />
+        </ui:VisualElement>
+
+        <ui:VisualElement class="flex-row justify-end w-full p-4">
+            <ui:Button name="Button_Gacha" text="Gacha" class="ds-btn ds-btn-primary p-4 text-xl" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
+<?xml version="1.0" encoding="utf-8"?>
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <ui:VisualElement name="Root" class="flex-col w-full h-full ds-panel-glassmorphism justify-end pb-8">
+        <ui:ScrollView name="ScrollView_Chat" class="w-full h-1/2 bg-transparent p-4 flex-col">
+            <!-- Dynamic elements will be inserted here -->
+        </ui:ScrollView>
+        <ui:VisualElement class="flex-row w-full p-4 bg-black/50">
+            <ui:Label name="Label_StreamingText" text="Waiting for LLM..." class="text-white text-lg ds-text-body flex-grow" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
+<?xml version="1.0" encoding="utf-8"?>
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <ui:VisualElement name="Root" class="w-full h-full bg-transparent">
+        <ui:VisualElement name="DialogFrame" class="absolute bottom-4 right-4 z-10 w-3/4 ds-panel bg-slate-800/90 p-6 rounded-lg border-2 border-cyan-400">
+            <ui:Label name="Label_Speaker" text="Speaker" class="text-cyan-400 text-2xl font-bold ds-text-h2 mb-2" />
+            <ui:Label name="Label_Dialog" text="This is a neo-punk visual novel dialog." class="text-white text-xl ds-text-body ds-font-serif" />
+            <ui:Button name="Button_Next" text="Next >" class="ds-btn ds-btn-primary absolute bottom-2 right-2" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
+using UnityEngine;
+using UnityEngine.UIElements;
+
+public partial class AnimeLobbyView : VisualElement
+{
+    public void Initialize()
+    {
+        // Example of using auto-generated bindings
+        // Assuming binding generator creates these based on UXML names
+        // Label_PlayerLevel.text = "Lv.100 Pro Player";
+        // Button_Settings.clicked += () => Debug.Log("Settings clicked");
+        // Button_Gacha.clicked += () => Debug.Log("Gacha clicked");
+    }
+}
+using UnityEngine;
+using UnityEngine.UIElements;
+using System.Text;
+
+public partial class StreamExperienceView : VisualElement
+{
+    private StringBuilder _textBuffer = new StringBuilder();
+    private bool _isDirty = false;
+
+    public void AppendText(string chunk)
+    {
+        _textBuffer.Append(chunk);
+        _isDirty = true;
+    }
+
+    public void OnUpdate()
+    {
+        if (_isDirty)
+        {
+            // Assuming Label_StreamingText is auto-generated
+            // Label_StreamingText.text = _textBuffer.ToString();
+            _isDirty = false;
+        }
+    }
+}
+using UnityEngine;
+using UnityEngine.UIElements;
+
+public partial class VisualNovelView : VisualElement
+{
+    public void Bind()
+    {
+        // Example of memory cleanup pattern
+        // Button_Next.clicked += OnNextClicked;
+
+        this.RegisterCallback<DetachFromPanelEvent>(e =>
+        {
+            // Button_Next.clicked -= OnNextClicked;
+        });
+    }
+
+    private void OnNextClicked()
+    {
+        Debug.Log("Next Dialog");
+    }
+}
 using System;
 using System.Collections.Generic;
 using UnityEngine;

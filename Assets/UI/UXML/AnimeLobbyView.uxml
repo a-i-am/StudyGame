@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xmlns:ext="Unity.UI.Extensions" editor-extension-mode="False">
+    <ui:VisualElement name="Root" class="flex-col w-full h-full bg-slate-900 ds-panel">
+        <ui:VisualElement class="flex-row justify-between w-full p-4 mt-2">
+            <ui:Label name="Label_PlayerLevel" text="Lv.99 Player" class="text-white text-lg font-bold ds-text-h2" />
+            <ui:Button name="Button_Settings" text="Settings" class="ds-btn ds-btn-secondary" />
+        </ui:VisualElement>
+        
+        <ui:VisualElement class="flex-grow items-center justify-center">
+            <ui:Label text="Anime Lobby" class="text-white text-4xl ds-text-h1 ds-font-serif" />
+        </ui:VisualElement>
+
+        <ui:VisualElement class="flex-row justify-end w-full p-4">
+            <ui:Button name="Button_Gacha" text="Gacha" class="ds-btn ds-btn-primary p-4 text-xl" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
