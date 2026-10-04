@@ -359,6 +359,21 @@ MonoBehaviour:
       \uCEF4\uD3EC\uB10C\uD2B8)"
     templateAsset: {fileID: 9197481963319205126, guid: 15b3d7ff33a42794882a145acd1948cf, type: 3}
     assetPath: Assets/UI/Showcase/OpenSource_Showcase.uxml
+  - displayName: AnimeLobbyView
+    description: "UI \uC544\uD0A4\uD14D\uCC98 PoC: Endava Binding + ZoboUI + Sinanata
+      Tokens \uC801\uC6A9 \uC815\uC801 \uB85C\uBE44"
+    templateAsset: {fileID: 9197481963319205126, guid: a9ef80ef1e1666c4a82fe09c0c0ff593, type: 3}
+    assetPath: Assets/UI/UXML/AnimeLobbyView.uxml
+  - displayName: StreamExperienceView
+    description: "UI \uC544\uD0A4\uD14D\uCC98 PoC: LLM \uD14D\uC2A4\uD2B8 \uC2A4\uD2B8\uB9AC\uBC0D
+      \uC218\uB3D9 \uBC30\uCE6D(Dirty Flag) \uBC0F Glassmorphism UI"
+    templateAsset: {fileID: 9197481963319205126, guid: cb078e689bb9c234284424f0e1350b0c, type: 3}
+    assetPath: Assets/UI/UXML/StreamExperienceView.uxml
+  - displayName: VisualNovelView
+    description: "UI \uC544\uD0A4\uD14D\uCC98 PoC: Visual Novel \uBAA8\uB4DC - \uC774\uBCA4\uD2B8
+      DetachFromPanel \uBA54\uBAA8\uB9AC \uAD00\uB9AC \uC801\uC6A9"
+    templateAsset: {fileID: 9197481963319205126, guid: 4afc1ee0e7f961c419d857509ac2a9a8, type: 3}
+    assetPath: Assets/UI/UXML/VisualNovelView.uxml
 --- !u!114 &666997796
 MonoBehaviour:
   m_ObjectHideFlags: 0

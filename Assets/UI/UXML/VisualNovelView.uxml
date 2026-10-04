@@ -1,10 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
-    <ui:VisualElement name="Root" class="w-full h-full bg-transparent">
-        <ui:VisualElement name="DialogFrame" class="absolute bottom-4 right-4 z-10 w-3/4 ds-panel bg-slate-800/90 p-6 rounded-lg border-2 border-cyan-400">
-            <ui:Label name="Label_Speaker" text="Speaker" class="text-cyan-400 text-2xl font-bold ds-text-h2 mb-2" />
-            <ui:Label name="Label_Dialog" text="This is a neo-punk visual novel dialog." class="text-white text-xl ds-text-body ds-font-serif" />
-            <ui:Button name="Button_Next" text="Next >" class="ds-btn ds-btn-primary absolute bottom-2 right-2" />
+<ui:UXML
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ui="UnityEngine.UIElements"
+    xmlns:uie="UnityEditor.UIElements"
+    xsi:noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd"
+>
+    <!-- CSS inclusion for minimal overrides, relies mainly on ZoboUI/SinanataDS -->
+    <ui:Style src="project://database/Packages/com.sinanata.designsystem/Resources/UI/Styles/DesignSystem/DesignTokens.uss" />
+    <ui:Style src="project://database/Packages/com.sinanata.designsystem/Resources/UI/Styles/DesignSystem/Buttons.uss" />
+    <ui:Style src="project://database/Packages/com.sinanata.designsystem/Resources/UI/Styles/DesignSystem/Badges.uss" />
+    <ui:Style src="project://database/Packages/com.sinanata.designsystem/Resources/UI/Styles/DesignSystem/Cards.uss" />
+    <ui:Style src="project://database/Packages/com.unity.uitoolkitextensions/Runtime/Styles/UIToolkitExtensionsControlStyles.uss" />
+    <ui:Style src="project://database/Assets/UI/Styles/zoboui_generated.uss" />
+    <ui:Style src="VisualNovelView.uss" />
+
+    <ui:VisualElement class="w-full h-full ds-bg-dark relative overflow-hidden flex-col justify-between max-w-7xl max-h-screen">
+        
+        <!-- Overlays (Scanlines, Vignette) -->
+        <ui:VisualElement class="absolute inset-0 scanlines opacity-60 pointer-events-none" />
+        <ui:VisualElement name="VisualElement_VignetteFlash" class="absolute inset-0 ds-bg-gradient-vignette opacity-0 transition-opacity pointer-events-none" />
+
+        <!-- Background Scene Layout -->
+        <ui:VisualElement class="absolute inset-0 z-0 flex-col justify-end overflow-hidden pointer-events-none">
+            <ui:VisualElement class="w-full h-3/5 bg-teal-900 border-b-4 border-black flex-center overflow-hidden">
+                <ui:VisualElement class="h-full flex-col justify-end" />
+            </ui:VisualElement>
+            <ui:VisualElement class="w-full h-2/5 bg-rose-700 border-t-4 border-black overflow-hidden flex-col justify-end" />
         </ui:VisualElement>
+
+        <!-- Top-Left Projection Badge -->
+        <ui:VisualElement class="relative z-20 pt-8 pl-8 pointer-events-none">
+            <ui:VisualElement class="w-16 h-16 bg-gray-800 border-2 border-black flex-center rotate-45 shadow-xl shadow-black">
+                <ui:Label text="映" class="-rotate-45 ds-text-h2 ds-text-light ds-font-serif" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+
+        <!-- Top-Right Quick Bar -->
+        <ui:VisualElement class="absolute top-8 right-8 z-30 flex-row space-x-3">
+            <ui:Button name="Button_Auto" text="AUTO" class="ds-btn ds-btn-outline px-4 py-2 text-xs" />
+            <ui:Button name="Button_Skip" text="SKIP" class="ds-btn ds-btn-outline px-4 py-2 text-xs" />
+            <ui:Button name="Button_Log" text="LOG" class="ds-btn ds-btn-outline px-4 py-2 text-xs" />
+            <ui:Button name="Button_Sound" text="SND" class="ds-btn ds-btn-outline px-4 py-2 text-xs" />
+        </ui:VisualElement>
+
+        <!-- Interactive Main Dialogue Area -->
+        <ui:VisualElement name="VisualElement_ClickZone" class="relative z-20 w-full px-12 pb-8 flex-col justify-end cursor-pointer">
+            
+            <!-- Name Plate -->
+            <ui:VisualElement class="relative left-12 -mb-3 z-30 flex-row items-center">
+                <ui:VisualElement class="flex-row items-center space-x-4 bg-gray-950 border-2 border-rose-500 py-2 px-6 rounded-md shadow-lg">
+                    <ui:Label name="Label_CharacterName" text="セ・セ・ナ" class="ds-text-h4 ds-text-light ds-font-bold" />
+                    
+                    <ui:VisualElement class="flex-row items-center space-x-2 ml-2">
+                        <ui:VisualElement name="Gem_Amber" class="w-4 h-4 bg-amber-500 rotate-45 border border-white-50 shadow-sm" />
+                        <ui:VisualElement name="Gem_Cyan" class="w-4 h-4 bg-cyan-500 rotate-45 border border-white-50 shadow-sm" />
+                        <ui:VisualElement name="Gem_Emerald" class="w-4 h-4 bg-emerald-500 rotate-45 border border-white-50 shadow-sm" />
+                    </ui:VisualElement>
+                </ui:VisualElement>
+            </ui:VisualElement>
+
+            <!-- Dialogue Frame Window -->
+            <ui:VisualElement class="w-full rounded-3xl bg-gray-900 border-2 border-rose-800 shadow-2xl px-16 py-10 min-h-200px flex-row items-center justify-between ds-panel">
+                
+                <ui:VisualElement class="w-full pl-12 pr-16 z-10">
+                    <ui:Label name="Label_DialogueText" text="..." class="ds-text-body ds-text-light ds-font-serif leading-loose tracking-wide" />
+                </ui:VisualElement>
+
+                <!-- Next Sigil Marker -->
+                <ui:VisualElement class="absolute right-10 bottom-6 z-20 flex-center">
+                    <ui:VisualElement name="VisualElement_Sigil" class="w-8 h-8 bg-rose-500 rotate-45 shadow-lg" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+
+        </ui:VisualElement>
+
+        <!-- Backlog / History Modal Overlay -->
+        <ui:VisualElement name="VisualElement_BacklogModal" class="absolute inset-0 z-50 bg-black-90 hidden flex-col p-12">
+            <ui:VisualElement class="flex-row items-center justify-between border-b-2 border-rose-500 pb-6 mb-6">
+                <ui:Label text="CHRONICLE LOG" class="ds-text-h2 ds-text-light ds-font-serif tracking-widest" />
+                <ui:Button name="Button_CloseLog" text="CLOSE [ESC]" class="ds-btn ds-btn-outline px-6 py-3" />
+            </ui:VisualElement>
+            <ui:ScrollView name="ScrollView_Log" class="flex-1 w-full pr-4" />
+        </ui:VisualElement>
+
     </ui:VisualElement>
 </ui:UXML>
