@@ -1,11 +1,262 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
-    <ui:VisualElement name="Root" class="flex-col w-full h-full ds-panel-glassmorphism justify-end pb-8">
-        <ui:ScrollView name="ScrollView_Chat" class="w-full h-1/2 bg-transparent p-4 flex-col">
-            <!-- Dynamic elements will be inserted here -->
-        </ui:ScrollView>
-        <ui:VisualElement class="flex-row w-full p-4 bg-black/50">
-            <ui:Label name="Label_StreamingText" text="Waiting for LLM..." class="text-white text-lg ds-text-body flex-grow" />
+<!--
+    Aura Glassmorphism Stream Experience
+    Reference: 비주얼 레퍼런스/Frontend/glassmorphism_stream_ui_experience.html
+
+    NOTE: This view intentionally uses ONLY classes defined in StreamExperienceView.uss.
+    UI Toolkit is not a browser: Tailwind/ZoboUI utility names that do not exist in a loaded
+    stylesheet are silently ignored, which is what broke the previous version.
+    The root custom element (StreamExperienceView) is what makes the C# logic run when the
+    gallery calls VisualTreeAsset.Instantiate().
+-->
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:views="StudyGame.UI.Views">
+    <ui:Style src="StreamExperienceView.uss" />
+
+    <views:StreamExperienceView class="aura-host">
+        <ui:VisualElement name="Root_Container" class="aura-root">
+
+            <!-- Ambient light orbs + particle layer (filled from C#) -->
+            <ui:VisualElement class="aura-layer" picking-mode="Ignore">
+                <ui:VisualElement name="Orb_Blue" class="aura-orb aura-orb--blue" picking-mode="Ignore" />
+                <ui:VisualElement name="Orb_Purple" class="aura-orb aura-orb--purple" picking-mode="Ignore" />
+            </ui:VisualElement>
+            <ui:VisualElement name="Layer_Particles" class="aura-layer" picking-mode="Ignore" />
+
+            <!-- ===== Top Floating Header Bar ===== -->
+            <ui:VisualElement class="aura-header">
+                <ui:VisualElement class="glass header-bar">
+                    <ui:VisualElement class="row header-left">
+                        <ui:VisualElement class="logo-badge">
+                            <ui:VisualElement class="diamond diamond--logo" />
+                            <ui:VisualElement name="Live_Ping" class="live-ping" />
+                            <ui:VisualElement class="live-dot" />
+                        </ui:VisualElement>
+                        <ui:Label text="AURA STREAM" class="brand-title" />
+                        <ui:Label text="LIVE UI PACK" class="brand-pill" />
+                    </ui:VisualElement>
+
+                    <ui:VisualElement name="Nav_Scenes" class="row scene-nav">
+                        <ui:Button name="Tab_Starting" text="Starting" class="scene-tab scene-tab--active" />
+                        <ui:Button name="Tab_Break" text="Break Time" class="scene-tab" />
+                        <ui:Button name="Tab_Ending" text="Ending" class="scene-tab" />
+                        <ui:Button name="Tab_Ingame" text="In-Game Overlay" class="scene-tab" />
+                        <ui:Button name="Tab_Alerts" text="Alerts Showcase" class="scene-tab" />
+                    </ui:VisualElement>
+
+                    <ui:VisualElement class="row header-right">
+                        <ui:Button name="Button_Sound" text="♪" class="glass icon-btn" />
+                        <ui:Button name="Button_TestAlert" text="Test Alert" class="pill-btn" />
+                        <ui:Button name="Button_Fullscreen" text="⤢" class="glass icon-btn" />
+                    </ui:VisualElement>
+                </ui:VisualElement>
+            </ui:VisualElement>
+
+            <!-- ===== Main Display Screen ===== -->
+            <ui:VisualElement class="aura-main">
+                <ui:VisualElement name="Screen_Frame" class="screen-frame">
+
+                    <!-- Micro-graphic corner decorations -->
+                    <ui:VisualElement class="row deco deco--tl" picking-mode="Ignore">
+                        <ui:Label text="+" class="deco-plus" />
+                        <ui:VisualElement class="dot dot--6 dot--a60" />
+                    </ui:VisualElement>
+                    <ui:VisualElement class="row deco deco--tr" picking-mode="Ignore">
+                        <ui:VisualElement class="diamond diamond--10" />
+                        <ui:Label text="♡" class="deco-heart" />
+                    </ui:VisualElement>
+                    <ui:VisualElement class="row deco deco--bl" picking-mode="Ignore">
+                        <ui:VisualElement class="diamond diamond--8" />
+                        <ui:VisualElement class="dot dot--6 dot--a70" />
+                    </ui:VisualElement>
+                    <ui:VisualElement class="row deco deco--br" picking-mode="Ignore">
+                        <ui:Label text="+" class="deco-plus" />
+                        <ui:VisualElement class="dot dot--8 dot--a50" />
+                    </ui:VisualElement>
+
+                    <!-- VIEW 1: STARTING / BREAK / ENDING -->
+                    <ui:VisualElement name="Scene_Hero" class="scene scene-hero">
+
+                        <!-- Left: Smartphone glass mockup -->
+                        <ui:VisualElement class="hero-left">
+                            <ui:VisualElement name="Phone_Card" class="glass phone-card">
+                                <ui:VisualElement class="row phone-status">
+                                    <ui:Label name="Label_Clock" text="09:41" class="phone-clock" />
+                                    <ui:VisualElement class="phone-notch" />
+                                    <ui:Label text="▂▄▆  ◔  ▭" class="phone-icons" />
+                                </ui:VisualElement>
+
+                                <ui:ScrollView name="Scroll_Chat" class="phone-chat" mode="Vertical" horizontal-scroller-visibility="Hidden" vertical-scroller-visibility="Hidden">
+                                    <ui:Label text="— Stream Chat Connected —" class="chat-system" />
+                                    <ui:Label text="&lt;b&gt;&lt;color=#BAE6FD&gt;AuraFan:&lt;/color&gt;&lt;/b&gt; Can't wait for today's stream!" class="glass chat-bubble" />
+                                    <ui:Label text="&lt;b&gt;&lt;color=#E9D5FF&gt;SkyBreeze:&lt;/color&gt;&lt;/b&gt; The glass UI looks magical" class="glass chat-bubble" />
+                                    <ui:Label text="&lt;b&gt;&lt;color=#FBCFE8&gt;Luna_99:&lt;/color&gt;&lt;/b&gt; sending love from Seoul!" class="glass chat-bubble" />
+                                </ui:ScrollView>
+
+                                <ui:VisualElement class="phone-input-row">
+                                    <ui:TextField name="TextField_ChatInput" placeholder-text="Say something dreamy..." class="chat-input" />
+                                    <ui:Button name="Button_Send" text="➤" class="send-btn" />
+                                </ui:VisualElement>
+
+                                <ui:VisualElement class="row phone-actions">
+                                    <ui:VisualElement class="row">
+                                        <ui:Button name="Button_Love" text="♡" class="micro-btn" />
+                                        <ui:Button name="Button_Comment" text="◌" class="micro-btn" />
+                                        <ui:Button name="Button_Share" text="➶" class="micro-btn" />
+                                    </ui:VisualElement>
+                                    <ui:Button name="Button_Bookmark" text="⊡" class="micro-btn" />
+                                </ui:VisualElement>
+
+                                <!-- Floating TYPING tooltip -->
+                                <ui:VisualElement name="Typing_Tooltip" class="glass row typing-tip" picking-mode="Ignore">
+                                    <ui:Label text="TYPING" class="typing-text" />
+                                    <ui:VisualElement class="dot dot--4 typing-dot" />
+                                    <ui:VisualElement class="dot dot--4 typing-dot" />
+                                    <ui:VisualElement class="dot dot--4 typing-dot" />
+                                </ui:VisualElement>
+                            </ui:VisualElement>
+                        </ui:VisualElement>
+
+                        <!-- Right: Script title & status -->
+                        <ui:VisualElement name="Hero_Right" class="hero-right">
+                            <ui:VisualElement name="Hero_Diamond" class="hero-diamond" picking-mode="Ignore" />
+
+                            <ui:VisualElement name="Hero_Capsule" class="glass row hero-capsule">
+                                <ui:VisualElement name="Capsule_Ping" class="dot dot--8 capsule-dot" />
+                                <ui:Label name="Label_Capsule" text="Starting Soon..." class="capsule-text" />
+                            </ui:VisualElement>
+
+                            <ui:VisualElement class="hero-title-wrap">
+                                <ui:Label name="Label_HeroTitle" text="start&#10;ing" class="hero-title" />
+                                <ui:Label name="Float_Heart" text="♡" class="hero-float hero-float--heart" picking-mode="Ignore" />
+                                <ui:VisualElement name="Float_Diamond" class="diamond diamond--14 hero-float hero-float--diamond" picking-mode="Ignore" />
+                                <ui:Label name="Float_Plus" text="+" class="hero-float hero-float--plus" picking-mode="Ignore" />
+                            </ui:VisualElement>
+
+                            <ui:Label name="Label_HeroSubtitle" text="The broadcast is about to begin. Grab your favorite drink" class="hero-subtitle" />
+                            <ui:VisualElement class="row countdown-pill">
+                                <ui:Label text="◷" class="countdown-icon" />
+                                <ui:Label name="Label_Countdown" text="00:04:59" class="countdown-time" />
+                                <ui:Label text="REMAINING" class="countdown-suffix" />
+                            </ui:VisualElement>
+
+                            <!-- LLM streaming line (StringBuilder + Dirty Flag batching) -->
+                            <ui:Label name="Label_StreamingText" text="" class="streaming-text" />
+                        </ui:VisualElement>
+                    </ui:VisualElement>
+
+                    <!-- VIEW 2: IN-GAME OVERLAY -->
+                    <ui:VisualElement name="Scene_Ingame" class="scene scene-ingame scene--hidden">
+                        <ui:VisualElement class="glass row ingame-bar">
+                            <ui:VisualElement class="row">
+                                <ui:Label name="Label_RecBadge" text="REC ● LIVE" class="rec-badge" />
+                                <ui:Label text="VALORANT / CHILL STREAM" class="ingame-title" />
+                            </ui:VisualElement>
+                            <ui:Label text="&lt;b&gt;1,842&lt;/b&gt; Viewers" class="glass viewer-pill" />
+                        </ui:VisualElement>
+
+                        <ui:VisualElement class="row ingame-grid">
+                            <ui:VisualElement class="glass game-view">
+                                <ui:VisualElement class="game-sky" />
+                                <ui:VisualElement class="game-ground" />
+                                <ui:VisualElement class="crosshair crosshair--h" />
+                                <ui:VisualElement class="crosshair crosshair--v" />
+                                <ui:VisualElement class="row game-corner">
+                                    <ui:VisualElement class="diamond diamond--8" />
+                                    <ui:VisualElement class="diamond diamond--8" />
+                                </ui:VisualElement>
+                                <ui:Label text="FPS: 144 | 19ms PING" class="game-fps" />
+                            </ui:VisualElement>
+
+                            <ui:VisualElement class="ingame-side">
+                                <ui:VisualElement class="glass side-card">
+                                    <ui:VisualElement class="row side-head">
+                                        <ui:Label text="WEBCAM" class="side-head-text" />
+                                        <ui:VisualElement class="dot dot--8 dot--emerald" />
+                                    </ui:VisualElement>
+                                    <ui:VisualElement class="webcam-body">
+                                        <ui:VisualElement class="webcam-avatar"><ui:Label text="☺" class="webcam-avatar-icon" /></ui:VisualElement>
+                                        <ui:Label text="Streamer Cam" class="webcam-name" />
+                                        <ui:Label text="60 FPS | 1080p Crystal" class="webcam-meta" />
+                                    </ui:VisualElement>
+                                    <ui:Label text="MIC: SHURE SM7B" class="side-foot" />
+                                </ui:VisualElement>
+
+                                <ui:VisualElement class="glass side-card side-card--last">
+                                    <ui:VisualElement class="row side-head">
+                                        <ui:Label text="STREAM CHAT" class="side-head-text" />
+                                        <ui:Label text="Slow mode: 3s" class="side-head-meta" />
+                                    </ui:VisualElement>
+                                    <ui:ScrollView name="Scroll_MiniChat" class="mini-chat" horizontal-scroller-visibility="Hidden" vertical-scroller-visibility="Hidden">
+                                        <ui:Label text="&lt;b&gt;&lt;color=#BAE6FD&gt;PixelGamer:&lt;/color&gt;&lt;/b&gt; NICE SHOT!!" class="mini-line" />
+                                        <ui:Label text="&lt;b&gt;&lt;color=#E9D5FF&gt;AuroraVibe:&lt;/color&gt;&lt;/b&gt; clutching this 1v3!!" class="mini-line" />
+                                        <ui:Label text="&lt;b&gt;&lt;color=#FBCFE8&gt;K-PopFan:&lt;/color&gt;&lt;/b&gt; loving the aesthetic" class="mini-line" />
+                                    </ui:ScrollView>
+                                    <ui:Label text="Press bottom chat to interact" class="side-foot side-foot--center" />
+                                </ui:VisualElement>
+                            </ui:VisualElement>
+                        </ui:VisualElement>
+
+                        <ui:VisualElement class="row goal-row">
+                            <ui:VisualElement class="glass row goal-card">
+                                <ui:VisualElement class="row">
+                                    <ui:VisualElement class="goal-icon goal-icon--sky"><ui:Label text="♥" class="goal-icon-text" /></ui:VisualElement>
+                                    <ui:VisualElement>
+                                        <ui:Label text="FOLLOWER GOAL" class="goal-label" />
+                                        <ui:Label text="4,850 / 5,000" class="goal-value" />
+                                    </ui:VisualElement>
+                                </ui:VisualElement>
+                                <ui:VisualElement class="goal-track"><ui:VisualElement class="goal-fill goal-fill--sky" style="width: 97%;" /></ui:VisualElement>
+                            </ui:VisualElement>
+                            <ui:VisualElement class="glass row goal-card goal-card--last">
+                                <ui:VisualElement class="row">
+                                    <ui:VisualElement class="goal-icon goal-icon--purple"><ui:Label text="◆" class="goal-icon-text" /></ui:VisualElement>
+                                    <ui:VisualElement>
+                                        <ui:Label text="SUB GOAL" class="goal-label" />
+                                        <ui:Label text="892 / 1,000" class="goal-value" />
+                                    </ui:VisualElement>
+                                </ui:VisualElement>
+                                <ui:VisualElement class="goal-track"><ui:VisualElement class="goal-fill goal-fill--purple" style="width: 89%;" /></ui:VisualElement>
+                            </ui:VisualElement>
+                        </ui:VisualElement>
+                    </ui:VisualElement>
+
+                    <!-- VIEW 3: ALERTS SHOWCASE (cards are generated from C#) -->
+                    <ui:VisualElement name="Scene_Alerts" class="scene scene-alerts scene--hidden">
+                        <ui:Label text="STREAM ALERTS &amp; LABEL PACK" class="glass alerts-pill" />
+                        <ui:Label text="Interactive Glassmorphism Badges" class="alerts-title" />
+                        <ui:Label text="Click any card to trigger an elastic pop-up interaction" class="alerts-sub" />
+                        <ui:VisualElement name="Alerts_Grid" class="alerts-grid" />
+                    </ui:VisualElement>
+                </ui:VisualElement>
+            </ui:VisualElement>
+
+            <!-- ===== Bottom Navigation Dock ===== -->
+            <ui:VisualElement class="aura-footer">
+                <ui:VisualElement class="glass row dock">
+                    <ui:Button name="Dock_Starting" class="dock-btn dock-btn--active"><ui:Label text="▶" class="dock-icon" /><ui:Label text="Start" class="dock-text" /></ui:Button>
+                    <ui:Button name="Dock_Break" class="dock-btn"><ui:Label text="☕" class="dock-icon" /><ui:Label text="Break" class="dock-text" /></ui:Button>
+                    <ui:Button name="Dock_Ending" class="dock-btn"><ui:Label text="⚑" class="dock-icon" /><ui:Label text="End" class="dock-text" /></ui:Button>
+                    <ui:Button name="Dock_Ingame" class="dock-btn"><ui:Label text="◈" class="dock-icon" /><ui:Label text="Game" class="dock-text" /></ui:Button>
+                    <ui:Button name="Dock_Alerts" class="dock-btn"><ui:Label text="♫" class="dock-icon" /><ui:Label text="Alerts" class="dock-text" /></ui:Button>
+                    <ui:Button name="Button_Heart" text="♥" class="heart-btn" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+
+            <!-- ===== Floating alert popup & toast ===== -->
+            <ui:VisualElement name="Alert_Popup" class="glass glass--highlight row alert-popup alert-popup--hidden" picking-mode="Ignore">
+                <ui:VisualElement class="alert-icon"><ui:Label name="Label_AlertIcon" text="✦" class="alert-icon-text" /></ui:VisualElement>
+                <ui:VisualElement class="alert-body">
+                    <ui:Label name="Label_AlertTag" text="new donation" class="alert-tag" />
+                    <ui:Label name="Label_AlertUser" text="DreamCatcher" class="alert-user" />
+                    <ui:Label name="Label_AlertMsg" text="Love your stream atmosphere so much!" class="alert-msg" />
+                </ui:VisualElement>
+                <ui:Button name="Button_AlertClose" text="✕" class="alert-close" />
+            </ui:VisualElement>
+
+            <ui:VisualElement name="Toast_Box" class="glass row toast toast--hidden" picking-mode="Ignore">
+                <ui:Label text="✔" class="toast-icon" />
+                <ui:Label name="Label_Toast" text="Action completed!" class="toast-text" />
+            </ui:VisualElement>
         </ui:VisualElement>
-    </ui:VisualElement>
+    </views:StreamExperienceView>
 </ui:UXML>
