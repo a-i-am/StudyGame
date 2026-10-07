@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 0}
+  m_Name: "\uC774\uBCA4\uD2B8_\uC2DC\uC791__OnInteract_Template"
+  m_EditorClassIdentifier: Assembly-CSharp:StudyGame.Data:WorkspaceNodeData
+  NodeId: 
+  NodeTitle: "\uC774\uBCA4\uD2B8 \uC2DC\uC791: OnInteract"
+  TemplateType: "\uC774\uBCA4\uD2B8 \uC2DC\uC791: OnInteract"
+  ThemeColorHex: '#ffffff'
+  ThemeIcon: "\U0001F4DD"
+  Properties:
+  - PropertyName: "\uD2B8\uB9AC\uAC70 \U0001F6A9"
+    Type: 0
+    StringValue: 
+    FloatValue: 0
+    ColorValue: {r: 1, g: 1, b: 1, a: 1}
+    AssetValue: {fileID: 0}
+    ShowAsBadge: 1
+  - PropertyName: "ID: \uBE48\uCE78"
+    Type: 0
+    StringValue: 
+    FloatValue: 0
+    ColorValue: {r: 1, g: 1, b: 1, a: 1}
+    AssetValue: {fileID: 0}
+    ShowAsBadge: 1
