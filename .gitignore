@@ -186,3 +186,15 @@ Assets/Resources/
 
 # Private Vault for AI and sensitive docs
 .PrivateVault/
+
+# Private Repo / AI System Infrastructure
+.agents/
+.claude/
+AGENTS.md
+CLAUDE.md
+GEMINI.md
+scripts/
+
+# Private Art Assets
+Assets/PrivateAssets/
+Assets/PrivateAssets.meta
