@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de748d8c4f347634abd410ca18d02452, type: 3}
+  m_Name: SentenceItem_Operator
+  m_EditorClassIdentifier: 
+  itemId: 
+  displayText: "\uC218\uB834 \uAC12 \uACE0\uC815"
+  category: 1
+  associatedConcept: {fileID: 0}
+  associatedSkill: {fileID: 0}
+  apCost: 1
+  itemIcon: {fileID: 0}
