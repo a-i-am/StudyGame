@@ -1,0 +1,70 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7bb2c85358cf6284e9eadc2b78252a4d, type: 3}
+  m_Name: "Node_0_Phase_0_\uD504\uB864\uB85C\uADF8_\uBC0F_\uD544\uB4DC_\uD0D0\uD5D8_(\uC815\uC801\uC758_\uC81C0\uC2DC\uD5D8\uC7A5)"
+  m_EditorClassIdentifier: 
+  NodeId: 890377c0-4d64-4375-9c68-48bba321042c
+  NodeTitle: "[Phase 0] \uD504\uB864\uB85C\uADF8 \uBC0F \uD544\uB4DC \uD0D0\uD5D8
+    (\uC815\uC801\uC758 \uC81C0\uC2DC\uD5D8\uC7A5)"
+  TemplateType: SNS
+  ThemeColorHex: '#ffffff'
+  ThemeIcon: "\U0001F4DD"
+  Properties:
+  - PropertyName: Dialogues
+    Type: 5
+    StringValue: 
+    FloatValue: 0
+    ColorValue: {r: 1, g: 1, b: 1, a: 1}
+    AssetValue: {fileID: 0}
+    TableColumns:
+    - "\uD654\uC790"
+    - "\uB300\uC0AC"
+    TableRows:
+    - Cells:
+      - "\uAD00\uB9AC\uC790 AI"
+      - "Error 403... \uAD8C\uD55C \uBD80\uC871... \uBC31\uC9C0 \uB370\uC774\uD130(\uD50C\uB808\uC774\uC5B4)\uC758
+        \uC811\uADFC\uC744... \uAC70, \uAC70\uBD80..."
+    - Cells:
+      - "\uAD00\uB9AC\uC790 AI"
+      - "\uB300\uC0C1 '\uC11C\uBB34\uACB0'... \uCE58\uBA85\uC801 \uACB0\uD568(Glitch)
+        \uBAA9\uACA9... \uACA9\uB9AC \uD504\uB85C\uD1A0\uCF5C \uAC00\uB3D9... \uD574\uB2F9
+        \uAC1C\uCCB4\uB294 \uCD9C\uB825 \uBD88\uAC00\uB2A5... \uAC00\uC7A5 \uC644\uBCBD\uD55C
+        1\uB4F1\uC758 \uB370\uC774\uD130\uB97C... \uCEA1\uC290\uB85C \uC7AC\uD65C\uC6A9
+        \uC911..."
+    ShowAsBadge: 0
+  - PropertyName: SNS Feed
+    Type: 5
+    StringValue: 
+    FloatValue: 0
+    ColorValue: {r: 1, g: 1, b: 1, a: 1}
+    AssetValue: {fileID: 0}
+    TableColumns:
+    - "\uACC4\uC815\uBA85"
+    - "\uB0B4\uC6A9"
+    TableRows:
+    - Cells:
+      - "@System_Admin [\uC2DC\uC2A4\uD15C \uACBD\uACE0]"
+      - "Fatal Error. \uD5C8\uAC00\uB418\uC9C0 \uC54A\uC740 \uC811\uADFC. \uC911\uC559
+        \uCF54\uC5B4 \uBB3C\uB9AC\uC801 \uACA9\uB9AC \uAC1C\uC2DC."
+    - Cells:
+      - '@Anonymous_99 [Public]'
+      - "\uC57C \uD558\uB298\uC774 \uCABC\uAC1C\uC9C0\uACE0 \uC788\uC5B4 \uBBF8\uCE5C
+        \uC774\uAC70 \uBB50\uC57C \uC9C0\uC9C4 \uB0AC\uC5B4?!"
+    - Cells:
+      - '@Unknown_032 [Public]'
+      - "\uBB34\uACB0\uC774 \uC0C1\uD0DC\uAC00 \uC774\uC0C1\uD574... \uC544\uBB34
+        \uB9D0\uB3C4 \uC548 \uD558\uACE0 \uC11D\uC0C1\uCC98\uB7FC \uAD73\uC5B4\uC788\uC5B4..."
+    - Cells:
+      - '@Cat_Lover_99 [Public]'
+      - "\uB204\uAC00 \uC81C\uBC1C \uC0B4\uB824\uC8FC\uC138\uC694 \uAD50\uC2E4 \uBB38\uC774
+        \uB2E4 \uC7A0\uACBC\uC5B4\uC694 \u3160\u3160"
+    ShowAsBadge: 0

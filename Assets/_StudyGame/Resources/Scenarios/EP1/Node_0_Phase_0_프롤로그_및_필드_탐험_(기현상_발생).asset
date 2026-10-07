@@ -1,0 +1,74 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7bb2c85358cf6284e9eadc2b78252a4d, type: 3}
+  m_Name: "Node_0_Phase_0_\uD504\uB864\uB85C\uADF8_\uBC0F_\uD544\uB4DC_\uD0D0\uD5D8_(\uAE30\uD604\uC0C1_\uBC1C\uC0DD)"
+  m_EditorClassIdentifier: 
+  NodeId: 3811cf72-0020-4fcd-b4fa-b66b3828b225
+  NodeTitle: "[Phase 0] \uD504\uB864\uB85C\uADF8 \uBC0F \uD544\uB4DC \uD0D0\uD5D8
+    (\uAE30\uD604\uC0C1 \uBC1C\uC0DD)"
+  TemplateType: SNS
+  ThemeColorHex: '#ffffff'
+  ThemeIcon: "\U0001F4DD"
+  Properties:
+  - PropertyName: Dialogues
+    Type: 5
+    StringValue: 
+    FloatValue: 0
+    ColorValue: {r: 1, g: 1, b: 1, a: 1}
+    AssetValue: {fileID: 0}
+    TableColumns:
+    - "\uD654\uC790"
+    - "\uB300\uC0AC"
+    TableRows:
+    - Cells:
+      - "\uC9C0\uCE5C 6\uD559\uB144"
+      - "...\uC5B4? \uB10C \uBB50\uC57C? \uC544... \uBB38\uC774 \uC65C \uC548 \uC5F4\uB9AC\uB294\uC9C0
+        \uBAA8\uB974\uACA0\uC5B4. \uB6F0\uC5C8\uB294\uB370\uB3C4 \uACC4\uC18D \uC774
+        \uADFC\uCC98\uC57C. \uC800\uAE30 \uB05D\uC5D0 \uC5B4\uB5A4 1\uD559\uB144\uC9DC\uB9AC
+        \uC560\uAC00 \uC549\uC544\uC788\uB294\uB370... \uAC54 \uCC45\uC0C1\uC5D0\uC11C
+        \uD30C\uB780 \uBD88\uAF43 \uAC19\uC740 \uAC8C \uBC88\uCA4D\uC774\uB354\uB2C8
+        \uAC11\uC790\uAE30 \uC628\uB3C4\uAC00 \uB5A8\uC5B4\uC84C\uC5B4."
+    - Cells:
+      - "\uC9C0\uCE5C 6\uD559\uB144"
+      - "\uBAA8\uB974\uACA0\uC5B4... \uCDA5\uACE0... \uC878\uB824..."
+    ShowAsBadge: 0
+  - PropertyName: SNS Feed
+    Type: 5
+    StringValue: 
+    FloatValue: 0
+    ColorValue: {r: 1, g: 1, b: 1, a: 1}
+    AssetValue: {fileID: 0}
+    TableColumns:
+    - "\uACC4\uC815\uBA85"
+    - "\uB0B4\uC6A9"
+    TableRows:
+    - Cells:
+      - "@School_Notice [\uACF5\uC9C0]"
+      - "\uC624\uB298 \uAE09\uC2DD \uBA54\uB274 \uC911 \uC54C\uB808\uB974\uAE30 \uC720\uBC1C
+        \uBB3C\uC9C8(\uB545\uCF69)\uC774 \uD3EC\uD568\uB418\uC5B4..."
+    - Cells:
+      - '@Mint_Choco [Public]'
+      - "\uC544 \uB9E4\uC810 \uBC8C\uC368 \uBE75 \uB2E4 \uD138\uB9BC \u3160\u3160\u3160
+        \uB0B4 \uCD08\uCF54\uC18C\uB77C\uBE75 \u3160\u3160"
+    - Cells:
+      - '@Escape_Library [Public]'
+      - "\uC57C 3\uC5F4\uB78C\uC2E4 \uBB38 \uC548 \uC5F4\uB824. \uC190\uC7A1\uC774\uAC00
+        \uC544\uC608 \uC548 \uB3CC\uC544\uAC00\uB294\uB370??"
+    - Cells:
+      - '@Unknown_032 [Public]'
+      - "\uC548\uC5D0 \uBB34\uC2A8 \uC77C \uB09C \uAC70 \uC544\uB0D0? \uC774\uC0C1\uD55C
+        \uBE5B \uAC19\uC740 \uAC8C \uC0C8\uC5B4 \uB098\uC624\uB294\uB370."
+    - Cells:
+      - '@Energy_Drink_AD [Ad]'
+      - "\uBC24\uC0D8 \uACF5\uBD80\uC5D4 \uC5ED\uC2DC \uD0C0\uC6B0\uB9B0 2000mg!
+        \uC9C0\uAE08 1+1 \uD589\uC0AC \uC911!"
+    ShowAsBadge: 0

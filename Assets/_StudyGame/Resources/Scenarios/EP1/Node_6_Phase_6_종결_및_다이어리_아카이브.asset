@@ -1,0 +1,59 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7bb2c85358cf6284e9eadc2b78252a4d, type: 3}
+  m_Name: "Node_6_Phase_6_\uC885\uACB0_\uBC0F_\uB2E4\uC774\uC5B4\uB9AC_\uC544\uCE74\uC774\uBE0C"
+  m_EditorClassIdentifier: 
+  NodeId: 95a1b891-3026-4c9e-abed-b8c9b83b08d6
+  NodeTitle: "[Phase 6] \uC885\uACB0 \uBC0F \uB2E4\uC774\uC5B4\uB9AC \uC544\uCE74\uC774\uBE0C"
+  TemplateType: SNS
+  ThemeColorHex: '#ffffff'
+  ThemeIcon: "\U0001F4DD"
+  Properties:
+  - PropertyName: Dialogues
+    Type: 5
+    StringValue: 
+    FloatValue: 0
+    ColorValue: {r: 1, g: 1, b: 1, a: 1}
+    AssetValue: {fileID: 0}
+    TableColumns:
+    - "\uD654\uC790"
+    - "\uB300\uC0AC"
+    TableRows:
+    - Cells:
+      - "\uB3C4\uC601"
+      - "...\uACF5\uC2DD\uC774 \uD2C0\uB838\uC5C8\uB098 \uBD10. \uCC98\uC74C\uBD80\uD130
+        \uB2E4\uC2DC \uC138\uC6CC\uC57C\uACA0\uB124."
+    - Cells:
+      - "\uB3C4\uC601"
+      - "...\uACE0\uB824\uD574 \uBCFC\uAC8C."
+    ShowAsBadge: 0
+  - PropertyName: SNS Feed
+    Type: 5
+    StringValue: 
+    FloatValue: 0
+    ColorValue: {r: 1, g: 1, b: 1, a: 1}
+    AssetValue: {fileID: 0}
+    TableColumns:
+    - "\uACC4\uC815\uBA85"
+    - "\uB0B4\uC6A9"
+    TableRows:
+    - Cells:
+      - '@Escape_Library [Public]'
+      - "\uC5B4? \uAC11\uC790\uAE30 \uC5F4\uB78C\uC2E4 \uBB38 \uC5F4\uB838\uB2E4!
+        \uD5D0 \u3160\u3160 \uC0B4\uC558\uB2E4 \u3160\u3160"
+    - Cells:
+      - '@Cat_Lover_99 [Public]'
+      - "\uB3C4\uC11C\uAD00 \uB4A4\uCABD\uC5D0 \uCE58\uC988\uB0E5\uC774 \uB098\uD0C0\uB0A8!!
+        \uCD94\uC6CC\uC11C \uC5BC\uC5B4 \uC8FD\uACA0\uB2E4 \u3160\u3160 \uB2E4\uB4E4
+        \uCE94 \uC8FC\uC9C0 \uB9D0\uACE0 \uB530\uB73B\uD55C \uBB3C\uC774\uB791 \uAC74\uC0AC\uB8CC
+        \uC8FC\uC148 \u3160"
+    ShowAsBadge: 0

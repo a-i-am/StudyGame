@@ -1,0 +1,161 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7bb2c85358cf6284e9eadc2b78252a4d, type: 3}
+  m_Name: EP1
+  m_EditorClassIdentifier: 
+  NodeId: 1c2cc607-9812-4bca-bc6a-918c0cf7c03b
+  NodeTitle: "\U0001F4D6 \uC5D0\uD53C\uC18C\uB4DC 1-1 (\uC218\uD559 - \uC99D\uBA85\uB418\uC9C0
+    \uC54A\uC740 \uC544\uC774) \uC0C1\uC138 \uC2DC\uB098\uB9AC\uC624 \uB300\uBCF8"
+  TemplateType: "\uC5D0\uD53C\uC18C\uB4DC \uD1B5\uC9DC \uB178\uB4DC"
+  ThemeColorHex: '#9b59b6'
+  ThemeIcon: "\U0001F4DA"
+  Properties:
+  - PropertyName: "[Phase 0] \uD504\uB864\uB85C\uADF8 \uBC0F \uD544\uB4DC \uD0D0\uD5D8
+      (\uAE30\uD604\uC0C1 \uBC1C\uC0DD) (SNS)"
+    Type: 5
+    StringValue: 
+    FloatValue: 0
+    ColorValue: {r: 1, g: 1, b: 1, a: 1}
+    AssetValue: {fileID: 0}
+    TableColumns:
+    - "\uACC4\uC815\uBA85"
+    - "\uB0B4\uC6A9"
+    TableRows:
+    - Cells:
+      - "@School_Notice [\uACF5\uC9C0]"
+      - "\uC624\uB298 \uAE09\uC2DD \uBA54\uB274 \uC911 \uC54C\uB808\uB974\uAE30 \uC720\uBC1C
+        \uBB3C\uC9C8(\uB545\uCF69)\uC774 \uD3EC\uD568\uB418\uC5B4..."
+    - Cells:
+      - '@Mint_Choco [Public]'
+      - "\uC544 \uB9E4\uC810 \uBC8C\uC368 \uBE75 \uB2E4 \uD138\uB9BC \u3160\u3160\u3160
+        \uB0B4 \uCD08\uCF54\uC18C\uB77C\uBE75 \u3160\u3160"
+    - Cells:
+      - '@Escape_Library [Public]'
+      - "\uC57C 3\uC5F4\uB78C\uC2E4 \uBB38 \uC548 \uC5F4\uB824. \uC190\uC7A1\uC774\uAC00
+        \uC544\uC608 \uC548 \uB3CC\uC544\uAC00\uB294\uB370??"
+    - Cells:
+      - '@Unknown_032 [Public]'
+      - "\uC548\uC5D0 \uBB34\uC2A8 \uC77C \uB09C \uAC70 \uC544\uB0D0? \uC774\uC0C1\uD55C
+        \uBE5B \uAC19\uC740 \uAC8C \uC0C8\uC5B4 \uB098\uC624\uB294\uB370."
+    - Cells:
+      - '@Energy_Drink_AD [Ad]'
+      - "\uBC24\uC0D8 \uACF5\uBD80\uC5D4 \uC5ED\uC2DC \uD0C0\uC6B0\uB9B0 2000mg!
+        \uC9C0\uAE08 1+1 \uD589\uC0AC \uC911!"
+    ShowAsBadge: 1
+  - PropertyName: "[Phase 1] \uB300\uD654 A (\uB3C4\uC601 \uCCAB \uC870\uC6B0) (\uB300\uD654)"
+    Type: 5
+    StringValue: 
+    FloatValue: 0
+    ColorValue: {r: 1, g: 1, b: 1, a: 1}
+    AssetValue: {fileID: 0}
+    TableColumns:
+    - "\uD654\uC790"
+    - "\uB300\uC0AC"
+    TableRows:
+    - Cells:
+      - "\uB3C4\uC601"
+      - "\uB3C5\uB9BD \uBCC0\uC778\uC740 \uBC30\uC81C\uD55C\uB2E4. \uD1B5\uC81C\uB41C
+        \uD658\uACBD\uB9CC\uC774 \uC644\uBCBD\uD55C \uC218\uB834\uC744 \uBCF4\uC7A5\uD558\uB2C8\uAE4C.
+        \uB098\uAC00."
+    - Cells:
+      - "\uB3C4\uC601"
+      - "\uC2DC\uAC01\uC801 \uC624\uCC28. \uAD74\uC808\uB960\uC758 \uBB38\uC81C\uC77C
+        \uBFD0\uC774\uC57C. 1\uB4F1\uAE09 \uCEF7\uC740 96\uC810. \uC624\uCC28 \uD55C\uB3C4\uB294
+        0.04... \uC544\uB2C8, 0\uC774\uC5B4\uC57C \uD574."
+    ShowAsBadge: 1
+  - PropertyName: "[Phase 2] \uD544\uB4DC \uC561\uC158 \uBC0F \uC544\uC774\uD15C
+      \uD0D0\uC0C9"
+    Type: 0
+    StringValue: "\uC774\uBCA4\uD2B8 \uC0C1\uD638\uC791\uC6A9 \uBC0F \uC9C0\uBB38
+      \uCC98\uB9AC"
+    FloatValue: 0
+    ColorValue: {r: 1, g: 1, b: 1, a: 1}
+    AssetValue: {fileID: 0}
+    TableColumns:
+    - "\uD654\uC790"
+    - "\uB300\uC0AC"
+    TableRows: []
+    ShowAsBadge: 1
+  - PropertyName: "[Phase 3] \uB371 \uC804\uD22C (\uC911\uD615 \uC774\uC0C1\uD604\uC0C1)"
+    Type: 0
+    StringValue: "\uC774\uBCA4\uD2B8 \uC0C1\uD638\uC791\uC6A9 \uBC0F \uC9C0\uBB38
+      \uCC98\uB9AC"
+    FloatValue: 0
+    ColorValue: {r: 1, g: 1, b: 1, a: 1}
+    AssetValue: {fileID: 0}
+    TableColumns:
+    - "\uD654\uC790"
+    - "\uB300\uC0AC"
+    TableRows: []
+    ShowAsBadge: 1
+  - PropertyName: "[Phase 4] \uB300\uD654 B (\uBC29\uC5B4\uB9C9 \uD30C\uD6FC \uBC0F
+      \uC7AC\uC9C4\uC785) (\uB300\uD654)"
+    Type: 5
+    StringValue: 
+    FloatValue: 0
+    ColorValue: {r: 1, g: 1, b: 1, a: 1}
+    AssetValue: {fileID: 0}
+    TableColumns:
+    - "\uD654\uC790"
+    - "\uB300\uC0AC"
+    TableRows:
+    - Cells:
+      - "\uB3C4\uC601"
+      - "...\uC678\uBD80 \uBCC0\uC218\uAC00 \uACC4\uC18D\uD574\uC11C \uAC1C\uC785\uD558\uACE0
+        \uC788\uC5B4. \uC5F0\uC0B0 \uD6A8\uC728 \uC800\uD558. \uC774\uB7EC\uBA74
+        \uB2A6\uC5B4... \uC774\uB7EC\uBA74 \uB530\uB77C\uC7A1\uC744 \uC218 \uC5C6\uC5B4."
+    - Cells:
+      - "\uB3C4\uC601"
+      - "\uC0C1\uC218(Constant)... \uC0C1\uC218\uB97C \uB17C\uD560 \uC790\uACA9\uC740
+        \uB0B4\uAC8C \uC5C6\uC5B4. \uB098\uB294 \uC544\uC9C1 \uBD88\uC644\uC804\uD55C
+        \uBCC0\uC218(Variable)\uB2C8\uAE4C."
+    - Cells:
+      - "\uB3C4\uC601"
+      - "100\uC810\uC5D0 \uC218\uB834\uD558\uC9C0 \uBABB\uD558\uB294 \uC2DD\uC740
+        \uD3D0\uAE30\uB418\uC5B4\uC57C \uD574... \uBB34\uD55C\uD788 \uC218\uB834\uD55C\uB2E4...
+        \uC624\uCC28 \uC5C6\uC774... \uC644\uBCBD\uD558\uAC8C..."
+    ShowAsBadge: 1
+  - PropertyName: "[Phase 5] \uBCF4\uC2A4\uC804 \uD074\uB77C\uC774\uB9E5\uC2A4 (\uC9C8\uBB38
+      \uC870\uB9BD\uAE30)"
+    Type: 0
+    StringValue: "\uC774\uBCA4\uD2B8 \uC0C1\uD638\uC791\uC6A9 \uBC0F \uC9C0\uBB38
+      \uCC98\uB9AC"
+    FloatValue: 0
+    ColorValue: {r: 1, g: 1, b: 1, a: 1}
+    AssetValue: {fileID: 0}
+    TableColumns:
+    - "\uD654\uC790"
+    - "\uB300\uC0AC"
+    TableRows: []
+    ShowAsBadge: 1
+  - PropertyName: "[Phase 6] \uC885\uACB0 \uBC0F \uB2E4\uC774\uC5B4\uB9AC \uC544\uCE74\uC774\uBE0C
+      (SNS)"
+    Type: 5
+    StringValue: 
+    FloatValue: 0
+    ColorValue: {r: 1, g: 1, b: 1, a: 1}
+    AssetValue: {fileID: 0}
+    TableColumns:
+    - "\uACC4\uC815\uBA85"
+    - "\uB0B4\uC6A9"
+    TableRows:
+    - Cells:
+      - '@Escape_Library [Public]'
+      - "\uC5B4? \uAC11\uC790\uAE30 \uC5F4\uB78C\uC2E4 \uBB38 \uC5F4\uB838\uB2E4!
+        \uD5D0 \u3160\u3160 \uC0B4\uC558\uB2E4 \u3160\u3160"
+    - Cells:
+      - '@Cat_Lover_99 [Public]'
+      - "\uB3C4\uC11C\uAD00 \uB4A4\uCABD\uC5D0 \uCE58\uC988\uB0E5\uC774 \uB098\uD0C0\uB0A8!!
+        \uCD94\uC6CC\uC11C \uC5BC\uC5B4 \uC8FD\uACA0\uB2E4 \u3160\u3160 \uB2E4\uB4E4
+        \uCE94 \uC8FC\uC9C0 \uB9D0\uACE0 \uB530\uB73B\uD55C \uBB3C\uC774\uB791 \uAC74\uC0AC\uB8CC
+        \uC8FC\uC148 \u3160"
+    ShowAsBadge: 1

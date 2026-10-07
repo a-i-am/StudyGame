@@ -1,0 +1,58 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7bb2c85358cf6284e9eadc2b78252a4d, type: 3}
+  m_Name: 2026_korean_29
+  m_EditorClassIdentifier: 
+  NodeId: 2026_korean_29
+  NodeTitle: "[Korean] 29. \u2018\uB3C5\uAC00\uCD0C\u2019\uC5D0 \uB300\uD55C \uC124\uBA85\uC73C\uB85C
+    \uAC00\uC7A5 \uC801\uC808\uD55C..."
+  TemplateType: "\uAE30\uBBF9 (Anomaly)"
+  ThemeColorHex: '#FF3366'
+  ThemeIcon: "\U0001F4D6"
+  Properties:
+  - PropertyName: Original Formula
+    Type: 0
+    StringValue: "29. \u2018\uB3C5\uAC00\uCD0C\u2019\uC5D0 \uB300\uD55C \uC124\uBA85\uC73C\uB85C
+      \uAC00\uC7A5 \uC801\uC808\uD55C \uAC83\uC740? \u2460\uACE0\uC18D\uB3C4\uB85C\uAC00
+      \uC5F0\uACB0\uB420 \uAC83\uC774 \uC54C\uB824\uC9C4 \uD6C4 \uC678\uBD80 \uC0AC\uB78C\uB4E4\uC758
+      \uAD00\uC2EC\uC744 \uBC1B\uAC8C  \uB41C \uACF3\uC774\uB2E4. \u2461\uD5C8\uBA85\uB450\uAC00
+      \uC9C0\uBAA9 \uBCC0\uACBD\uC73C\uB85C \uAE30\uB4DD\uAD8C\uC744 \uBD80\uC5EC\uBC1B\uACE0\uC11C
+      \uC9D1\uB4E4\uC744 \uC0AC\uB4E4\uC774\uACE0  \uC788\uB294 \uACF3\uC774\uB2E4.
+      \u2462\uB9C8\uC744 \uC0AC\uB78C\uB4E4\uC774 \uB18D\uC0AC\uB97C \uC9C0\uC5B4
+      \uC654\uC9C0\uB9CC \uC5EC\uC804\uD788 \uACBD\uC81C\uC801\uC73C\uB85C \uC790\uB9BD
+      \uD558\uAE30 \uC5B4\uB824\uC6B4 \uACF3\uC774\uB2E4. \u2463\uC628 \uC528\uAC00
+      \uB9C8\uC744 \uC0AC\uB78C\uB4E4\uACFC \uD568\uAED8 \uB18D\uC5C5 \uC911\uC2EC\uC758
+      \uAE30\uC874 \uC0DD\uD65C\uC591\uC2DD\uC744  \uBC14\uAFB8\uB824 \uD558\uB294
+      \uACF3\uC774\uB2E4. \u2464\uAD00\uAD11\uC9C0\uB85C\uC11C\uC758 \uC88B\uC740
+      \uC870\uAC74\uC744 \uAC16\uCD94\uAC8C \uD558\uB824\uACE0 \uB9C8\uC744 \uC0AC\uB78C\uB4E4\uC774
+      \uD53C\uB540  \uD758\uB824 \uB178\uB825\uD55C \uACF3\uC774\uB2E4. 30. <\uBCF4\uAE30>\uB97C
+      \uCC38\uACE0\uD558\uC5EC \u3260\uFF5E\u3264\uC744 \uC774\uD574\uD55C \uB0B4\uC6A9\uC73C\uB85C
+      \uC801\uC808\uD558\uC9C0 \uC54A\uC740  \uAC83\uC740?"
+    FloatValue: 0
+    ColorValue: {r: 1, g: 1, b: 1, a: 1}
+    AssetValue: {fileID: 0}
+    TableColumns:
+    - "\uD654\uC790"
+    - "\uB300\uC0AC"
+    TableRows: []
+    ShowAsBadge: 0
+  - PropertyName: "\U0001F3AF \uAE30\uBBF9 1: LogicLinker"
+    Type: 0
+    StringValue: "\uC57D\uC810: Logic Type"
+    FloatValue: 0
+    ColorValue: {r: 1, g: 1, b: 1, a: 1}
+    AssetValue: {fileID: 0}
+    TableColumns:
+    - "\uD654\uC790"
+    - "\uB300\uC0AC"
+    TableRows: []
+    ShowAsBadge: 1

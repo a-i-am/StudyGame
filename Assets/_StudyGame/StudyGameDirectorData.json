@@ -1,0 +1,26 @@
+{
+    "Nodes": [
+        {
+            "NodeId": "02d7e7cb-338e-475f-b7f1-bda6b0be01c1",
+            "Title": "Database Hub",
+            "Position": {
+                "serializedVersion": "2",
+                "x": 150.40000915527345,
+                "y": 149.5999755859375,
+                "width": 308.0,
+                "height": 472.00006103515627
+            },
+            "NodeColor": {
+                "r": 0.0,
+                "g": 1.0,
+                "b": 1.0,
+                "a": 1.0
+            },
+            "WorldPosition": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        }
+    ]
+}

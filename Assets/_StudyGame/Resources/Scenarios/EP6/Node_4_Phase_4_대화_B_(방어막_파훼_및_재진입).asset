@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7bb2c85358cf6284e9eadc2b78252a4d, type: 3}
+  m_Name: "Node_4_Phase_4_\uB300\uD654_B_(\uBC29\uC5B4\uB9C9_\uD30C\uD6FC_\uBC0F_\uC7AC\uC9C4\uC785)"
+  m_EditorClassIdentifier: 
+  NodeId: fb705c1d-c63f-4ff7-8321-947e3184d444
+  NodeTitle: "[Phase 4] \uB300\uD654 B (\uBC29\uC5B4\uB9C9 \uD30C\uD6FC \uBC0F \uC7AC\uC9C4\uC785)"
+  TemplateType: "\uB2E4\uC774\uC5BC\uB85C\uADF8"
+  ThemeColorHex: '#ffffff'
+  ThemeIcon: "\U0001F4DD"
+  Properties:
+  - PropertyName: Dialogues
+    Type: 5
+    StringValue: 
+    FloatValue: 0
+    ColorValue: {r: 1, g: 1, b: 1, a: 1}
+    AssetValue: {fileID: 0}
+    TableColumns:
+    - "\uD654\uC790"
+    - "\uB300\uC0AC"
+    TableRows:
+    - Cells:
+      - "\uD574\uC601"
+      - "\uC548 \uB3FC, \uCC38\uC544\uC57C \uD574... \uCC38\uC744 \uC218 \uC788\uC5B4...!"
+    - Cells:
+      - "\uD574\uC601"
+      - "\uB2E4\uB4E4 \uB098\uBCF4\uACE0 \uD53C\uACE4\uD558\uB314\uC5B4! \uADF8\uB7EC\uB2C8\uAE4C
+        \uD55C \uBC29\uC6B8\uB3C4 \uC548 \uB0A8\uAE30\uACE0 \uB2E4 \uC5BC\uB824\uBC84\uB824\uC57C
+        \uD55C\uB2E8 \uB9D0\uC774\uC57C!!"
+    ShowAsBadge: 0

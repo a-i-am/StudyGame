@@ -1,0 +1,54 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7bb2c85358cf6284e9eadc2b78252a4d, type: 3}
+  m_Name: "Node_6_Phase_6_\uC885\uACB0_\uBC0F_\uB2E4\uC774\uC5B4\uB9AC_\uC544\uCE74\uC774\uBE0C"
+  m_EditorClassIdentifier: 
+  NodeId: 6f537c00-7f5d-43a2-bf38-b7c31da690b7
+  NodeTitle: "[Phase 6] \uC885\uACB0 \uBC0F \uB2E4\uC774\uC5B4\uB9AC \uC544\uCE74\uC774\uBE0C"
+  TemplateType: SNS
+  ThemeColorHex: '#ffffff'
+  ThemeIcon: "\U0001F4DD"
+  Properties:
+  - PropertyName: Dialogues
+    Type: 5
+    StringValue: 
+    FloatValue: 0
+    ColorValue: {r: 1, g: 1, b: 1, a: 1}
+    AssetValue: {fileID: 0}
+    TableColumns:
+    - "\uD654\uC790"
+    - "\uB300\uC0AC"
+    TableRows:
+    - Cells:
+      - "\uC9C0\uC548"
+      - "...\uD558\uC544. \uC9C4\uC9DC \uD1A0\uD560 \uAC83 \uAC19\uC558\uC5B4. \uACC4\uC18D
+        \uB0A8\uB4E4 \uC785\uB9DB\uC5D0\uB9CC \uB9DE\uCD94\uB294 \uAC70."
+    ShowAsBadge: 0
+  - PropertyName: SNS Feed
+    Type: 5
+    StringValue: 
+    FloatValue: 0
+    ColorValue: {r: 1, g: 1, b: 1, a: 1}
+    AssetValue: {fileID: 0}
+    TableColumns:
+    - "\uACC4\uC815\uBA85"
+    - "\uB0B4\uC6A9"
+    TableRows:
+    - Cells:
+      - '@Escape_Library [Public]'
+      - "\uC0AC\uD68C\uC2E4 \uCC45\uC0C1\uB4E4 \uBA48\uCDA4!! \uC640 \uC9C4\uC9DC
+        \u3148\u3134 \uC9D1\uB2E8 \uCD5C\uBA74 \uAC78\uB9B0 \uC904."
+    - Cells:
+      - '@Cafeteria_Lover [Public]'
+      - "\uC624\uB298 \uC810\uC2EC \uC81C\uC721\uBCF6\uC74C \uB098\uC774\uC2A4 \uD3FC
+        \uBBF8\uCCE4\uB2E4 \u314B\u314B\u314B"
+    ShowAsBadge: 0

@@ -1,0 +1,64 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7bb2c85358cf6284e9eadc2b78252a4d, type: 3}
+  m_Name: 2026_korean_44
+  m_EditorClassIdentifier: 
+  NodeId: 2026_korean_44
+  NodeTitle: "[Korean] 44. \u3260\uFF5E\u3264\uC5D0 \uB300\uD55C \uC124\uBA85\uC73C\uB85C
+    \uC801\uC808\uD558\uC9C0 \uC54A\uC740 ..."
+  TemplateType: "\uAE30\uBBF9 (Anomaly)"
+  ThemeColorHex: '#FF3366'
+  ThemeIcon: "\U0001F4D6"
+  Properties:
+  - PropertyName: Original Formula
+    Type: 0
+    StringValue: "44. \u3260\uFF5E\u3264\uC5D0 \uB300\uD55C \uC124\uBA85\uC73C\uB85C
+      \uC801\uC808\uD558\uC9C0 \uC54A\uC740 \uAC83\uC740? \u2460\uD68C\uC758\uC2E4\uB85C\uC758
+      \uC811\uC18D\uC744 \uC81C\uD55C\uD560 \uC218 \uC788\uB294 \u3260\uACFC \uAD00\uB828\uD558\uC5EC,
+      \uD574\uB2F9  \uC815\uBCF4\uB97C \uC78A\uC5B4\uBC84\uB9B0 \uD61C\uC815\uC5D0\uAC8C
+      \uC11C\uD604\uC740 \uC798\uBABB\uB41C \uC815\uBCF4\uB97C \uC804\uB2EC\uD588\uB2E4.
+      \u2461\uD68C\uC758\uC2E4\uB85C\uC758 \uC785\uC7A5\uC744 \uCCAD\uD558\uB294
+      \uC815\uBCF4\uC778 \u3261\uACFC \uAD00\uB828\uD558\uC5EC, \uB2E4\uACB8\uC740 
+      \uD61C\uC815\uC774 \uB354 \uD3B8\uB9AC\uD558\uAC8C \uD68C\uC758\uC2E4\uC5D0
+      \uC811\uC18D\uD560 \uC218 \uC788\uB2E4\uACE0 \uD310\uB2E8\uD588\uB2E4. \u2462\uD68C\uC758\uC2E4
+      \uCC38\uC5EC\uC790\uB97C \uD655\uC778\uD560 \uC218 \uC788\uB294 \u3262\uACFC
+      \uAD00\uB828\uD558\uC5EC, \uB3C4\uC724\uC740  \uD68C\uC758\uC2E4\uC5D0 \uC544\uC9C1
+      \uC811\uC18D\uD558\uC9C0 \uC54A\uC740 \uC778\uBB3C\uC774 \uC788\uC74C\uC744
+      \uD655\uC778\uD588\uB2E4. \u2463\uD68C\uC758\uC2E4 \uD654\uBA74\uC744 \uC5EC\uB7EC
+      \uCC38\uC5EC\uC790\uAC00 \uACF5\uC720\uD558\uB294 \u3263\uACFC \uAD00\uB828\uD558\uC5EC,
+      \uD61C\uC815\uC758  \uC694\uCCAD\uC5D0 \uB530\uB77C \uB2E4\uACB8\uC740 \uD654\uBA74
+      \uACF5\uC720\uC758 \uAD8C\uD55C\uC744 \uB118\uACBC\uB2E4. \u2464\uD68C\uC758\uC2E4\uC5D0\uC758
+      \uCC38\uC5EC \uC694\uCCAD\uC744 \uC218\uB77D\uD560 \uC218 \uC788\uB294 \u3264\uACFC
+      \uAD00\uB828\uD558\uC5EC,  \uB2E4\uACB8\uC740 \uD68C\uC758\uC2E4\uC5D0 \uC785\uC7A5\uD558\uB824\uB294
+      \uD61C\uC815\uC758 \uC694\uAD6C\uB97C \uBC1B\uC544\uB4E4\uC600\uB2E4. 45. (\uAC00)\uC758
+      \uB0B4\uC6A9\uC744 \uBC14\uD0D5\uC73C\uB85C (\uB098)\uB97C \uAD6C\uC131\uD588\uB2E4\uACE0
+      \uD560 \uB54C, \uC774\uC5D0 \uB300\uD55C  \uC774\uD574\uB85C \uC801\uC808\uD558\uC9C0
+      \uC54A\uC740 \uAC83\uC740?"
+    FloatValue: 0
+    ColorValue: {r: 1, g: 1, b: 1, a: 1}
+    AssetValue: {fileID: 0}
+    TableColumns:
+    - "\uD654\uC790"
+    - "\uB300\uC0AC"
+    TableRows: []
+    ShowAsBadge: 0
+  - PropertyName: "\U0001F3AF \uAE30\uBBF9 1: LogicLinker"
+    Type: 0
+    StringValue: "\uC57D\uC810: Logic Type"
+    FloatValue: 0
+    ColorValue: {r: 1, g: 1, b: 1, a: 1}
+    AssetValue: {fileID: 0}
+    TableColumns:
+    - "\uD654\uC790"
+    - "\uB300\uC0AC"
+    TableRows: []
+    ShowAsBadge: 1

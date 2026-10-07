@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: abe2a9d30201f344a8e75c2ece45c2e9, type: 3}
+  m_Name: BookmarkData
+  m_EditorClassIdentifier: 
+  thumbnail: {fileID: 0}
+  title: "Red Velvet \uB808\uB4DC\uBCA8\uBCB3 '\uB7EC\uC2DC\uC548 \uB8F0\uB81B (Russian
+    Roulette)' MV"
+  description: "Red Velvet\u2019s 3rd mini album \u201CRussian Roulette\u201D has
+    been released. Listen and download on iTunes & Apple Music, Spotify, and Google
+    Play Music"
+  youtubeVideoID: https://www.youtube.com/watch?v=QslJYDX3o8s&list=RDQ7JGYd2eh3Q&index=17
+  rewardID: 0

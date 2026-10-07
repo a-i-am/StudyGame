@@ -1,0 +1,62 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7bb2c85358cf6284e9eadc2b78252a4d, type: 3}
+  m_Name: "Node_0_Phase_0_\uD504\uB864\uB85C\uADF8_\uBC0F_\uD544\uB4DC_\uD0D0\uD5D8_(\uC6D0\uD615_\uAD50\uC2E4)"
+  m_EditorClassIdentifier: 
+  NodeId: b23f3375-f8d4-49cf-b7f3-208cacd23159
+  NodeTitle: "[Phase 0] \uD504\uB864\uB85C\uADF8 \uBC0F \uD544\uB4DC \uD0D0\uD5D8
+    (\uC6D0\uD615 \uAD50\uC2E4)"
+  TemplateType: SNS
+  ThemeColorHex: '#ffffff'
+  ThemeIcon: "\U0001F4DD"
+  Properties:
+  - PropertyName: Dialogues
+    Type: 5
+    StringValue: 
+    FloatValue: 0
+    ColorValue: {r: 1, g: 1, b: 1, a: 1}
+    AssetValue: {fileID: 0}
+    TableColumns:
+    - "\uD654\uC790"
+    - "\uB300\uC0AC"
+    TableRows:
+    - Cells:
+      - "\uAC89\uB3C4\uB294 \uD559\uC0DD"
+      - "\uC800\uAE30 \uAC00\uC6B4\uB370... \u3148\u3147\uC774\uAC00 \uC549\uC544\uC788\uC5B4.
+        \uAC54\uAC00 \uC785\uC744 \uC5F4 \uB54C\uB9C8\uB2E4 \uB2E4\uC218\uACB0 \uD22C\uD45C\uAC00
+        \uC2DC\uC791\uB3FC. \uBC18\uB300\uD558\uB294 \uC0AC\uB78C\uC740 \uC804\uBD80
+        \uC800 \uC885\uC774(\uD22C\uD45C\uC6A9\uC9C0) \uCE7C\uB0A0\uC5D0 \uB09C\uB3C4\uC9C8\uB2F9\uD55C\uB2E4\uACE0."
+    ShowAsBadge: 0
+  - PropertyName: SNS Feed
+    Type: 5
+    StringValue: 
+    FloatValue: 0
+    ColorValue: {r: 1, g: 1, b: 1, a: 1}
+    AssetValue: {fileID: 0}
+    TableColumns:
+    - "\uACC4\uC815\uBA85"
+    - "\uB0B4\uC6A9"
+    TableRows:
+    - Cells:
+      - '@Fashion_Trend_AD [Ad]'
+      - "\uC9C0\uAE08 \uC804\uAD50\uC0DD\uC774 \uB2E4 \uC785\uB294 \uADF8 \uBC14\uB78C\uB9C9\uC774!
+        \uB108\uB9CC \uC5C6\uC73C\uBA74 \uC655\uB530 \uD655\uC815? \uD2B9\uAC00 \uD560\uC778!"
+    - Cells:
+      - '@Escape_Library [Public]'
+      - "\uC0AC\uD68C\uC2E4 \uC65C \uC800\uB798? \uCC45\uC0C1\uB4E4\uC774 \uC9C0\uB4E4\uB07C\uB9AC
+        \uB9C9 \uC6C0\uC9C1\uC774\uB294\uB370??"
+    - Cells:
+      - '@Tired_Runner [Public]'
+      - "\uC57C \uC800\uAE30 \uC6D0 \uC548\uC73C\uB85C \uB4E4\uC5B4\uAC00\uC9C0 \uB9C8\uB77C.
+        \uC544\uAE4C \uB204\uAC00 \uBC1C \uC798\uBABB \uB514\uB3A0\uB2E4\uAC00 \uC885\uC774
+        \uBB49\uCE58\uC5D0 \uD30C\uBB3B\uD600\uC11C \uAE30\uC808\uD568."
+    ShowAsBadge: 0

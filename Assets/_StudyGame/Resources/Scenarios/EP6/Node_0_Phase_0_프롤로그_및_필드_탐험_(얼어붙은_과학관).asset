@@ -1,0 +1,69 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7bb2c85358cf6284e9eadc2b78252a4d, type: 3}
+  m_Name: "Node_0_Phase_0_\uD504\uB864\uB85C\uADF8_\uBC0F_\uD544\uB4DC_\uD0D0\uD5D8_(\uC5BC\uC5B4\uBD99\uC740_\uACFC\uD559\uAD00)"
+  m_EditorClassIdentifier: 
+  NodeId: 90924fd1-59d1-4371-b01f-cf26e64f1488
+  NodeTitle: "[Phase 0] \uD504\uB864\uB85C\uADF8 \uBC0F \uD544\uB4DC \uD0D0\uD5D8
+    (\uC5BC\uC5B4\uBD99\uC740 \uACFC\uD559\uAD00)"
+  TemplateType: SNS
+  ThemeColorHex: '#ffffff'
+  ThemeIcon: "\U0001F4DD"
+  Properties:
+  - PropertyName: Dialogues
+    Type: 5
+    StringValue: 
+    FloatValue: 0
+    ColorValue: {r: 1, g: 1, b: 1, a: 1}
+    AssetValue: {fileID: 0}
+    TableColumns:
+    - "\uD654\uC790"
+    - "\uB300\uC0AC"
+    TableRows:
+    - Cells:
+      - "\uACE4\uB780\uD55C \uD559\uC0DD"
+      - "\uC544 \u3148\u3134 \uCD94\uC6CC... \uBB38\uC774 \uC5BC\uC5B4\uC11C \uC548
+        \uC5F4\uB9AC\uC796\uC544..."
+    - Cells:
+      - "\uACE4\uB780\uD55C \uD559\uC0DD"
+      - "\u314E\u3147\uC774\uAC00 \uC800 \uC548\uC5D0\uC11C \uC548 \uB098\uC640.
+        \uC694\uC0C8 \uB204\uAC00 \uBB50\uB77C \uD574\uB3C4 \uD55C \uBC88\uB3C4 \uC548
+        \uC6B8\uAE38\uB798 \uB3C5\uD574\uC84C\uB098 \uD588\uB294\uB370, \uAC11\uC790\uAE30
+        \uC800 \uC548\uC5D0\uC11C \uB2E4 \uC5BC\uB824\uBC84\uB9AC\uACE0 \uC788\uC796\uC544.
+        \uC548\uC5D0\uC11C \uC720\uB9AC\uAC00 \uACC4\uC18D \uAE68\uC838."
+    ShowAsBadge: 0
+  - PropertyName: SNS Feed
+    Type: 5
+    StringValue: 
+    FloatValue: 0
+    ColorValue: {r: 1, g: 1, b: 1, a: 1}
+    AssetValue: {fileID: 0}
+    TableColumns:
+    - "\uACC4\uC815\uBA85"
+    - "\uB0B4\uC6A9"
+    TableRows:
+    - Cells:
+      - '@Escape_Library [Public]'
+      - "\uBBF8\uCE5C \uACFC\uD559\uC2E4 \uCABD \uAC00\uC9C0 \uB9C8\uC148;; \uBC29\uAE08
+        \uB4E4\uACE0 \uC788\uB358 \uC0DD\uC218\uBCD1 \uBE60\uC9C1 \uD558\uACE0 \uD1B5\uC9F8\uB85C
+        \uC5BC\uC5B4\uD130\uC9D0."
+    - Cells:
+      - '@Hot_Pack_AD [Ad]'
+      - "\uBD99\uC774\uB294 \uD56B\uD329 100\uAC1C \uC138\uD2B8! \uC601\uD558 20\uB3C4\uC5D0\uB3C4
+        \uB044\uB5A1\uC5C6\uB294 \uD6C4\uB048\uD568!"
+    - Cells:
+      - '@Cat_Lover_99 [Public]'
+      - "\uD559\uAD50 \uB4A4\uC5D0 \uAE38\uB0E5\uC774\uB4E4 \uCD94\uC6CC\uC11C \uC5B4\uB5A1\uD558\uB0D0
+        \u3160\u3160 \uB2E4\uB4E4 \uC2B5\uC2DD \uCE94 \uC8FC\uC9C0 \uB9C8\uB77C \uAE08\uBC29
+        \uC5BC\uC5B4\uC11C \uC560\uB4E4 \uD600 \uB2E4\uCE68 \u3160 \uB530\uB73B\uD55C
+        \uBB3C\uB85C \uC8FC\uC148 \u3160"
+    ShowAsBadge: 0

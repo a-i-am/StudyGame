@@ -1,0 +1,35 @@
+{
+  "BlueprintName": "Chapter 1: The Awakening",
+  "Tracks": [
+    {
+      "TrackId": "env-track",
+      "TrackName": "🏗️ Environments",
+      "TrackType": 0,
+      "TrackColor": { "r": 0.2, "g": 0.7, "b": 0.3, "a": 1.0 },
+      "Clips": [
+        { "ClipId": "ep1-env", "Label": "Map EP1", "TimeStart": 0.0, "Duration": 4.0, "ClipColor": { "r": 0.25, "g": 0.75, "b": 0.35, "a": 1.0 }, "FloorplanJsonPath": "Assets/Resources/Scenarios/Maps/EP1.json" },
+        { "ClipId": "ep2-env", "Label": "Map EP2", "TimeStart": 10.0, "Duration": 4.0, "ClipColor": { "r": 0.25, "g": 0.75, "b": 0.35, "a": 1.0 }, "FloorplanJsonPath": "Assets/Resources/Scenarios/Maps/EP2.json" },
+        { "ClipId": "ep3-env", "Label": "Map EP3", "TimeStart": 20.0, "Duration": 4.0, "ClipColor": { "r": 0.25, "g": 0.75, "b": 0.35, "a": 1.0 }, "FloorplanJsonPath": "Assets/Resources/Scenarios/Maps/EP3.json" },
+        { "ClipId": "ep4-env", "Label": "Map EP4", "TimeStart": 30.0, "Duration": 4.0, "ClipColor": { "r": 0.25, "g": 0.75, "b": 0.35, "a": 1.0 }, "FloorplanJsonPath": "Assets/Resources/Scenarios/Maps/EP4.json" },
+        { "ClipId": "ep5-env", "Label": "Map EP5", "TimeStart": 40.0, "Duration": 4.0, "ClipColor": { "r": 0.25, "g": 0.75, "b": 0.35, "a": 1.0 }, "FloorplanJsonPath": "Assets/Resources/Scenarios/Maps/EP5.json" },
+        { "ClipId": "ep6-env", "Label": "Map EP6", "TimeStart": 50.0, "Duration": 4.0, "ClipColor": { "r": 0.25, "g": 0.75, "b": 0.35, "a": 1.0 }, "FloorplanJsonPath": "Assets/Resources/Scenarios/Maps/EP6.json" },
+        { "ClipId": "ep7-env", "Label": "Map EP7", "TimeStart": 60.0, "Duration": 4.0, "ClipColor": { "r": 0.25, "g": 0.75, "b": 0.35, "a": 1.0 }, "FloorplanJsonPath": "Assets/Resources/Scenarios/Maps/EP7.json" }
+      ]
+    },
+    {
+      "TrackId": "sce-track",
+      "TrackName": "🕸️ Episode Flow",
+      "TrackType": 1,
+      "TrackColor": { "r": 0.3, "g": 0.5, "b": 0.9, "a": 1.0 },
+      "Clips": [
+        { "ClipId": "ep1-sce", "Label": "Episode 1", "TimeStart": 4.5, "Duration": 4.0, "ClipColor": { "r": 0.35, "g": 0.55, "b": 0.95, "a": 1.0 }, "EpisodeGraphPath": "Assets/Resources/Scenarios/Episodes/EP1.asset" },
+        { "ClipId": "ep2-sce", "Label": "Episode 2", "TimeStart": 14.5, "Duration": 4.0, "ClipColor": { "r": 0.35, "g": 0.55, "b": 0.95, "a": 1.0 }, "EpisodeGraphPath": "Assets/Resources/Scenarios/Episodes/EP2.asset" },
+        { "ClipId": "ep3-sce", "Label": "Episode 3", "TimeStart": 24.5, "Duration": 4.0, "ClipColor": { "r": 0.35, "g": 0.55, "b": 0.95, "a": 1.0 }, "EpisodeGraphPath": "Assets/Resources/Scenarios/Episodes/EP3.asset" },
+        { "ClipId": "ep4-sce", "Label": "Episode 4", "TimeStart": 34.5, "Duration": 4.0, "ClipColor": { "r": 0.35, "g": 0.55, "b": 0.95, "a": 1.0 }, "EpisodeGraphPath": "Assets/Resources/Scenarios/Episodes/EP4.asset" },
+        { "ClipId": "ep5-sce", "Label": "Episode 5", "TimeStart": 44.5, "Duration": 4.0, "ClipColor": { "r": 0.35, "g": 0.55, "b": 0.95, "a": 1.0 }, "EpisodeGraphPath": "Assets/Resources/Scenarios/Episodes/EP5.asset" },
+        { "ClipId": "ep6-sce", "Label": "Episode 6", "TimeStart": 54.5, "Duration": 4.0, "ClipColor": { "r": 0.35, "g": 0.55, "b": 0.95, "a": 1.0 }, "EpisodeGraphPath": "Assets/Resources/Scenarios/Episodes/EP6.asset" },
+        { "ClipId": "ep7-sce", "Label": "Episode 7", "TimeStart": 64.5, "Duration": 4.0, "ClipColor": { "r": 0.35, "g": 0.55, "b": 0.95, "a": 1.0 }, "EpisodeGraphPath": "Assets/Resources/Scenarios/Episodes/EP7.asset" }
+      ]
+    }
+  ]
+}

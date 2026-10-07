@@ -1,0 +1,4463 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d736f97a9e2e074b92f0c8c68f564ad, type: 3}
+  m_Name: MathData
+  m_EditorClassIdentifier: 
+  systemName: Math_Game_Interaction_DB
+  version: 1.1.0
+  totalWorlds: 5
+  totalEntities: 230
+  worlds:
+  - id: world_math_1
+    title: "\uC218\uD559 I"
+    description: "\uC9C0\uC218/\uB85C\uADF8, \uC0BC\uAC01\uD568\uC218, \uC218\uC5F4
+      \uC601\uC5ED"
+    biomes:
+    - id: biome_exp_log
+      title: "\uC9C0\uC218\uC640 \uB85C\uADF8\uC758 \uC601\uC5ED"
+      laws:
+      - id: law_exp_growth
+        law_type: ExponentialGrowth
+        name: "\uC9C0\uC218 \uC5F0\uC1C4 \uBC95\uCE59"
+        formula_pattern: a^x
+        interactive_rules:
+          operator: pow
+          target_property: scale
+          input_parameter: x
+          action_type: ScaleTransform
+      - id: law_log_compress
+        law_type: LogarithmicCompress
+        name: "\uB85C\uADF8 \uC555\uCD95 \uBC95\uCE59"
+        formula_pattern: \log_a x
+        interactive_rules:
+          operator: log
+          target_property: mass
+          input_parameter: x
+          action_type: DeconstructWeight
+      entities:
+      - id: 2023_math_01
+        law_id: law_log_compress
+        question_text: "\uC758 \uAC12\uC740?"
+        formula: \left(\frac{4}{2^{\sqrt{2}}}\right)^{2+\sqrt{2}}
+        choices:
+        - \frac{1}{4}
+        - \frac{1}{2}
+        - 1
+        - 2
+        - 4
+        points: 2
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: \frac{1}{4}
+      - id: 2023_math_04
+        law_id: law_exp_growth
+        question_text: "\uB2E4\uD56D\uD568\uC218 f(x)\uC5D0 \uB300\uD558\uC5EC \uD568\uC218
+          g(x)\uB97C \uB77C \uD558\uC790. f(2)=1, f'(2)=3\uC77C \uB54C, g'(2)\uC758
+          \uAC12\uC740?"
+        formula: g(x) = x^2 f(x)
+        choices:
+        - 12
+        - 14
+        - 16
+        - 18
+        - 20
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 12
+      - id: 2023_math_11
+        law_id: law_exp_growth
+        question_text: "\uADF8\uB9BC\uACFC \uAC19\uC774 \uC0AC\uAC01\uD615 ABCD\uAC00
+          \uD55C \uC6D0\uC5D0 \uB0B4\uC811\uD558\uACE0 \uB2E4\uC74C \uC870\uAC74\uC774
+          \uC8FC\uC5B4\uC9C8 \uB54C, \uC774 \uC6D0\uC758 \uBC18\uC9C0\uB984\uC758
+          \uAE38\uC774\uB294?"
+        formula: \overline{AB} = 5, \; \overline{AC} = 3\sqrt{5}, \; \overline{AD}
+          = 7, \; \angle BAC = \angle CAD
+        choices:
+        - \frac{5\sqrt{2}}{2}
+        - \frac{8\sqrt{5}}{5}
+        - \frac{5\sqrt{5}}{3}
+        - \frac{8\sqrt{2}}{3}
+        - \frac{9\sqrt{3}}{4}
+        points: 4
+        has_image: 1
+        image_asset_id: Math_Fig_2023_math_11
+        render_type: Static_Sprite
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: \frac{5\sqrt{2}}{2}
+      - id: 2023_math_16
+        law_id: law_log_compress
+        question_text: "\uBC29\uC815\uC2DD\uC744 \uB9CC\uC871\uC2DC\uD0A4\uB294 \uC2E4\uC218
+          x\uC758 \uAC12\uC744 \uAD6C\uD558\uC2DC\uC624."
+        formula: \log_2 (3x + 2) = 2 + \log_2 (x - 2)
+        choices: []
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 0
+      - id: 2023_math_17
+        law_id: law_exp_growth
+        question_text: "\uD568\uC218 f(x)\uC5D0 \uB300\uD558\uC5EC f'(x) = 4x^3 -
+          2x\uC774\uACE0 f(0) = 3\uC77C \uB54C, f(2)\uC758 \uAC12\uC744 \uAD6C\uD558\uC2DC\uC624."
+        formula: 
+        choices: []
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 0
+      - id: 2023_math_19
+        law_id: law_exp_growth
+        question_text: "\uBC29\uC815\uC2DD\uC758 \uC11C\uB85C \uB2E4\uB978 \uC591\uC758
+          \uC2E4\uADFC\uC758 \uAC1C\uC218\uAC00 2\uAC00 \uB418\uB3C4\uB85D \uD558\uB294
+          \uC815\uC218 k\uC758 \uAC1C\uC218\uB97C \uAD6C\uD558\uC2DC\uC624."
+        formula: 2x^3 - 6x^2 + k = 0
+        choices: []
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 0
+      - id: 2023_math_20
+        law_id: law_exp_growth
+        question_text: "\uC218\uC9C1\uC120 \uC704\uB97C \uC6C0\uC9C1\uC774\uB294
+          \uC810 P\uC758 \uC2DC\uAC01 t(t \\ge 0)\uC5D0\uC11C\uC758 \uC18D\uB3C4
+          v(t)\uC640 \uAC00\uC18D\uB3C4 a(t)\uAC00 \uB2E4\uC74C \uC870\uAC74\uC744
+          \uB9CC\uC871\uC2DC\uD0A8\uB2E4.\n(\uAC00) 0 \\le t \\le 2\uC77C \uB54C,
+          v(t) = 2t^3 - 8t\uC774\uB2E4.\n(\uB098) t \\ge 2\uC77C \uB54C, a(t) = 6t
+          + 4\uC774\uB2E4.\n\uC2DC\uAC01 t=0\uC5D0\uC11C t=3\uAE4C\uC9C0 \uC810 P\uAC00
+          \uC6C0\uC9C1\uC778 \uAC70\uB9AC\uB97C \uAD6C\uD558\uC2DC\uC624."
+        formula: 
+        choices: []
+        points: 4
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 0
+      - id: 2023_math_21
+        law_id: law_log_compress
+        question_text: "\uC790\uC5F0\uC218 n\uC5D0 \uB300\uD558\uC5EC \uD568\uC218
+          f(x)\uB97C \uB2E4\uC74C\uACFC \uAC19\uC774 \uC815\uC758\uD558\uC790. \uC2E4\uC218
+          t\uC5D0 \uB300\uD558\uC5EC x\uC5D0 \uB300\uD55C \uBC29\uC815\uC2DD f(x)
+          = t\uC758 \uC11C\uB85C \uB2E4\uB978 \uC2E4\uADFC\uC758 \uAC1C\uC218\uB97C
+          g(t)\uB77C \uD560 \uB54C, \uD568\uC218 g(t)\uC758 \uCD5C\uB313\uAC12\uC774
+          4\uAC00 \uB418\uB3C4\uB85D \uD558\uB294 \uBAA8\uB4E0 \uC790\uC5F0\uC218
+          n\uC758 \uAC12\uC758 \uD569\uC744 \uAD6C\uD558\uC2DC\uC624."
+        formula: f(x) = \begin{cases} |3^{x+2} - n| & (x < 0) \\ |\log_2(x+4) - n|
+          & (x \ge 0) \end{cases}
+        choices: []
+        points: 4
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 0
+      - id: 2023_math_22
+        law_id: law_exp_growth
+        question_text: "\uCD5C\uACE0\uCC28\uD56D\uC758 \uACC4\uC218\uAC00 1\uC778
+          \uC0BC\uCC28\uD568\uC218 f(x)\uC640 \uC2E4\uC218 \uC804\uCCB4\uC758 \uC9D1\uD569\uC5D0\uC11C
+          \uC5F0\uC18D\uC778 \uD568\uC218 g(x)\uAC00 \uB2E4\uC74C \uC870\uAC74\uC744
+          \uB9CC\uC871\uC2DC\uD0AC \uB54C, f(4)\uC758 \uAC12\uC744 \uAD6C\uD558\uC2DC\uC624.\n(\uAC00)
+          \uBAA8\uB4E0 \uC2E4\uC218 x\uC5D0 \uB300\uD558\uC5EC f(x) = f(1) + (x-1)f'(g(x))\uC774\uB2E4.\n(\uB098)
+          \uD568\uC218 g(x)\uC758 \uCD5C\uC19F\uAC12\uC740 \\frac{5}{2}\uC774\uB2E4.\n(\uB2E4)
+          f(0) = -3, f(g(1)) = 6"
+        formula: 
+        choices: []
+        points: 4
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 0
+      - id: 2024_math_01
+        law_id: law_log_compress
+        question_text: "\uC758 \uAC12\uC740?"
+        formula: \sqrt[3]{24} \times 3^{\frac{2}{3}}
+        choices:
+        - 6
+        - 7
+        - 8
+        - 9
+        - 10
+        points: 2
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 6
+      - id: 2024_math_04
+        law_id: law_exp_growth
+        question_text: "\uD568\uC218 f(x)\uAC00 \uC2E4\uC218 \uC804\uCCB4\uC758 \uC9D1\uD569\uC5D0\uC11C
+          \uC5F0\uC18D\uC77C \uB54C, \uC0C1\uC218 a\uC758 \uAC12\uC740?"
+        formula: f(x) = \begin{cases} 3x - a & (x < 2) \\ x^2 + a & (x \ge 2) \end{cases}
+        choices:
+        - 1
+        - 2
+        - 3
+        - 4
+        - 5
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 1
+      - id: 2024_math_09
+        law_id: law_log_compress
+        question_text: "\uC218\uC9C1\uC120 \uC704\uC758 \uB450 \uC810 P(\\log_5 3),
+          Q(\\log_5 12)\uC5D0 \uB300\uD558\uC5EC \uC120\uBD84 PQ\uB97C m:(1-m)\uC73C\uB85C
+          \uB0B4\uBD84\uD558\uB294 \uC810\uC758 \uC88C\uD45C\uAC00 1\uC77C \uB54C,
+          4^m\uC758 \uAC12\uC740? (\uB2E8, 0<m<1\uC778 \uC0C1\uC218\uC774\uB2E4.)"
+        formula: 4^m
+        choices:
+        - \frac{7}{6}
+        - \frac{4}{3}
+        - \frac{3}{2}
+        - \frac{5}{3}
+        - \frac{11}{6}
+        points: 4
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: \frac{7}{6}
+      - id: 2024_math_10
+        law_id: law_exp_growth
+        question_text: "\uC2DC\uAC01 t=0\uC77C \uB54C \uB3D9\uC2DC\uC5D0 \uC6D0\uC810\uC744
+          \uCD9C\uBC1C\uD558\uC5EC \uC218\uC9C1\uC120 \uC704\uB97C \uC6C0\uC9C1\uC774\uB294
+          \uB450 \uC810 P, Q\uC758 \uC2DC\uAC01 t\uC5D0\uC11C\uC758 \uC18D\uB3C4\uAC00
+          \uAC01\uAC01 v_1(t)=t^2-6t+5, v_2(t)=2t-7\uC774\uB2E4. \uB450 \uC810 P,
+          Q \uC0AC\uC774\uC758 \uAC70\uB9AC\uB97C f(t)\uB77C \uD560 \uB54C, f(t)\uB294
+          \uAD6C\uAC04 [0, a]\uC5D0\uC11C \uC99D\uAC00\uD558\uACE0, [a, b]\uC5D0\uC11C
+          \uAC10\uC18C\uD558\uACE0, [b, \\infty)\uC5D0\uC11C \uC99D\uAC00\uD55C\uB2E4.
+          \uC2DC\uAC01 t=a\uC5D0\uC11C t=b\uAE4C\uC9C0 \uC810 Q\uAC00 \uC6C0\uC9C1\uC778
+          \uAC70\uB9AC\uB294?"
+        formula: v_1(t)=t^2-6t+5, \; v_2(t)=2t-7
+        choices:
+        - \frac{15}{2}
+        - \frac{17}{2}
+        - \frac{19}{2}
+        - \frac{21}{2}
+        - \frac{23}{2}
+        points: 4
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: \frac{15}{2}
+      - id: 2024_math_12
+        law_id: law_exp_growth
+        question_text: "\uC2E4\uC218 t\uC5D0 \uB300\uD558\uC5EC x\uC5D0 \uB300\uD55C
+          \uBC29\uC815\uC2DD f(x)=t\uC758 \uC11C\uB85C \uB2E4\uB978 \uC2E4\uADFC\uC758
+          \uAC1C\uC218\uB97C g(t)\uB77C \uD558\uC790. \uD568\uC218 g(t)\uAC00 t=k\uC5D0\uC11C
+          \uBD88\uC5F0\uC18D\uC778 k\uC758 \uAC1C\uC218\uAC00 2\uC77C \uB54C, k\uC758
+          \uAC12\uC758 \uD569\uC740?"
+        formula: f(x) = \frac{1}{9}x(x-6)^2
+        choices:
+        - 2
+        - 4
+        - 6
+        - 8
+        - 10
+        points: 4
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 2
+      - id: 2024_math_13
+        law_id: law_exp_growth
+        question_text: "\uC0AC\uAC01 trapezoid ABCD\uC5D0\uC11C \uBCC0\uC758 \uAE38\uC774\uC640
+          \uAC01\uB3C4\uAC00 \uC8FC\uC5B4\uC84C\uC744 \uB54C, \uC120\uBD84 BD\uC758
+          \uAE38\uC774\uB294?"
+        formula: \overline{AB}=2, \; \overline{AD}=1, \; \angle DAB = \frac{2\pi}{3}
+        choices:
+        - \sqrt{5}
+        - \sqrt{6}
+        - \sqrt{7}
+        - 2\sqrt{2}
+        - 3
+        points: 4
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: \sqrt{5}
+      - id: 2024_math_16
+        law_id: law_log_compress
+        question_text: "\uBC29\uC815\uC2DD 3^{x-8} = (1/27)^x \uB97C \uB9CC\uC871\uC2DC\uD0A4\uB294
+          \uC2E4\uC218 x\uC758 \uAC12\uC744 \uAD6C\uD558\uC2DC\uC624."
+        formula: 3^{x-8} = \left(\frac{1}{27}\right)^x
+        choices: []
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 0
+      - id: 2024_math_19
+        law_id: law_exp_growth
+        question_text: "\uD568\uC218 f(x)=x^3-3x^2-9x+k\uC758 \uADF9\uC19F\uAC12\uC774
+          0\uC77C \uB54C, \uC0C1\uC218 k\uC758 \uAC12\uC744 \uAD6C\uD558\uC2DC\uC624."
+        formula: f(x)=x^3-3x^2-9x+k
+        choices: []
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 0
+      - id: 2024_math_20
+        law_id: law_exp_growth
+        question_text: "\uC2DC\uAC01 t=0\uC5D0\uC11C \uC704\uCE58\uAC00 0\uC778 \uC810
+          P\uC758 \uC2DC\uAC01 t\uC5D0\uC11C\uC758 \uC18D\uB3C4 v(t)=3t^2-12t+9\uC774\uB2E4.
+          \uC810 P\uAC00 \uCD9C\uBC1C\uD55C \uD6C4 \uC2DC\uAC01 t=3\uAE4C\uC9C0 \uC6C0\uC9C1\uC778
+          \uAC70\uB9AC\uB97C \uAD6C\uD558\uC2DC\uC624."
+        formula: v(t)=3t^2-12t+9
+        choices: []
+        points: 4
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 0
+      - id: 2024_math_21
+        law_id: law_log_compress
+        question_text: "\uC790\uC5F0\uC218 n\uC5D0 \uB300\uD558\uC5EC \uB450 \uD568\uC218
+          y=2^x, y=\\log_2 x\uC758 \uADF8\uB798\uD504\uC640 \uC9C1\uC120 x+y=n\uC774
+          \uB9CC\uB098\uB294 \uC810\uC744 \uAC01\uAC01 (x_1, y_1), (x_2, y_2)\uB77C
+          \uD558\uC790. \uC870\uAC74\uC744 \uB9CC\uC871\uD558\uB294 n\uC758 \uAC12\uC744
+          \uAD6C\uD558\uC2DC\uC624."
+        formula: 
+        choices: []
+        points: 4
+        has_image: 1
+        image_asset_id: Math_Fig_2024_math_21
+        render_type: Static_Sprite
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 0
+      - id: 2024_math_22
+        law_id: law_exp_growth
+        question_text: "\uCD5C\uACE0\uCC28\uD56D\uC758 \uACC4\uC218\uAC00 1\uC778
+          \uC0BC\uCC28\uD568\uC218 f(x)\uC640 \uC591\uC218 a\uC5D0 \uB300\uD558\uC5EC
+          f(x)\uAC00 \uC870\uAC74\uC744 \uB9CC\uC871\uC2DC\uD0AC \uB54C, f(k)\uC758
+          \uAC12\uC744 \uAD6C\uD558\uC2DC\uC624."
+        formula: 
+        choices: []
+        points: 4
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 0
+      - id: 2025_math_even_01
+        law_id: law_exp_growth
+        question_text: "\uC758 \uAC12\uC740?"
+        formula: \sqrt[3]{5} \times 25^{\frac{1}{3}}
+        choices:
+        - 1
+        - 2
+        - 3
+        - 4
+        - 5
+        points: 2
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 1
+      - id: 2025_math_even_04
+        law_id: law_exp_growth
+        question_text: "\uD568\uC218 f(x)\uAC00 \uC2E4\uC218 \uC804\uCCB4\uC758 \uC9D1\uD569\uC5D0\uC11C
+          \uC5F0\uC18D\uC77C \uB54C, \uC0C1\uC218 a\uC758 \uAC12\uC740?"
+        formula: f(x) = \begin{cases} 5x + a & (x < -2) \\ x^2 - a & (x \ge -2) \end{cases}
+        choices:
+        - 7
+        - 8
+        - 9
+        - 10
+        - 11
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 7
+      - id: 2025_math_even_09
+        law_id: law_log_compress
+        question_text: "\uB450 \uACE1\uC120 y=2^x, y=-2^{-x}+k \uAC00 \uB9CC\uB098\uB294
+          \uC810\uC758 x\uC88C\uD45C\uAC00 1/2\uC77C \uB54C, \uC0C1\uC218 k\uC758
+          \uAC12\uC740?"
+        formula: y=2^x, \; y=-2^{-x}+k
+        choices:
+        - \frac{3\sqrt{2}}{2}
+        - 2\sqrt{2}
+        - \frac{5\sqrt{2}}{2}
+        - 3\sqrt{2}
+        - \frac{7\sqrt{2}}{2}
+        points: 4
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: \frac{3\sqrt{2}}{2}
+      - id: 2025_math_even_10
+        law_id: law_exp_growth
+        question_text: "\uC2DC\uAC01 t=0\uC77C \uB54C \uC6D0\uC810\uC744 \uCD9C\uBC1C\uD558\uC5EC
+          \uC218\uC9C1\uC120 \uC704\uB97C \uC6C0\uC9C1\uC774\uB294 \uC810 P\uC758
+          \uC2DC\uAC01 t\uC5D0\uC11C\uC758 \uC18D\uB3C4 v(t)=6t^2-18t+12\uC774\uB2E4.
+          \uC810 P\uAC00 \uBC29\uD5A5\uC744 \uBC14\uAFC0 \uB54C\uC758 \uC704\uCE58\uC758
+          \uCC28\uB294?"
+        formula: v(t)=6t^2-18t+12
+        choices:
+        - 1
+        - 2
+        - 3
+        - 4
+        - 5
+        points: 4
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 1
+      - id: 2025_math_even_14
+        law_id: law_exp_growth
+        question_text: "\uC2E4\uC218 t\uC5D0 \uB300\uD558\uC5EC \uD568\uC218 f(x)=x^3-3x^2+t\uC758
+          \uADF8\uB798\uD504\uC640 x\uCD95\uC758 \uAD50\uC810\uC758 \uAC1C\uC218\uB97C
+          g(t)\uB77C \uD558\uC790. \uD568\uC218 g(t)\uAC00 \uBD88\uC5F0\uC18D\uC778
+          \uBAA8\uB4E0 t\uC758 \uAC12\uC758 \uD569\uC740?"
+        formula: f(x)=x^3-3x^2+t
+        choices:
+        - 2
+        - 4
+        - 6
+        - 8
+        - 10
+        points: 4
+        has_image: 1
+        image_asset_id: Math_Fig_2025_math_even_14
+        render_type: Procedural_Graph
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 2
+      - id: 2025_math_even_16
+        law_id: law_log_compress
+        question_text: "\uBC29\uC815\uC2DD \\log_3(x-1) = 2\uB97C \uB9CC\uC871\uC2DC\uD0A4\uB294
+          x\uC758 \uAC12\uC744 \uAD6C\uD558\uC2DC\uC624."
+        formula: \log_3(x-1) = 2
+        choices: []
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 0
+      - id: 2025_math_even_19
+        law_id: law_exp_growth
+        question_text: "\uBC29\uC815\uC2DD 2x^3-6x+k=0\uC774 \uC11C\uB85C \uB2E4\uB978
+          \uB450 \uC2E4\uADFC\uC744 \uAC16\uB3C4\uB85D \uD558\uB294 \uC591\uC218
+          k\uC758 \uAC12\uC744 \uAD6C\uD558\uC2DC\uC624."
+        formula: 2x^3-6x+k=0
+        choices: []
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 0
+      - id: 2025_math_even_20
+        law_id: law_exp_growth
+        question_text: "\uC2DC\uAC01 t=0\uC5D0\uC11C \uCD9C\uBC1C\uD55C \uC810 P\uC758
+          \uC18D\uB3C4\uAC00 v(t)=4t-8\uC77C \uB54C t=0\uBD80\uD130 t=4\uAE4C\uC9C0
+          \uC6C0\uC9C1\uC778 \uAC70\uB9AC\uB97C \uAD6C\uD558\uC2DC\uC624."
+        formula: v(t)=4t-8
+        choices: []
+        points: 4
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 0
+      - id: 2025_math_even_21
+        law_id: law_exp_growth
+        question_text: "\uC9C0\uC218\uD568\uC218\uC640 \uB85C\uADF8\uD568\uC218\uC758
+          \uADF8\uB798\uD504\uAC00 \uB9CC\uB098\uB294 \uC810\uC758 \uAC1C\uC218\uB97C
+          \uAD6C\uD558\uC2DC\uC624."
+        formula: 
+        choices: []
+        points: 4
+        has_image: 1
+        image_asset_id: Math_Fig_2025_math_even_21
+        render_type: Procedural_Graph
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 0
+      - id: 2025_math_even_22
+        law_id: law_exp_growth
+        question_text: "\uCD5C\uACE0\uCC28\uD56D\uC758 \uACC4\uC218\uAC00 1\uC778
+          \uC0AC\uCC28\uD568\uC218 f(x)\uAC00 \uC870\uAC74\uC744 \uB9CC\uC871\uD560
+          \uB54C f(3)\uC758 \uAC12\uC744 \uAD6C\uD558\uC2DC\uC624."
+        formula: 
+        choices: []
+        points: 4
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 0
+      - id: 2025_math_odd_01
+        law_id: law_exp_growth
+        question_text: "\uC758 \uAC12\uC740?"
+        formula: \sqrt[3]{5} \times 25^{\frac{1}{3}}
+        choices:
+        - 1
+        - 2
+        - 3
+        - 4
+        - 5
+        points: 2
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 1
+      - id: 2025_math_odd_04
+        law_id: law_exp_growth
+        question_text: "\uD568\uC218 f(x)\uAC00 \uC2E4\uC218 \uC804\uCCB4\uC758 \uC9D1\uD569\uC5D0\uC11C
+          \uC5F0\uC18D\uC77C \uB54C, \uC0C1\uC218 a\uC758 \uAC12\uC740?"
+        formula: f(x) = \begin{cases} 5x + a & (x < -2) \\ x^2 - a & (x \ge -2) \end{cases}
+        choices:
+        - 7
+        - 8
+        - 9
+        - 10
+        - 11
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 7
+      - id: 2025_math_odd_09
+        law_id: law_log_compress
+        question_text: "\uB450 \uACE1\uC120 y=2^x, y=-2^{-x}+k \uAC00 \uB9CC\uB098\uB294
+          \uC810\uC758 x\uC88C\uD45C\uAC00 1/2\uC77C \uB54C, \uC0C1\uC218 k\uC758
+          \uAC12\uC740?"
+        formula: y=2^x, \; y=-2^{-x}+k
+        choices:
+        - \frac{3\sqrt{2}}{2}
+        - 2\sqrt{2}
+        - \frac{5\sqrt{2}}{2}
+        - 3\sqrt{2}
+        - \frac{7\sqrt{2}}{2}
+        points: 4
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: \frac{3\sqrt{2}}{2}
+      - id: 2025_math_odd_10
+        law_id: law_exp_growth
+        question_text: "\uC2DC\uAC01 t=0\uC77C \uB54C \uC6D0\uC810\uC744 \uCD9C\uBC1C\uD558\uC5EC
+          \uC218\uC9C1\uC120 \uC704\uB97C \uC6C0\uC9C1\uC774\uB294 \uC810 P\uC758
+          \uC2DC\uAC01 t\uC5D0\uC11C\uC758 \uC18D\uB3C4 v(t)=6t^2-18t+12\uC774\uB2E4.
+          \uC810 P\uAC00 \uBC29\uD5A5\uC744 \uBC14\uAFC0 \uB54C\uC758 \uC704\uCE58\uC758
+          \uCC28\uB294?"
+        formula: v(t)=6t^2-18t+12
+        choices:
+        - 1
+        - 2
+        - 3
+        - 4
+        - 5
+        points: 4
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 1
+      - id: 2025_math_odd_14
+        law_id: law_exp_growth
+        question_text: "\uC2E4\uC218 t\uC5D0 \uB300\uD558\uC5EC \uD568\uC218 f(x)=x^3-3x^2+t\uC758
+          \uADF8\uB798\uD504\uC640 x\uCD95\uC758 \uAD50\uC810\uC758 \uAC1C\uC218\uB97C
+          g(t)\uB77C \uD558\uC790. \uD568\uC218 g(t)\uAC00 \uBD88\uC5F0\uC18D\uC778
+          \uBAA8\uB4E0 t\uC758 \uAC12\uC758 \uD569\uC740?"
+        formula: f(x)=x^3-3x^2+t
+        choices:
+        - 2
+        - 4
+        - 6
+        - 8
+        - 10
+        points: 4
+        has_image: 1
+        image_asset_id: Math_Fig_2025_math_odd_14
+        render_type: Procedural_Graph
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 2
+      - id: 2025_math_odd_16
+        law_id: law_log_compress
+        question_text: "\uBC29\uC815\uC2DD \\log_3(x-1) = 2\uB97C \uB9CC\uC871\uC2DC\uD0A4\uB294
+          x\uC758 \uAC12\uC744 \uAD6C\uD558\uC2DC\uC624."
+        formula: \log_3(x-1) = 2
+        choices: []
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 0
+      - id: 2025_math_odd_19
+        law_id: law_exp_growth
+        question_text: "\uBC29\uC815\uC2DD 2x^3-6x+k=0\uC774 \uC11C\uB85C \uB2E4\uB978
+          \uB450 \uC2E4\uADFC\uC744 \uAC16\uB3C4\uB85D \uD558\uB294 \uC591\uC218
+          k\uC758 \uAC12\uC744 \uAD6C\uD558\uC2DC\uC624."
+        formula: 2x^3-6x+k=0
+        choices: []
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 0
+      - id: 2025_math_odd_20
+        law_id: law_exp_growth
+        question_text: "\uC2DC\uAC01 t=0\uC5D0\uC11C \uCD9C\uBC1C\uD55C \uC810 P\uC758
+          \uC18D\uB3C4\uAC00 v(t)=4t-8\uC77C \uB54C t=0\uBD80\uD130 t=4\uAE4C\uC9C0
+          \uC6C0\uC9C1\uC778 \uAC70\uB9AC\uB97C \uAD6C\uD558\uC2DC\uC624."
+        formula: v(t)=4t-8
+        choices: []
+        points: 4
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 0
+      - id: 2025_math_odd_21
+        law_id: law_exp_growth
+        question_text: "\uC9C0\uC218\uD568\uC218\uC640 \uB85C\uADF8\uD568\uC218\uC758
+          \uADF8\uB798\uD504\uAC00 \uB9CC\uB098\uB294 \uC810\uC758 \uAC1C\uC218\uB97C
+          \uAD6C\uD558\uC2DC\uC624."
+        formula: 
+        choices: []
+        points: 4
+        has_image: 1
+        image_asset_id: Math_Fig_2025_math_odd_21
+        render_type: Procedural_Graph
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 0
+      - id: 2025_math_odd_22
+        law_id: law_exp_growth
+        question_text: "\uCD5C\uACE0\uCC28\uD56D\uC758 \uACC4\uC218\uAC00 1\uC778
+          \uC0AC\uCC28\uD568\uC218 f(x)\uAC00 \uC870\uAC74\uC744 \uB9CC\uC871\uD560
+          \uB54C f(3)\uC758 \uAC12\uC744 \uAD6C\uD558\uC2DC\uC624."
+        formula: 
+        choices: []
+        points: 4
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 0
+      - id: 2026_math_01
+        law_id: law_log_compress
+        question_text: "\uB2E4\uC74C \uC2DD\uC758 \uAC12\uC740?"
+        formula: 9^{\frac{1}{4}} \times 3^{-\frac{1}{2}}
+        choices:
+        - 1
+        - \sqrt{3}
+        - 3
+        - 3\sqrt{3}
+        - 9
+        points: 2
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 1
+      - id: 2026_math_04
+        law_id: law_exp_growth
+        question_text: "\uD568\uC218 f(x)\uAC00 \uC2E4\uC218 \uC804\uCCB4\uC758 \uC9D1\uD569\uC5D0\uC11C
+          \uC5F0\uC18D\uC77C \uB54C, \uC0C1\uC218 a\uC758 \uAC12\uC740?"
+        formula: f(x) = \begin{cases} 3x-2 & (x < 1) \\ x^2 - 3x + a & (x \ge 1)
+          \end{cases}
+        choices:
+        - 1
+        - 2
+        - 3
+        - 4
+        - 5
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 1
+      - id: 2026_math_08
+        law_id: law_exp_growth
+        question_text: "\uC0BC\uCC28\uD568\uC218 f(x)=x^3-3x^2+a\uC758 \uADF9\uB313\uAC12\uC774
+          5\uC77C \uB54C, f(x)\uC758 \uADF9\uC19F\uAC12\uC740?"
+        formula: f(x)=x^3-3x^2+a
+        choices:
+        - 1
+        - 2
+        - 3
+        - 4
+        - 5
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 1
+      - id: 2026_math_09
+        law_id: law_log_compress
+        question_text: "\uC9C0\uC218\uBC29\uC815\uC2DD 4^x - 3 \\times 2^{x+1} +
+          8 = 0 \uC758 \uB450 \uC2E4\uADFC\uC758 \uD569\uC740?"
+        formula: 4^x - 3 \times 2^{x+1} + 8 = 0
+        choices:
+        - 1
+        - 2
+        - 3
+        - 4
+        - 5
+        points: 4
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 1
+      - id: 2026_math_10
+        law_id: law_exp_growth
+        question_text: "\uC218\uC9C1\uC120 \uC704\uB97C \uC6C0\uC9C1\uC774\uB294
+          \uC810 P\uC758 \uC2DC\uAC01 t\uC5D0\uC11C\uC758 \uC704\uCE58 x(t)=t^3-6t^2+9t\uC77C
+          \uB54C \uC810 P\uAC00 \uCD9C\uBC1C \uD6C4 \uC6B4\uB3D9 \uBC29\uD5A5\uC744
+          \uBC14\uAD6C\uB294 \uC2DC\uAC01 t\uC758 \uAC12\uB4E4\uC758 \uD569\uC740?"
+        formula: x(t)=t^3-6t^2+9t
+        choices:
+        - 3
+        - 4
+        - 5
+        - 6
+        - 7
+        points: 4
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 3
+      - id: 2026_math_14
+        law_id: law_exp_growth
+        question_text: "\uCD5C\uACE0\uCC28\uD56D\uC758 \uACC4\uC218\uAC00 1\uC778
+          \uC0BC\uCC28\uD568\uC218 f(x)\uC5D0 \uB300\uD558\uC5EC \uD568\uC218 g(x)\uAC00
+          \uC2E4\uC218 \uC804\uCCB4\uC758 \uC9D1\uD569\uC5D0\uC11C \uBBF8\uBD84\uAC00\uB2A5\uD560
+          \uB54C f(2)\uC758 \uAC12\uC740?"
+        formula: 
+        choices:
+        - 12
+        - 14
+        - 16
+        - 18
+        - 20
+        points: 4
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 12
+      - id: 2026_math_16
+        law_id: law_log_compress
+        question_text: "\uBC29\uC815\uC2DD \\log_2(x+3) = 4\uB97C \uB9CC\uC871\uC2DC\uD0A4\uB294
+          x\uC758 \uAC12\uC744 \uAD6C\uD558\uC2DC\uC624."
+        formula: \log_2(x+3) = 4
+        choices: []
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 0
+      - id: 2026_math_19
+        law_id: law_exp_growth
+        question_text: "\uD568\uC218 f(x)=x^3-3x^2+k\uC758 \uADF9\uB313\uAC12\uC774
+          7\uC77C \uB54C \uC0C1\uC218 k\uC758 \uAC12\uC744 \uAD6C\uD558\uC2DC\uC624."
+        formula: f(x)=x^3-3x^2+k
+        choices: []
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 0
+      - id: 2026_math_20
+        law_id: law_exp_growth
+        question_text: "\uC2DC\uAC01 t=0\uC77C \uB54C \uC6D0\uC810\uC744 \uCD9C\uBC1C\uD55C
+          \uC810 P\uC758 \uC18D\uB3C4 v(t)=6t-12\uC774\uB2E4. \uC810 P\uAC00 t=0\uBD80\uD130
+          t=4\uAE4C\uC9C0 \uC6C0\uC9C1\uC778 \uAC70\uB9AC\uB97C \uAD6C\uD558\uC2DC\uC624."
+        formula: v(t)=6t-12
+        choices: []
+        points: 4
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 0
+      - id: 2026_math_21
+        law_id: law_log_compress
+        question_text: "\uB450 \uACE1\uC120 y=2^x + a, y=\\log_2(x-a)\uC758 \uC704\uCE58
+          \uAD00\uACC4 \uC870\uAC74\uC744 \uB9CC\uC871\uC2DC\uD0A4\uB294 \uC790\uC5F0\uC218
+          a\uC758 \uAC12\uC744 \uAD6C\uD558\uC2DC\uC624."
+        formula: 
+        choices: []
+        points: 4
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 0
+      - id: 2026_math_22
+        law_id: law_exp_growth
+        question_text: "\uCD5C\uACE0\uCC28\uD56D\uC758 \uACC4\uC218\uAC00 1\uC778
+          \uC0BC\uCC28\uD568\uC218 f(x)\uC640 \uC591\uC218 k\uAC00 \uC870\uAC74 (\uAC00),
+          (\uB098)\uB97C \uB9CC\uC871\uC2DC\uD0AC \uB54C f(4)\uC758 \uAC12\uC744
+          \uAD6C\uD558\uC2DC\uC624."
+        formula: 
+        choices: []
+        points: 4
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 0
+    - id: biome_trig
+      title: "\uC0BC\uAC01\uD568\uC218\uC758 \uC601\uC5ED"
+      laws:
+      - id: law_trig_period
+        law_type: TrigonometricOscillation
+        name: "\uC0BC\uAC01 \uC8FC\uAE30 \uBC95\uCE59"
+        formula_pattern: \sin \theta
+        interactive_rules:
+          operator: sin
+          target_property: frequency
+          input_parameter: theta
+          action_type: OscillatePlatform
+      entities:
+      - id: 2023_math_05
+        law_id: law_trig_period
+        question_text: "\\tan \\theta < 0\uC774\uACE0 \uB2E4\uC74C \uC2DD\uC77C \uB54C,
+          \\cos \\theta \uC758 \uAC12\uC740?"
+        formula: \cos \left(\frac{\pi}{2} + \theta\right) = \frac{\sqrt{5}}{5}
+        choices:
+        - -\frac{2\sqrt{5}}{5}
+        - -\frac{\sqrt{5}}{5}
+        - 0
+        - \frac{\sqrt{5}}{5}
+        - \frac{2\sqrt{5}}{5}
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: -\frac{2\sqrt{5}}{5}
+      - id: 2023_math_09
+        law_id: law_trig_period
+        question_text: "\uD568\uC218 f(x)\uAC00 \uB2EB\uD78C\uAD6C\uAC04 \\left[-\\frac{\\pi}{6},
+          b\\right] \uC5D0\uC11C \uCD5C\uB313\uAC12 7, \uCD5C\uC19F\uAC12 3\uC744
+          \uAC00\uC9C8 \uB54C, a \\times b\uC758 \uAC12\uC740? (\uB2E8, a, b\uB294
+          \uC0C1\uC218\uC774\uB2E4.)"
+        formula: f(x) = a - \sqrt{3} \tan 2x
+        choices:
+        - \frac{\pi}{2}
+        - \frac{5\pi}{12}
+        - \frac{\pi}{3}
+        - \frac{\pi}{4}
+        - \frac{\pi}{6}
+        points: 4
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: \frac{\pi}{2}
+      - id: 2024_math_03
+        law_id: law_trig_period
+        question_text: "\\frac{3\\pi}{2} < \\theta < 2\\pi\uC778 \\theta\uC5D0 \uB300\uD558\uC5EC
+          \\sin(-\\theta) = \\frac{1}{3}\uC77C \uB54C, \\tan \\theta\uC758 \uAC12\uC740?"
+        formula: \sin(-\theta) = \frac{1}{3}
+        choices:
+        - -\frac{\sqrt{2}}{2}
+        - -\frac{\sqrt{2}}{4}
+        - -\frac{1}{4}
+        - \frac{1}{4}
+        - \frac{\sqrt{2}}{4}
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: -\frac{\sqrt{2}}{2}
+      - id: 2025_math_even_06
+        law_id: law_trig_period
+        question_text: "\\cos \\theta < 0\uC774\uACE0 \\sin(\\pi - \\theta) = \\frac{3}{5}\uC77C
+          \uB54C, \\tan \\theta\uC758 \uAC12\uC740?"
+        formula: \sin(\pi - \theta) = \frac{3}{5}
+        choices:
+        - -\frac{4}{3}
+        - -\frac{3}{4}
+        - 0
+        - \frac{3}{4}
+        - \frac{4}{3}
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: -\frac{4}{3}
+      - id: 2025_math_even_12
+        law_id: law_trig_period
+        question_text: "\uC0BC\uAC01\uD615 ABC\uC5D0\uC11C \\overline{AB}=4, \\overline{AC}=5\uC774\uACE0
+          \\cos A = \\frac{1}{8}\uC77C \uB54C, \uBCC0 BC\uC758 \uAE38\uC774\uB294?"
+        formula: \overline{AB}=4, \; \overline{AC}=5, \; \cos A = \frac{1}{8}
+        choices:
+        - \sqrt{33}
+        - \sqrt{35}
+        - \sqrt{37}
+        - \sqrt{39}
+        - \sqrt{41}
+        points: 4
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: \sqrt{33}
+      - id: 2025_math_odd_06
+        law_id: law_trig_period
+        question_text: "\\cos \\theta < 0\uC774\uACE0 \\sin(\\pi - \\theta) = \\frac{3}{5}\uC77C
+          \uB54C, \\tan \\theta\uC758 \uAC12\uC740?"
+        formula: \sin(\pi - \theta) = \frac{3}{5}
+        choices:
+        - -\frac{4}{3}
+        - -\frac{3}{4}
+        - 0
+        - \frac{3}{4}
+        - \frac{4}{3}
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: -\frac{4}{3}
+      - id: 2025_math_odd_12
+        law_id: law_trig_period
+        question_text: "\uC0BC\uAC01\uD615 ABC\uC5D0\uC11C \\overline{AB}=4, \\overline{AC}=5\uC774\uACE0
+          \\cos A = \\frac{1}{8}\uC77C \uB54C, \uBCC0 BC\uC758 \uAE38\uC774\uB294?"
+        formula: \overline{AB}=4, \; \overline{AC}=5, \; \cos A = \frac{1}{8}
+        choices:
+        - \sqrt{33}
+        - \sqrt{35}
+        - \sqrt{37}
+        - \sqrt{39}
+        - \sqrt{41}
+        points: 4
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: \sqrt{33}
+      - id: 2026_math_06
+        law_id: law_trig_period
+        question_text: "\\sin \\theta \\cos \\theta = \\frac{1}{3}\uC77C \uB54C,
+          (\\sin \\theta + \\cos \\theta)^2\uC758 \uAC12\uC740?"
+        formula: (\sin \theta + \cos \theta)^2
+        choices:
+        - \frac{4}{3}
+        - \frac{5}{3}
+        - 2
+        - \frac{7}{3}
+        - \frac{8}{3}
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: \frac{4}{3}
+      - id: 2026_math_11
+        law_id: law_trig_period
+        question_text: "\uB2EB\uD78C\uAD6C\uAC04 [0, 2\\pi]\uC5D0\uC11C \uC815\uC758\uB41C
+          \uD568\uC218 f(x)=2 \\sin 2x + 1\uC758 \uADF8\uB798\uD504\uC640 \uC9C1\uC120
+          y=2\uAC00 \uB9CC\uB098\uB294 \uC810\uC758 \uAC1C\uC218\uB294?"
+        formula: f(x)=2 \sin 2x + 1
+        choices:
+        - 2
+        - 3
+        - 4
+        - 5
+        - 6
+        points: 4
+        has_image: 1
+        image_asset_id: Math_Fig_2026_math_11
+        render_type: Procedural_Graph
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 2
+    - id: biome_sequence
+      title: "\uC218\uC5F4\uC758 \uC601\uC5ED"
+      laws:
+      - id: law_sequence_recurrence
+        law_type: SequenceRecurrence
+        name: "\uC218\uC5F4 \uC810\uD654 \uBC95\uCE59"
+        formula_pattern: a_{n+1} = f(a_n)
+        interactive_rules:
+          operator: recurrence
+          target_property: sequence_step
+          input_parameter: n
+          action_type: StepSequenceSwitch
+      entities:
+      - id: 2023_math_03
+        law_id: law_sequence_recurrence
+        question_text: "\uACF5\uBE44\uAC00 \uC591\uC218\uC778 \uB4F1\uBE44\uC218\uC5F4
+          \\{a_n\\}\uC774 \uB2E4\uC74C\uC744 \uB9CC\uC871\uC2DC\uD0AC \uB54C, a_1\uC758
+          \uAC12\uC740?"
+        formula: a_2 + a_4 = 30, \; a_4 + a_6 = \frac{15}{2}
+        choices:
+        - 48
+        - 56
+        - 64
+        - 72
+        - 80
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 48
+      - id: 2023_math_07
+        law_id: law_sequence_recurrence
+        question_text: "\uBAA8\uB4E0 \uD56D\uC774 \uC591\uC218\uC774\uACE0 \uCCAB\uC9F8\uD56D\uACFC
+          \uACF5\uCC28\uAC00 \uAC19\uC740 \uB4F1\uCC28\uC218\uC5F4 \\{a_n\\}\uC774
+          \uB2E4\uC74C\uC744 \uB9CC\uC871\uC2DC\uD0AC \uB54C, a_4\uC758 \uAC12\uC740?"
+        formula: \sum_{k=1}^{15} \frac{1}{\sqrt{a_k} + \sqrt{a_{k+1}}} = 2
+        choices:
+        - 6
+        - 7
+        - 8
+        - 9
+        - 10
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 6
+      - id: 2023_math_13
+        law_id: law_sequence_recurrence
+        question_text: "\uC790\uC5F0\uC218 m(m \\ge 2)\uC5D0 \uB300\uD558\uC5EC m^{12}\uC758
+          n\uC81C\uACF1\uADFC \uC911\uC5D0\uC11C \uC815\uC218\uAC00 \uC874\uC7AC\uD558\uB3C4\uB85D
+          \uD558\uB294 2 \uC774\uC0C1\uC758 \uC790\uC5F0\uC218 n\uC758 \uAC1C\uC218\uB97C
+          f(m)\uC774\uB77C \uD560 \uB54C, \uB2E4\uC74C \uC2DD\uC758 \uAC12\uC740?"
+        formula: \sum_{m=2}^{9} f(m)
+        choices:
+        - 37
+        - 42
+        - 47
+        - 52
+        - 57
+        points: 4
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 37
+      - id: 2023_math_15
+        law_id: law_sequence_recurrence
+        question_text: "\uBAA8\uB4E0 \uD56D\uC774 \uC790\uC5F0\uC218\uC774\uACE0
+          \uB2E4\uC74C \uC870\uAC74\uC744 \uB9CC\uC871\uC2DC\uD0A4\uB294 \uBAA8\uB4E0
+          \uC218\uC5F4 \\{a_n\\}\uC5D0 \uB300\uD558\uC5EC a_9\uC758 \uCD5C\uB313\uAC12\uACFC
+          \uCD5C\uC19F\uAC12\uC744 \uAC01\uAC01 M, m\uC774\uB77C \uD560 \uB54C, M
+          + m\uC758 \uAC12\uC740?\n(\uAC00) a_7 = 40\n(\uB098) \uBAA8\uB4E0 \uC790\uC5F0\uC218
+          n\uC5D0 \uB300\uD558\uC5EC \uB2E4\uC74C\uC774 \uC131\uB9BD\uD55C\uB2E4."
+        formula: "a_{n+2} = \\begin{cases} a_{n+1} + a_n & (a_{n+1}\\text{\uC774
+          3\uC758 \uBC30\uC218\uAC00 \uC544\uB2CC \uACBD\uC6B0}) \\\\ \\frac{1}{3}
+          a_{n+1} & (a_{n+1}\\text{\uC774 3\uC758 \uBC30\uC218\uC778 \uACBD\uC6B0})
+          \\end{cases}"
+        choices:
+        - 216
+        - 218
+        - 220
+        - 222
+        - 224
+        points: 4
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 216
+      - id: 2023_math_18
+        law_id: law_sequence_recurrence
+        question_text: "\uB450 \uC218\uC5F4 \\{a_n\\}, \\{b_n\\}\uC5D0 \uB300\uD558\uC5EC
+          \uB2E4\uC74C\uC774 \uC131\uB9BD\uD560 \uB54C, \uC8FC\uC5B4\uC9C4 \uC2DD\uC758
+          \uAC12\uC744 \uAD6C\uD558\uC2DC\uC624."
+        formula: \sum_{k=1}^{5} (3a_k + 5) = 55, \; \sum_{k=1}^{5} (a_k + b_k) =
+          32 \quad \Rightarrow \quad \sum_{k=1}^{5} b_k
+        choices: []
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 0
+      - id: 2024_math_06
+        law_id: law_sequence_recurrence
+        question_text: "\uB4F1\uBE44\uC218\uC5F4 {a_n}\uC758 \uCCAB\uC9F8\uD56D\uBD80\uD130
+          \uC81Cn\uD56D\uAE4C\uC9C0\uC758 \uD569\uC744 S_n\uC774\uB77C \uD558\uC790.
+          S_4 - S_2 = 3a_4, a_5 = 3/4 \uC77C \uB54C, a_1 + a_2\uC758 \uAC12\uC740?"
+        formula: S_4 - S_2 = 3a_4, \; a_5 = \frac{3}{4}
+        choices:
+        - 27
+        - 24
+        - 21
+        - 18
+        - 15
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 27
+      - id: 2024_math_11
+        law_id: law_sequence_recurrence
+        question_text: "\uCCAB\uC9F8\uD56D\uC774 \uC790\uC5F0\uC218\uC778 \uC218\uC5F4
+          {a_n}\uC774 \uBAA8\uB4E0 \uC790\uC5F0\uC218 n\uC5D0 \uB300\uD558\uC5EC
+          a_{n+1} = a_n + 1 (a_n\uC774 \uD640\uC218\uC778 \uACBD\uC6B0) \uB610\uB294
+          a_{n+1} = a_n / 2 (a_n\uC774 \uC9DD\uC218\uC778 \uACBD\uC6B0)\uB97C \uB9CC\uC871\uC2DC\uD0A8\uB2E4.
+          a_2 + a_4 = 40\uC774 \uB418\uB3C4\uB85D \uD558\uB294 \uBAA8\uB4E0 a_1\uC758
+          \uAC12\uC758 \uD569\uC740?"
+        formula: "a_{n+1} = \\begin{cases} a_n + 1 & (a_n\\text{\uC774 \uD640\uC218})
+          \\\\ \\frac{a_n}{2} & (a_n\\text{\uC774 \uC9DD\uC218}) \\end{cases}"
+        choices:
+        - 172
+        - 175
+        - 178
+        - 181
+        - 184
+        points: 4
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 172
+      - id: 2024_math_18
+        law_id: law_sequence_recurrence
+        question_text: "\uC218\uC5F4 \\{a_n\\}\uC5D0 \uB300\uD558\uC5EC \\sum_{k=1}^{10}
+          a_k = 15, \\sum_{k=1}^{10} (a_k + 2b_k) = 45\uC77C \uB54C, \\sum_{k=1}^{10}
+          b_k\uC758 \uAC12\uC744 \uAD6C\uD558\uC2DC\uC624."
+        formula: \sum_{k=1}^{10} b_k
+        choices: []
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 0
+      - id: 2025_math_even_03
+        law_id: law_sequence_recurrence
+        question_text: "\uCCAB\uC9F8\uD56D\uACFC \uACF5\uBE44\uAC00 \uBAA8\uB450
+          \uC591\uC218 k\uC778 \uB4F1\uBE44\uC218\uC5F4 {a_n}\uC774 \\frac{a_4}{a_2}
+          + \\frac{a_2}{a_1} = 30 \uC744 \uB9CC\uC871\uC2DC\uD0AC \uB54C, k\uC758
+          \uAC12\uC740?"
+        formula: \frac{a_4}{a_2} + \frac{a_2}{a_1} = 30
+        choices:
+        - 1
+        - 2
+        - 3
+        - 4
+        - 5
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 1
+      - id: 2025_math_even_07
+        law_id: law_sequence_recurrence
+        question_text: "\uCCAB\uC9F8\uD56D\uC774 1\uC778 \uB4F1\uCC28\uC218\uC5F4
+          {a_n}\uC5D0 \uB300\uD558\uC5EC S_5 - S_3 = 22\uC77C \uB54C, a_6\uC758 \uAC12\uC740?"
+        formula: S_5 - S_3 = 22
+        choices:
+        - 11
+        - 13
+        - 15
+        - 17
+        - 19
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 11
+      - id: 2025_math_even_13
+        law_id: law_sequence_recurrence
+        question_text: "\uC218\uC5F4 \\{a_n\\}\uC774 \uBAA8\uB4E0 \uC790\uC5F0\uC218
+          n\uC5D0 \uB300\uD558\uC5EC a_{n+1} = a_n + n (-1)^n\uC744 \uB9CC\uC871\uC2DC\uD0A4\uACE0
+          a_1=1\uC77C \uB54C, a_{10}\uC758 \uAC12\uC740?"
+        formula: a_{n+1} = a_n + n (-1)^n
+        choices:
+        - -4
+        - -2
+        - 0
+        - 2
+        - 4
+        points: 4
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: -4
+      - id: 2025_math_even_15
+        law_id: law_sequence_recurrence
+        question_text: "\uBAA8\uB4E0 \uD56D\uC774 \uC790\uC5F0\uC218\uC778 \uC218\uC5F4
+          {a_n}\uC774 \uC870\uAC74\uC744 \uB9CC\uC871\uD560 \uB54C a_1\uC758 \uCD5C\uB313\uAC12\uC740?"
+        formula: 
+        choices:
+        - 108
+        - 112
+        - 116
+        - 120
+        - 124
+        points: 4
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 108
+      - id: 2025_math_even_18
+        law_id: law_sequence_recurrence
+        question_text: "\uC218\uC5F4 \\{a_n\\}\uC5D0 \uB300\uD558\uC5EC \\sum_{k=1}^{5}
+          a_k = 20\uC77C \uB54C, \\sum_{k=1}^{5} (2a_k + 3)\uC758 \uAC12\uC744 \uAD6C\uD558\uC2DC\uC624."
+        formula: \sum_{k=1}^{5} (2a_k + 3)
+        choices: []
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 0
+      - id: 2025_math_odd_03
+        law_id: law_sequence_recurrence
+        question_text: "\uCCAB\uC9F8\uD56D\uACFC \uACF5\uBE44\uAC00 \uBAA8\uB450
+          \uC591\uC218 k\uC778 \uB4F1\uBE44\uC218\uC5F4 {a_n}\uC774 \\frac{a_4}{a_2}
+          + \\frac{a_2}{a_1} = 30 \uC744 \uB9CC\uC871\uC2DC\uD0AC \uB54C, k\uC758
+          \uAC12\uC740?"
+        formula: \frac{a_4}{a_2} + \frac{a_2}{a_1} = 30
+        choices:
+        - 1
+        - 2
+        - 3
+        - 4
+        - 5
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 1
+      - id: 2025_math_odd_07
+        law_id: law_sequence_recurrence
+        question_text: "\uCCAB\uC9F8\uD56D\uC774 1\uC778 \uB4F1\uCC28\uC218\uC5F4
+          {a_n}\uC5D0 \uB300\uD558\uC5EC S_5 - S_3 = 22\uC77C \uB54C, a_6\uC758 \uAC12\uC740?"
+        formula: S_5 - S_3 = 22
+        choices:
+        - 11
+        - 13
+        - 15
+        - 17
+        - 19
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 11
+      - id: 2025_math_odd_13
+        law_id: law_sequence_recurrence
+        question_text: "\uC218\uC5F4 \\{a_n\\}\uC774 \uBAA8\uB4E0 \uC790\uC5F0\uC218
+          n\uC5D0 \uB300\uD558\uC5EC a_{n+1} = a_n + n (-1)^n\uC744 \uB9CC\uC871\uC2DC\uD0A4\uACE0
+          a_1=1\uC77C \uB54C, a_{10}\uC758 \uAC12\uC740?"
+        formula: a_{n+1} = a_n + n (-1)^n
+        choices:
+        - -4
+        - -2
+        - 0
+        - 2
+        - 4
+        points: 4
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: -4
+      - id: 2025_math_odd_15
+        law_id: law_sequence_recurrence
+        question_text: "\uBAA8\uB4E0 \uD56D\uC774 \uC790\uC5F0\uC218\uC778 \uC218\uC5F4
+          {a_n}\uC774 \uC870\uAC74\uC744 \uB9CC\uC871\uD560 \uB54C a_1\uC758 \uCD5C\uB313\uAC12\uC740?"
+        formula: 
+        choices:
+        - 108
+        - 112
+        - 116
+        - 120
+        - 124
+        points: 4
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 108
+      - id: 2025_math_odd_18
+        law_id: law_sequence_recurrence
+        question_text: "\uC218\uC5F4 \\{a_n\\}\uC5D0 \uB300\uD558\uC5EC \\sum_{k=1}^{5}
+          a_k = 20\uC77C \uB54C, \\sum_{k=1}^{5} (2a_k + 3)\uC758 \uAC12\uC744 \uAD6C\uD558\uC2DC\uC624."
+        formula: \sum_{k=1}^{5} (2a_k + 3)
+        choices: []
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 0
+      - id: 2026_math_03
+        law_id: law_sequence_recurrence
+        question_text: "\uC218\uC5F4 \\{a_n\\}\uC5D0 \uB300\uD558\uC5EC \\sum_{k=1}^{4}
+          (2a_k - k) = 0\uC77C \uB54C, \\sum_{k=1}^{4} a_k\uC758 \uAC12\uC740?"
+        formula: \sum_{k=1}^{4} a_k
+        choices:
+        - 1
+        - 2
+        - 3
+        - 4
+        - 5
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 1
+      - id: 2026_math_07
+        law_id: law_sequence_recurrence
+        question_text: "\uCCAB\uC9F8\uD56D\uC774 2\uC778 \uB4F1\uCC28\uC218\uC5F4
+          {a_n}\uC758 \uCCAB\uC9F8\uD56D\uBD80\uD130 \uC81Cn\uD56D\uAE4C\uC9C0\uC758
+          \uD569 S_n\uC5D0 \uB300\uD558\uC5EC S_5 = 35\uC77C \uB54C a_8\uC758 \uAC12\uC740?"
+        formula: S_5 = 35
+        choices:
+        - 14
+        - 16
+        - 18
+        - 20
+        - 22
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 14
+      - id: 2026_math_13
+        law_id: law_sequence_recurrence
+        question_text: "\uC218\uC5F4 \\{a_n\\}\uC774 a_1=1\uC774\uACE0 a_{n+1} =
+          a_n + 2n\uC744 \uB9CC\uC871\uC2DC\uD0AC \uB54C a_{10}\uC758 \uAC12\uC740?"
+        formula: a_{n+1} = a_n + 2n
+        choices:
+        - 89
+        - 91
+        - 93
+        - 95
+        - 97
+        points: 4
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 89
+      - id: 2026_math_15
+        law_id: law_sequence_recurrence
+        question_text: "\uBAA8\uB4E0 \uD56D\uC774 \uC790\uC5F0\uC218\uC778 \uC218\uC5F4
+          {a_n}\uC774 \uC870\uAC74\uC5D0 \uB530\uB77C \uC815\uC758\uB420 \uB54C a_1\uC758
+          \uBAA8\uB4E0 \uAC12\uC758 \uD569\uC740?"
+        formula: 
+        choices:
+        - 45
+        - 48
+        - 51
+        - 54
+        - 57
+        points: 4
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 45
+      - id: 2026_math_18
+        law_id: law_sequence_recurrence
+        question_text: "\uC218\uC5F4 \\{a_n\\}\uC5D0 \uB300\uD558\uC5EC \\sum_{k=1}^{6}
+          a_k = 15\uC77C \uB54C \\sum_{k=1}^{6} (3a_k - 2)\uC758 \uAC12\uC744 \uAD6C\uD558\uC2DC\uC624."
+        formula: \sum_{k=1}^{6} (3a_k - 2)
+        choices: []
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 0
+  - id: world_math_2
+    title: "\uC218\uD559 II"
+    description: "\uADF9\uD55C, \uBBF8\uBD84, \uC801\uBD84 \uC601\uC5ED"
+    biomes:
+    - id: biome_limit_continuity
+      title: "\uADF9\uD55C\uACFC \uC5F0\uC18D\uC758 \uC601\uC5ED"
+      laws:
+      - id: law_limit_converge
+        law_type: LimitConvergence
+        name: "\uADF9\uC810 \uC218\uB834 \uBC95\uCE59"
+        formula_pattern: \lim_{x \to a} f(x)
+        interactive_rules:
+          operator: limit
+          target_property: velocity
+          input_parameter: x_target
+          action_type: DampVelocity
+      entities:
+      - id: 2023_math_02
+        law_id: law_limit_converge
+        question_text: "\uC758 \uAC12\uC740?"
+        formula: \lim_{x \to \infty} \frac{\sqrt{x^2 - 2} + 3x}{x + 5}
+        choices:
+        - 1
+        - 2
+        - 3
+        - 4
+        - 5
+        points: 2
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 1
+      - id: 2023_math_06
+        law_id: law_limit_converge
+        question_text: "\uD568\uC218 f(x) = 2x^3 - 9x^2 + ax + 5\uB294 x=1\uC5D0\uC11C
+          \uADF9\uB300\uC774\uACE0, x=b\uC5D0\uC11C \uADF9\uC18C\uC774\uB2E4. a+b\uC758
+          \uAC12\uC740? (\uB2E8, a, b\uB294 \uC0C1\uC218\uC774\uB2E4.)"
+        formula: 
+        choices:
+        - 12
+        - 14
+        - 16
+        - 18
+        - 20
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 12
+      - id: 2023_math_14
+        law_id: law_limit_converge
+        question_text: "\uB2E4\uD56D\uD568\uC218 f(x)\uC5D0 \uB300\uD558\uC5EC \uD568\uC218
+          g(x)\uB97C \uB2E4\uC74C\uACFC \uAC19\uC774 \uC815\uC758\uD55C\uB2E4. \uD568\uC218
+          h(x)\uC5D0 \uB300\uD558\uC5EC <\uBCF4\uAE30>\uC5D0\uC11C \uC633\uC740 \uAC83\uB9CC\uC744
+          \uC788\uB294 \uB300\uB85C \uACE0\uB978 \uAC83\uC740?\n<\uBCF4\uAE30>\n\u3131.
+          h(1) = 3\n\u3134. \uD568\uC218 h(x)\uB294 \uC2E4\uC218 \uC804\uCCB4\uC758
+          \uC9D1\uD569\uC5D0\uC11C \uC5F0\uC18D\uC774\uB2E4.\n\u3137. \uD568\uC218
+          g(x)\uAC00 \uB2EB\uD78C\uAD6C\uAC04 [-1, 1]\uC5D0\uC11C \uAC10\uC18C\uD558\uACE0
+          g(-1) = -2\uC774\uBA74 \uD568\uC218 h(x)\uB294 \uC2E4\uC218 \uC804\uCCB4\uC758
+          \uC9D1\uD569\uC5D0\uC11C \uCD5C\uC19F\uAC12\uC744 \uAC16\uB294\uB2E4."
+        formula: "g(x) = \\begin{cases} x & (x < -1 \\text{ \uB610\uB294 } x > 1)
+          \\\\ f(x) & (-1 \\le x \\le 1) \\end{cases} \\quad h(x) = \\lim_{t \\to
+          0+} g(x+t) \\times \\lim_{t \\to 2+} g(x+t)"
+        choices:
+        - "\u3131"
+        - "\u3134"
+        - "\u3131, \u3134"
+        - "\u3131, \u3137"
+        - "\u3134, \u3137"
+        points: 4
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: "\u3131"
+      - id: 2024_math_02
+        law_id: law_limit_converge
+        question_text: "\uD568\uC218 f(x)=2x^3-5x^2+3\uC5D0 \uB300\uD558\uC5EC \\lim_{h
+          \\to 0} \\frac{f(2+h)-f(2)}{h}\uC758 \uAC12\uC740?"
+        formula: \lim_{h \to 0} \frac{f(2+h)-f(2)}{h}
+        choices:
+        - 1
+        - 2
+        - 3
+        - 4
+        - 5
+        points: 2
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 1
+      - id: 2024_math_07
+        law_id: law_limit_converge
+        question_text: "\uD568\uC218 f(x)=\\frac{1}{3}x^3-2x^2-12x+4\uAC00 x=\\alpha\uC5D0\uC11C
+          \uADF9\uB300\uC774\uACE0 x=\\beta\uC5D0\uC11C \uADF9\uC18C\uC77C \uB54C,
+          \\beta-\\alpha\uC758 \uAC12\uC740? (\uB2E8, \\alpha\uC640 \\beta\uB294
+          \uC0C1\uC218\uC774\uB2E4.)"
+        formula: f(x)=\frac{1}{3}x^3-2x^2-12x+4
+        choices:
+        - -4
+        - -1
+        - 2
+        - 5
+        - 8
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: -4
+      - id: 2025_math_even_02
+        law_id: law_limit_converge
+        question_text: "\uD568\uC218 f(x)=x^3-8x+7\uC5D0 \uB300\uD558\uC5EC \\lim_{h
+          \\to 0} \\frac{f(2+h)-f(2)}{h}\uC758 \uAC12\uC740?"
+        formula: \lim_{h \to 0} \frac{f(2+h)-f(2)}{h}
+        choices:
+        - 1
+        - 2
+        - 3
+        - 4
+        - 5
+        points: 2
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 1
+      - id: 2025_math_odd_02
+        law_id: law_limit_converge
+        question_text: "\uD568\uC218 f(x)=x^3-8x+7\uC5D0 \uB300\uD558\uC5EC \\lim_{h
+          \\to 0} \\frac{f(2+h)-f(2)}{h}\uC758 \uAC12\uC740?"
+        formula: \lim_{h \to 0} \frac{f(2+h)-f(2)}{h}
+        choices:
+        - 1
+        - 2
+        - 3
+        - 4
+        - 5
+        points: 2
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 1
+      - id: 2026_math_02
+        law_id: law_limit_converge
+        question_text: "\uD568\uC218 f(x)=3x^3+4x+1\uC5D0 \uB300\uD558\uC5EC \\lim_{h
+          \\to 0} \\frac{f(1+h)-f(1)}{h}\uC758 \uAC12\uC740?"
+        formula: \lim_{h \to 0} \frac{f(1+h)-f(1)}{h}
+        choices:
+        - 7
+        - 9
+        - 11
+        - 13
+        - 15
+        points: 2
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 7
+    - id: biome_differentiation
+      title: "\uBBF8\uBD84\uBC95\uC758 \uC601\uC5ED"
+      laws:
+      - id: law_derivative_slope
+        law_type: DerivativeSlope
+        name: "\uBBF8\uBD84 \uACBD\uC0AC \uBC95\uCE59"
+        formula_pattern: f'(x)
+        interactive_rules:
+          operator: derivative
+          target_property: tangent_vector
+          input_parameter: x
+          action_type: RedirectVector
+      entities:
+      - id: 2023_math_08
+        law_id: law_derivative_slope
+        question_text: "\uC810 (0, 4)\uC5D0\uC11C \uB2E4\uC74C \uACE1\uC120\uC5D0
+          \uADF8\uC740 \uC811\uC120\uC758 x\uC808\uD3B8\uC740?"
+        formula: y = x^3 - x + 2
+        choices:
+        - -\frac{1}{2}
+        - -1
+        - -\frac{3}{2}
+        - -2
+        - -\frac{5}{2}
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: -\frac{1}{2}
+      - id: 2024_math_05
+        law_id: law_derivative_slope
+        question_text: "\uB2E4\uD56D\uD568\uC218 f(x)\uAC00 f'(x)=3x(x-2), f(1)=6\uC744
+          \uB9CC\uC871\uC2DC\uD0AC \uB54C, f(2)\uC758 \uAC12\uC740?"
+        formula: f'(x)=3x(x-2), \; f(1)=6
+        choices:
+        - 1
+        - 2
+        - 3
+        - 4
+        - 5
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 1
+      - id: 2024_math_17
+        law_id: law_derivative_slope
+        question_text: "\uD568\uC218 f(x)\uC5D0 \uB300\uD558\uC5EC f'(x)=4x^3-2x+1\uC774\uACE0
+          f(0)=2\uC77C \uB54C, f(1)\uC758 \uAC12\uC744 \uAD6C\uD558\uC2DC\uC624."
+        formula: f'(x)=4x^3-2x+1, \; f(0)=2
+        choices: []
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 0
+      - id: 2025_math_even_05
+        law_id: law_derivative_slope
+        question_text: "\uB2E4\uD56D\uD568\uC218 f(x)\uAC00 f'(x)=6x^2-4x, f(1)=3\uC744
+          \uB9CC\uC871\uC2DC\uD0AC \uB54C, f(2)\uC758 \uAC12\uC740?"
+        formula: f'(x)=6x^2-4x, \; f(1)=3
+        choices:
+        - 11
+        - 12
+        - 13
+        - 14
+        - 15
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 11
+      - id: 2025_math_even_08
+        law_id: law_derivative_slope
+        question_text: "\uACE1\uC120 y=x^3-3x+4 \uC704\uC758 \uC810 (1, 2)\uC5D0\uC11C\uC758
+          \uC811\uC120\uC758 y\uC808\uD3B8\uC740?"
+        formula: y=x^3-3x+4
+        choices:
+        - 1
+        - 2
+        - 3
+        - 4
+        - 5
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 1
+      - id: 2025_math_even_17
+        law_id: law_derivative_slope
+        question_text: "\uD568\uC218 f(x)\uC5D0 \uB300\uD558\uC5EC f'(x)=3x^2+4x\uC774\uACE0
+          f(1)=5\uC77C \uB54C, f(2)\uC758 \uAC12\uC744 \uAD6C\uD558\uC2DC\uC624."
+        formula: f'(x)=3x^2+4x, \; f(1)=5
+        choices: []
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 0
+      - id: 2025_math_odd_05
+        law_id: law_derivative_slope
+        question_text: "\uB2E4\uD56D\uD568\uC218 f(x)\uAC00 f'(x)=6x^2-4x, f(1)=3\uC744
+          \uB9CC\uC871\uC2DC\uD0AC \uB54C, f(2)\uC758 \uAC12\uC740?"
+        formula: f'(x)=6x^2-4x, \; f(1)=3
+        choices:
+        - 11
+        - 12
+        - 13
+        - 14
+        - 15
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 11
+      - id: 2025_math_odd_08
+        law_id: law_derivative_slope
+        question_text: "\uACE1\uC120 y=x^3-3x+4 \uC704\uC758 \uC810 (1, 2)\uC5D0\uC11C\uC758
+          \uC811\uC120\uC758 y\uC808\uD3B8\uC740?"
+        formula: y=x^3-3x+4
+        choices:
+        - 1
+        - 2
+        - 3
+        - 4
+        - 5
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 1
+      - id: 2025_math_odd_17
+        law_id: law_derivative_slope
+        question_text: "\uD568\uC218 f(x)\uC5D0 \uB300\uD558\uC5EC f'(x)=3x^2+4x\uC774\uACE0
+          f(1)=5\uC77C \uB54C, f(2)\uC758 \uAC12\uC744 \uAD6C\uD558\uC2DC\uC624."
+        formula: f'(x)=3x^2+4x, \; f(1)=5
+        choices: []
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 0
+      - id: 2026_math_05
+        law_id: law_derivative_slope
+        question_text: "\uB2E4\uD56D\uD568\uC218 f(x)\uC758 \uB3C4\uD568\uC218\uAC00
+          f'(x)=6x^2-2x\uC77C \uB54C f(1)=2\uC774\uBA74 f(2)\uC758 \uAC12\uC740?"
+        formula: f'(x)=6x^2-2x, \; f(1)=2
+        choices:
+        - 10
+        - 12
+        - 14
+        - 16
+        - 18
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 10
+      - id: 2026_math_17
+        law_id: law_derivative_slope
+        question_text: "\uD568\uC218 f(x)\uC5D0 \uB300\uD558\uC5EC f'(x)=3x^2-6x+2\uC774\uACE0
+          f(0)=1\uC77C \uB54C f(3)\uC758 \uAC12\uC744 \uAD6C\uD558\uC2DC\uC624."
+        formula: f'(x)=3x^2-6x+2, \; f(0)=1
+        choices: []
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 0
+    - id: biome_integration
+      title: "\uC801\uBD84\uBC95\uC758 \uC601\uC5ED"
+      laws:
+      - id: law_integral_accumulation
+        law_type: IntegralAccumulation
+        name: "\uBA74\uC801 \uC801\uBD84 \uBC95\uCE59"
+        formula_pattern: \int_{a}^{b} f(x) dx
+        interactive_rules:
+          operator: integral
+          target_property: accumulated_gauge
+          input_parameter: a,b
+          action_type: FillGauge
+      entities:
+      - id: 2023_math_10
+        law_id: law_integral_accumulation
+        question_text: "\uB450 \uACE1\uC120 y = x^3 + x^2, y = -x^2 + k \uC640 y\uCD95\uC73C\uB85C
+          \uB458\uB7EC\uC2F8\uC778 \uBD80\uBD84\uC758 \uB113\uC774\uB97C A, \uB450
+          \uACE1\uC120 y = x^3 + x^2, y = -x^2 + k \uC640 \uC9C1\uC120 x=2\uB85C
+          \uB458\uB7EC\uC2F8\uC778 \uBD80\uBD84\uC758 \uB113\uC774\uB97C B\uB77C
+          \uD558\uC790. A = B\uC77C \uB54C, \uC0C1\uC218 k\uC758 \uAC12\uC740? (\uB2E8,
+          4 < k < 5)"
+        formula: 
+        choices:
+        - \frac{25}{6}
+        - \frac{13}{3}
+        - \frac{9}{2}
+        - \frac{14}{3}
+        - \frac{29}{6}
+        points: 4
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: \frac{25}{6}
+      - id: 2023_math_12
+        law_id: law_integral_accumulation
+        question_text: "\uC2E4\uC218 \uC804\uCCB4\uC758 \uC9D1\uD569\uC5D0\uC11C
+          \uC5F0\uC18D\uC778 \uD568\uC218 f(x)\uAC00 \uB2E4\uC74C \uC870\uAC74\uC744
+          \uB9CC\uC871\uC2DC\uD0A8\uB2E4. (\uAC00) n-1 \\le x < n\uC77C \uB54C, |f(x)|
+          = |6(x - n + 1)(x - n)| \uC774\uB2E4. (\uB2E8, n\uC740 \uC790\uC5F0\uC218\uC774\uB2E4.)\n\uC5F4\uB9B0\uAD6C\uAC04
+          (0, 4)\uC5D0\uC11C \uC815\uC758\uB41C \uD568\uC218 g(x)\uAC00 x=2\uC5D0\uC11C
+          \uCD5C\uC19F\uAC12 0\uC744 \uAC00\uC9C8 \uB54C, \uB2E4\uC74C \uC815\uC801\uBD84\uC758
+          \uAC12\uC740?"
+        formula: g(x) = \int_{0}^{x} f(t) dt - \int_{x}^{4} f(t) dt \quad \Rightarrow
+          \quad \int_{\frac{1}{2}}^{4} f(x) dx
+        choices:
+        - -\frac{3}{2}
+        - -\frac{1}{2}
+        - \frac{1}{2}
+        - \frac{3}{2}
+        - \frac{5}{2}
+        points: 4
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: -\frac{3}{2}
+      - id: 2024_math_08
+        law_id: law_integral_accumulation
+        question_text: "\uC0BC\uCC28\uD568\uC218 f(x)\uAC00 \uBAA8\uB4E0 \uC2E4\uC218
+          x\uC5D0 \uB300\uD558\uC5EC x f(x) - f(x) = 3x^4 - 3x\uB97C \uB9CC\uC871\uC2DC\uD0AC
+          \uB54C, \uC815\uC801\uBD84\uC758 \uAC12\uC740?"
+        formula: \int_{-2}^{2} f(x) dx
+        choices:
+        - 12
+        - 16
+        - 20
+        - 24
+        - 28
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 12
+      - id: 2024_math_14
+        law_id: law_integral_accumulation
+        question_text: "\uB450 \uB450 \uD568\uC218 f(x), g(x)\uC5D0 \uB300\uD558\uC5EC
+          \uBCF4\uAE30\uC5D0\uC11C \uC633\uC740 \uAC83\uB9CC\uC744 \uC788\uB294 \uB300\uB85C
+          \uACE0\uB978 \uAC83\uC740?"
+        formula: g(x) = \int_{0}^{x} f(t) dt
+        choices:
+        - "\u3131"
+        - "\u3134"
+        - "\u3131, \u3134"
+        - "\u3131, \u3137"
+        - "\u3131, \u3134, \u3137"
+        points: 4
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: "\u3131"
+      - id: 2024_math_15
+        law_id: law_integral_accumulation
+        question_text: "\uCD5C\uACE0\uCC28\uD56D\uC758 \uACC4\uC218\uAC00 1\uC778
+          \uC0BC\uCC28\uD568\uC218 f(x)\uC5D0 \uB300\uD558\uC5EC \uD568\uC218 g(x)\uAC00
+          \uB2E4\uC74C \uC870\uAC74\uC744 \uB9CC\uC871\uC2DC\uD0A8\uB2E4. f(3)\uC758
+          \uAC12\uC740?"
+        formula: g(x) = \begin{cases} f(x+3) & (x < 0) \\ \int_{0}^{x} f(t)dt & (x
+          \ge 0) \end{cases}
+        choices:
+        - 40
+        - 42
+        - 44
+        - 46
+        - 48
+        points: 4
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 40
+      - id: 2025_math_even_11
+        law_id: law_integral_accumulation
+        question_text: "\uC0BC\uCC28\uD568\uC218 f(x)\uC758 \uADF8\uB798\uD504\uC640
+          x\uCD95\uC73C\uB85C \uB458\uB7EC\uC2F8\uC778 \uB450 \uBD80\uBD84\uC758
+          \uB113\uC774\uAC00 \uAC19\uC744 \uB54C \uC0C1\uC218 k\uC758 \uAC12\uC740?"
+        formula: f(x) = x(x-2)(x-k)
+        choices:
+        - 3
+        - 4
+        - 5
+        - 6
+        - 7
+        points: 4
+        has_image: 1
+        image_asset_id: Math_Fig_2025_math_even_11
+        render_type: Procedural_Graph
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 3
+      - id: 2025_math_odd_11
+        law_id: law_integral_accumulation
+        question_text: "\uC0BC\uCC28\uD568\uC218 f(x)\uC758 \uADF8\uB798\uD504\uC640
+          x\uCD95\uC73C\uB85C \uB458\uB7EC\uC2F8\uC778 \uB450 \uBD80\uBD84\uC758
+          \uB113\uC774\uAC00 \uAC19\uC744 \uB54C \uC0C1\uC218 k\uC758 \uAC12\uC740?"
+        formula: f(x) = x(x-2)(x-k)
+        choices:
+        - 3
+        - 4
+        - 5
+        - 6
+        - 7
+        points: 4
+        has_image: 1
+        image_asset_id: Math_Fig_2025_math_odd_11
+        render_type: Procedural_Graph
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 3
+      - id: 2026_math_12
+        law_id: law_integral_accumulation
+        question_text: "\uACE1\uC120 y=x^2-2x\uC640 \uC9C1\uC120 y=x\uB85C \uB458\uB7EC\uC2F8\uC778
+          \uBD80\uBD84\uC758 \uB113\uC774\uB294?"
+        formula: y=x^2-2x, \; y=x
+        choices:
+        - \frac{7}{6}
+        - \frac{4}{3}
+        - \frac{3}{2}
+        - \frac{5}{3}
+        - \frac{9}{2}
+        points: 4
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: \frac{7}{6}
+  - id: world_prob_stat
+    title: "\uD655\uB960\uACFC \uD1B5\uACC4"
+    description: "\uD655\uB960 \uBC0F \uD1B5\uACC4 \uC601\uC5ED"
+    biomes:
+    - id: biome_probability
+      title: "\uD655\uB960\uACFC \uD1B5\uACC4\uC758 \uC601\uC5ED"
+      laws:
+      - id: law_probability_branch
+        law_type: ProbabilityBranch
+        name: "\uD655\uB960 \uBD84\uAE30 \uBC95\uCE59"
+        formula_pattern: P(A)
+        interactive_rules:
+          operator: probability
+          target_property: branch_path
+          input_parameter: p_value
+          action_type: SelectRoute
+      entities:
+      - id: 2023_math_prob_stat_23
+        law_id: law_probability_branch
+        question_text: "\uB2E4\uD56D\uC2DD\uC758 \uC804\uAC1C\uC2DD\uC5D0\uC11C x^9\uC758
+          \uACC4\uC218\uB294?"
+        formula: (x^3 + 3)^5
+        choices:
+        - 30
+        - 60
+        - 90
+        - 120
+        - 150
+        points: 2
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 30
+      - id: 2023_math_prob_stat_24
+        law_id: law_probability_branch
+        question_text: "\uC22B\uC790 1, 2, 3, 4, 5 \uC911\uC5D0\uC11C \uC911\uBCF5\uC744
+          \uD5C8\uB77D\uD558\uC5EC 4\uAC1C\uB97C \uD0DD\uD574 \uC77C\uB82C\uB85C
+          \uB098\uC5F4\uD558\uC5EC \uB9CC\uB4E4 \uC218 \uC788\uB294 \uB124 \uC790\uB9AC\uC758
+          \uC790\uC5F0\uC218 \uC911 4000 \uC774\uC0C1\uC778 \uD640\uC218\uC758 \uAC1C\uC218\uB294?"
+        formula: 
+        choices:
+        - 125
+        - 150
+        - 175
+        - 200
+        - 225
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 125
+      - id: 2023_math_prob_stat_25
+        law_id: law_probability_branch
+        question_text: "\uD770\uC0C9 \uB9C8\uC2A4\uD06C 5\uAC1C, \uAC80\uC740\uC0C9
+          \uB9C8\uC2A4\uD06C 9\uAC1C\uAC00 \uB4E4\uC5B4 \uC788\uB294 \uC0C1\uC790\uAC00
+          \uC788\uB2E4. \uC774 \uC0C1\uC790\uC5D0\uC11C \uC784\uC758\uB85C 3\uAC1C\uC758
+          \uB9C8\uC2A4\uD06C\uB97C \uB3D9\uC2DC\uC5D0 \uAEBC\uB0BC \uB54C, \uAEBC\uB0B8
+          3\uAC1C\uC758 \uB9C8\uC2A4\uD06C \uC911\uC5D0\uC11C \uC801\uC5B4\uB3C4
+          \uD55C \uAC1C\uAC00 \uD770\uC0C9 \uB9C8\uC2A4\uD06C\uC77C \uD655\uB960\uC740?"
+        formula: 
+        choices:
+        - \frac{8}{13}
+        - \frac{17}{26}
+        - \frac{9}{13}
+        - \frac{19}{26}
+        - \frac{10}{13}
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: \frac{8}{13}
+      - id: 2023_math_prob_stat_26
+        law_id: law_probability_branch
+        question_text: "\uC8FC\uBA38\uB2C8\uC5D0 1\uC774 \uC801\uD78C \uD770 \uACF5
+          1\uAC1C, 2\uAC00 \uC801\uD78C \uD770 \uACF5 1\uAC1C, 1\uC774 \uC801\uD78C
+          \uAC80\uC740 \uACF5 1\uAC1C, 2\uAC00 \uC801\uD78C \uAC80\uC740 \uACF5 3\uAC1C\uAC00
+          \uB4E4\uC5B4 \uC788\uB2E4. \uC774 \uC8FC\uBA38\uB2C8\uC5D0\uC11C \uC784\uC758\uB85C
+          3\uAC1C\uC758 \uACF5\uC744 \uB3D9\uC2DC\uC5D0 \uAEBC\uB0B4\uB294 \uC2DC\uD589\uC744
+          \uD55C\uB2E4. \uC774 \uC2DC\uD589\uC5D0\uC11C \uAEBC\uB0B8 3\uAC1C\uC758
+          \uACF5 \uC911\uC5D0\uC11C \uD770 \uACF5\uC774 1\uAC1C\uC774\uACE0 \uAC80\uC740
+          \uACF5\uC774 2\uAC1C\uC778 \uC0AC\uAC74\uC744 A, \uAEBC\uB0B8 3\uAC1C\uC758
+          \uACF5\uC5D0 \uC801\uD600 \uC788\uB294 \uC218\uB97C \uBAA8\uB450 \uACF1\uD55C
+          \uAC12\uC774 8\uC778 \uC0AC\uAC74\uC744 B\uB77C \uD560 \uB54C, P(A \\cup
+          B)\uC758 \uAC12\uC740?"
+        formula: 
+        choices:
+        - \frac{11}{20}
+        - \frac{3}{5}
+        - \frac{13}{20}
+        - \frac{7}{10}
+        - \frac{3}{4}
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: \frac{11}{20}
+      - id: 2023_math_prob_stat_27
+        law_id: law_probability_branch
+        question_text: "\uC5B4\uB290 \uD68C\uC0AC\uC5D0\uC11C \uC0DD\uC0B0\uD558\uB294
+          \uC0F4\uD478 1\uAC1C\uC758 \uC6A9\uB7C9\uC740 \uC815\uADDC\uBD84\uD3EC
+          N(m, \\sigma^2)\uC744 \uB530\uB978\uB2E4\uACE0 \uD55C\uB2E4. \uC774 \uD68C\uC0AC\uC5D0\uC11C
+          \uC0DD\uC0B0\uD558\uB294 \uC0F4\uD478 \uC911\uC5D0\uC11C 16\uAC1C\uB97C
+          \uC784\uC758\uCD94\uCD9C\uD558\uC5EC \uC5BB\uC740 \uD45C\uBCF8\uD3C9\uADE0\uC744
+          \uC774\uC6A9\uD558\uC5EC \uAD6C\uD55C m\uC5D0 \uB300\uD55C \uC2E0\uB8B0\uB3C4
+          95%\uC758 \uC2E0\uB8B0\uAD6C\uAC04\uC774 746.1 \\le m \\le 755.9\uC774\uB2E4.
+          \uC774 \uD68C\uC0AC\uC5D0\uC11C \uC0DD\uC0B0\uD558\uB294 \uC0F4\uD478 \uC911\uC5D0\uC11C
+          n\uAC1C\uB97C \uC784\uC758\uCD94\uCD9C\uD558\uC5EC \uC5BB\uC740 \uD45C\uBCF8\uD3C9\uADE0\uC744
+          \uC774\uC6A9\uD558\uC5EC \uAD6C\uD558\uB294 m\uC5D0 \uB300\uD55C \uC2E0\uB8B0\uB3C4
+          99%\uC758 \uC2E0\uB8B0\uAD6C\uAC04\uC774 a \\le m \\le b\uC77C \uB54C,
+          b - a\uC758 \uAC12\uC774 6 \uC774\uD558\uAC00 \uB418\uAE30 \uC704\uD55C
+          \uC790\uC5F0\uC218 n\uC758 \uCD5C\uC19F\uAC12\uC740? (\uB2E8, \uC6A9\uB7C9\uC758
+          \uB2E8\uC704\uB294 mL\uC774\uACE0, Z\uAC00 \uD45C\uC900\uC815\uADDC\uBD84\uD3EC\uB97C
+          \uB530\uB974\uB294 \uD655\uB960\uBCC0\uC218\uC77C \uB54C, P(|Z| \\le 1.96)
+          = 0.95, P(|Z| \\le 2.58) = 0.99\uB85C \uACC4\uC0B0\uD55C\uB2E4.)"
+        formula: 
+        choices:
+        - 70
+        - 74
+        - 78
+        - 82
+        - 86
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 70
+      - id: 2023_math_prob_stat_28
+        law_id: law_probability_branch
+        question_text: "\uC5F0\uC18D\uD655\uB960\uBCC0\uC218 X\uAC00 \uAC16\uB294
+          \uAC12\uC758 \uBC94\uC704\uB294 0 \\le X \\le a\uC774\uACE0, X\uC758 \uD655\uB960\uBC00\uB3C4\uD568\uC218\uC758
+          \uADF8\uB798\uD504\uAC00 \uADF8\uB9BC\uACFC \uAC19\uB2E4. \uB2E4\uC74C\uC774
+          \uC131\uB9BD\uD560 \uB54C, a + b + c\uC758 \uAC12\uC740? (\uB2E8, a, b,
+          c\uB294 \uC0C1\uC218\uC774\uB2E4.)"
+        formula: P(X \le b) - P(X \ge b) = \frac{1}{4}, \; P(X \le \sqrt{5}) = \frac{1}{2}
+        choices:
+        - \frac{11}{2}
+        - 6
+        - \frac{13}{2}
+        - 7
+        - \frac{15}{2}
+        points: 4
+        has_image: 1
+        image_asset_id: Math_Fig_2023_math_prob_stat_28
+        render_type: Static_Sprite
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: \frac{11}{2}
+      - id: 2023_math_prob_stat_29
+        law_id: law_probability_branch
+        question_text: "\uC55E\uBA74\uC5D0\uB294 1\uBD80\uD130 6\uAE4C\uC9C0\uC758
+          \uC790\uC5F0\uC218\uAC00 \uD558\uB098\uC529 \uC801\uD600 \uC788\uACE0 \uB4B7\uBA74\uC5D0\uB294
+          \uBAA8\uB450 0\uC774 \uD558\uB098\uC529 \uC801\uD600 \uC788\uB294 6\uC7A5\uC758
+          \uCE74\uB4DC\uAC00 \uC788\uB2E4. \uC774 6\uC7A5\uC758 \uCE74\uB4DC\uAC00
+          \uADF8\uB9BC\uACFC \uAC19\uC774 6 \uC774\uD558\uC758 \uC790\uC5F0\uC218
+          k\uC5D0 \uB300\uD558\uC5EC k\uBC88\uC9F8 \uC790\uB9AC\uC5D0 \uC790\uC5F0\uC218
+          k\uAC00 \uBCF4\uC774\uB3C4\uB85D \uB193\uC5EC \uC788\uB2E4. \uC774 6\uC7A5\uC758
+          \uCE74\uB4DC\uC640 \uD55C \uAC1C\uC758 \uC8FC\uC0AC\uC704\uB97C \uC0AC\uC6A9\uD558\uC5EC
+          \uB2E4\uC74C \uC2DC\uD589\uC744 \uD55C\uB2E4.\n\uC8FC\uC0AC\uC704\uB97C
+          \uD55C \uBC88 \uB358\uC838 \uB098\uC628 \uB208\uC758 \uC218\uAC00 k\uC774\uBA74
+          k\uBC88\uC9F8 \uC790\uB9AC\uC5D0 \uB193\uC5EC \uC788\uB294 \uCE74\uB4DC\uB97C
+          \uD55C \uBC88 \uB4A4\uC9D1\uC5B4 \uC81C\uC790\uB9AC\uC5D0 \uB193\uB294\uB2E4.\n\uC704\uC758
+          \uC2DC\uD589\uC744 3\uBC88 \uBC18\uBCF5\uD55C \uD6C4 6\uC7A5\uC758 \uCE74\uB4DC\uC5D0
+          \uBCF4\uC774\uB294 \uBAA8\uB4E0 \uC218\uC758 \uD569\uC774 \uC9DD\uC218\uC77C
+          \uB54C, \uC8FC\uC0AC\uC704\uC758 1\uC758 \uB208\uC774 \uD55C \uBC88\uB9CC
+          \uB098\uC654\uC744 \uD655\uB960\uC740 q/p\uC774\uB2E4. p+q\uC758 \uAC12\uC744
+          \uAD6C\uD558\uC2DC\uC624. (\uB2E8, p\uC640 q\uB294 \uC11C\uB85C\uC18C\uC778
+          \uC790\uC5F0\uC218\uC774\uB2E4.)"
+        formula: 
+        choices: []
+        points: 4
+        has_image: 1
+        image_asset_id: Math_Fig_2023_math_prob_stat_29
+        render_type: Static_Sprite
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 0
+      - id: 2023_math_prob_stat_30
+        law_id: law_probability_branch
+        question_text: "\uC9D1\uD569 X = \\{x | x\uB294 10 \uC774\uD558\uC758 \uC790\uC5F0\uC218\\}\uC5D0
+          \uB300\uD558\uC5EC \uB2E4\uC74C \uC870\uAC74\uC744 \uB9CC\uC871\uC2DC\uD0A4\uB294
+          \uD568\uC218 f: X \\to X\uC758 \uAC1C\uC218\uB97C \uAD6C\uD558\uC2DC\uC624.\\n(\uAC00)
+          9 \uC774\uD558\uC758 \uBAA8\uB4E0 \uC790\uC5F0\uC218 x\uC5D0 \uB300\uD558\uC5EC
+          f(x) \\le f(x+1)\uC774\uB2E4.\\n(\uB098) 1 \\le x \\le 5\uC77C \uB54C f(x)
+          \\le x\uC774\uACE0, 6 \\le x \\le 10\uC77C \uB54C f(x) \\ge x\uC774\uB2E4.\\n(\uB2E4)
+          f(6) = f(5) + 6"
+        formula: 
+        choices: []
+        points: 4
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 0
+      - id: 2024_math_prob_stat_23
+        law_id: law_probability_branch
+        question_text: "5\uAC1C\uC758 \uBB38\uC790 x, x, y, y, z\uB97C \uBAA8\uB450
+          \uC77C\uB82C\uB85C \uB098\uC5F4\uD558\uB294 \uACBD\uC6B0\uC758 \uC218\uB294?"
+        formula: 
+        choices:
+        - 15
+        - 20
+        - 25
+        - 30
+        - 35
+        points: 2
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 15
+      - id: 2024_math_prob_stat_24
+        law_id: law_probability_branch
+        question_text: "\uB450 \uC0AC\uAC74 A, B\uAC00 \uC11C\uB85C \uB3C5\uB9BD\uC774\uACE0
+          P(A \\cap B) = 1/6, P(A^c) = 1/2 \uC77C \uB54C, P(B)\uC758 \uAC12\uC740?"
+        formula: P(A \cap B) = \frac{1}{6}, \; P(A^c) = \frac{1}{2}
+        choices:
+        - \frac{1}{3}
+        - \frac{1}{2}
+        - \frac{2}{3}
+        - \frac{3}{4}
+        - \frac{5}{6}
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: \frac{1}{3}
+      - id: 2024_math_prob_stat_25
+        law_id: law_probability_branch
+        question_text: "\uC22B\uC790 1, 2, 3, 4, 5 \uC911 \uC911\uBCF5\uC744 \uD5C8\uB77D\uD558\uC5EC
+          4\uAC1C\uB97C \uC120\uD0DD\uD574 \uC77C\uB82C\uB85C \uB098\uC5F4\uD560
+          \uB54C, 3000 \uC774\uC0C1\uC778 \uC9DD\uC218\uC758 \uAC1C\uC218\uB294?"
+        formula: 
+        choices:
+        - 120
+        - 150
+        - 180
+        - 210
+        - 240
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 120
+      - id: 2024_math_prob_stat_26
+        law_id: law_probability_branch
+        question_text: "\uC5B4\uB290 \uACF5\uC7A5\uC5D0\uC11C \uC0DD\uC0B0\uD558\uB294
+          \uC81C\uD488\uC758 \uBB34\uAC8C\uB294 \uD3C9\uADE0\uC774 m, \uD45C\uC900\uD3B8\uCC28\uAC00
+          10\uC778 \uC815\uADDC\uBD84\uD3EC\uB97C \uB530\uB978\uB2E4. \uD45C\uBCF8
+          100\uAC1C\uB97C \uC784\uC758\uCD94\uCD9C\uD560 \uB54C, \uD45C\uBCF8\uD3C9\uADE0\uC774
+          50 \uC774\uC0C1\uC77C \uD655\uB960\uC740?"
+        formula: N(m, 10^2)
+        choices:
+        - 0.1587
+        - 0.3085
+        - 0.5000
+        - 0.6915
+        - 0.8413
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 0.1587
+      - id: 2024_math_prob_stat_27
+        law_id: law_probability_branch
+        question_text: "\uC8FC\uBA38\uB2C8\uC5D0 \uAC80\uC740 \uACF5 3\uAC1C\uC640
+          \uD770 \uACF5 2\uAC1C\uAC00 \uB4E4\uC5B4 \uC788\uB2E4. \uC8FC\uBA38\uB2C8\uC5D0\uC11C
+          \uACF5\uC744 \uD55C \uAC1C\uC529 \uAEBC\uB0BC \uB54C, 3\uBC88\uC9F8\uC5D0
+          \uD770 \uACF5\uC774 \uB098\uC62C \uD655\uB960\uC740?"
+        formula: 
+        choices:
+        - \frac{1}{5}
+        - \frac{2}{5}
+        - \frac{3}{5}
+        - \frac{4}{5}
+        - 1
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: \frac{1}{5}
+      - id: 2024_math_prob_stat_28
+        law_id: law_probability_branch
+        question_text: "\uC5F0\uC18D\uD655\uB960\uBCC0\uC218 X\uC758 \uD655\uB960\uBC00\uB3C4\uD568\uC218
+          f(x)\uAC00 0 \\le x \\le a\uC5D0\uC11C \uC815\uC758\uB420 \uB54C, a+b\uC758
+          \uAC12\uC740?"
+        formula: f(x) = b(a - x)
+        choices:
+        - 2
+        - 3
+        - 4
+        - 5
+        - 6
+        points: 4
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 2
+      - id: 2024_math_prob_stat_29
+        law_id: law_probability_branch
+        question_text: "\uC9D1\uD569 X={1, 2, 3, 4, 5}\uC5D0 \uB300\uD558\uC5EC \uB2E4\uC74C
+          \uC870\uAC74\uC744 \uB9CC\uC871\uC2DC\uD0A4\uB294 \uD568\uC218 f: X \to
+          X\uC758 \uAC1C\uC218\uB97C \uAD6C\uD558\uC2DC\uC624."
+        formula: f(1) \le f(2) \le f(3) \le f(4) \le f(5)
+        choices: []
+        points: 4
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 0
+      - id: 2024_math_prob_stat_30
+        law_id: law_probability_branch
+        question_text: "\uC8FC\uC0AC\uC704\uB97C 4\uBC88 \uB358\uC9C8 \uB54C \uB098\uC624\uB294
+          \uB208\uC758 \uC218\uC758 \uD569\uC774 10\uC77C \uD655\uB960\uC744 p/q\uB77C
+          \uD558\uC790. p+q\uC758 \uAC12\uC744 \uAD6C\uD558\uC2DC\uC624."
+        formula: 
+        choices: []
+        points: 4
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 0
+      - id: 2025_math_prob_stat_23
+        law_id: law_probability_branch
+        question_text: "\uC774\uD56D\uC815\uB9AC\uB97C \uC774\uC6A9\uD558\uC5EC \uC804\uAC1C\uC2DD\uC5D0\uC11C
+          x^4\uC758 \uACC4\uC218\uB97C \uAD6C\uD558\uC2DC\uC624."
+        formula: (x+2)^6
+        choices:
+        - 15
+        - 30
+        - 60
+        - 120
+        - 240
+        points: 2
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 15
+      - id: 2025_math_prob_stat_24
+        law_id: law_probability_branch
+        question_text: "\uB450 \uC0AC\uAC74 A, B\uC5D0 \uB300\uD558\uC5EC P(A)=1/3,
+          P(B)=1/2, P(A \\cup B)=2/3\uC77C \uB54C P(A \\cap B)\uC758 \uAC12\uC740?"
+        formula: P(A)=\frac{1}{3}, \; P(B)=\frac{1}{2}, \; P(A \cup B)=\frac{2}{3}
+        choices:
+        - \frac{1}{6}
+        - \frac{1}{4}
+        - \frac{1}{3}
+        - \frac{1}{2}
+        - \frac{7}{12}
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: \frac{1}{6}
+      - id: 2025_math_prob_stat_25
+        law_id: law_probability_branch
+        question_text: "\uC6D0\uC21C\uC5F4\uC744 \uC774\uC6A9\uD55C \uACBD\uC6B0\uC758
+          \uC218\uB97C \uAD6C\uD558\uC2DC\uC624."
+        formula: 
+        choices:
+        - 6
+        - 12
+        - 24
+        - 48
+        - 120
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 6
+      - id: 2025_math_prob_stat_26
+        law_id: law_probability_branch
+        question_text: "\uD45C\uC900\uC815\uADDC\uBD84\uD3EC\uB97C \uC774\uC6A9\uD55C
+          \uD655\uB960\uC744 \uAD6C\uD558\uC2DC\uC624."
+        formula: N(100, 15^2)
+        choices:
+        - 0.0228
+        - 0.0668
+        - 0.1587
+        - 0.3085
+        - 0.5000
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 0.0228
+      - id: 2025_math_prob_stat_27
+        law_id: law_probability_branch
+        question_text: "\uC870\uAC74\uBD80\uD655\uB960\uC744 \uAD6C\uD558\uC2DC\uC624."
+        formula: P(A|B)
+        choices:
+        - \frac{1}{5}
+        - \frac{2}{5}
+        - \frac{3}{5}
+        - \frac{4}{5}
+        - 1
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: \frac{1}{5}
+      - id: 2025_math_prob_stat_28
+        law_id: law_probability_branch
+        question_text: "\uC774\uC0B0\uD655\uB960\uBCC0\uC218 X\uC758 \uAE30\uB313\uAC12\uC744
+          \uAD6C\uD558\uC2DC\uC624."
+        formula: E(X)
+        choices:
+        - 2
+        - 3
+        - 4
+        - 5
+        - 6
+        points: 4
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 2
+      - id: 2025_math_prob_stat_29
+        law_id: law_probability_branch
+        question_text: "\uC911\uBCF5\uC870\uD569\uC744 \uC774\uC6A9\uD55C \uACBD\uC6B0\uC758
+          \uC218\uB97C \uAD6C\uD558\uC2DC\uC624."
+        formula: a+b+c+d=10
+        choices: []
+        points: 4
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 0
+      - id: 2025_math_prob_stat_30
+        law_id: law_probability_branch
+        question_text: "\uB3C5\uB9BD\uC2DC\uD589\uC758 \uD655\uB960 p/q\uC5D0 \uB300\uD558\uC5EC
+          p+q\uC758 \uAC12\uC744 \uAD6C\uD558\uC2DC\uC624."
+        formula: 
+        choices: []
+        points: 4
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 0
+      - id: 2025_math_prob_stat_23
+        law_id: law_probability_branch
+        question_text: "\uC774\uD56D\uC815\uB9AC\uB97C \uC774\uC6A9\uD558\uC5EC \uC804\uAC1C\uC2DD\uC5D0\uC11C
+          x^4\uC758 \uACC4\uC218\uB97C \uAD6C\uD558\uC2DC\uC624."
+        formula: (x+2)^6
+        choices:
+        - 15
+        - 30
+        - 60
+        - 120
+        - 240
+        points: 2
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 15
+      - id: 2025_math_prob_stat_24
+        law_id: law_probability_branch
+        question_text: "\uB450 \uC0AC\uAC74 A, B\uC5D0 \uB300\uD558\uC5EC P(A)=1/3,
+          P(B)=1/2, P(A \\cup B)=2/3\uC77C \uB54C P(A \\cap B)\uC758 \uAC12\uC740?"
+        formula: P(A)=\frac{1}{3}, \; P(B)=\frac{1}{2}, \; P(A \cup B)=\frac{2}{3}
+        choices:
+        - \frac{1}{6}
+        - \frac{1}{4}
+        - \frac{1}{3}
+        - \frac{1}{2}
+        - \frac{7}{12}
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: \frac{1}{6}
+      - id: 2025_math_prob_stat_25
+        law_id: law_probability_branch
+        question_text: "\uC6D0\uC21C\uC5F4\uC744 \uC774\uC6A9\uD55C \uACBD\uC6B0\uC758
+          \uC218\uB97C \uAD6C\uD558\uC2DC\uC624."
+        formula: 
+        choices:
+        - 6
+        - 12
+        - 24
+        - 48
+        - 120
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 6
+      - id: 2025_math_prob_stat_26
+        law_id: law_probability_branch
+        question_text: "\uD45C\uC900\uC815\uADDC\uBD84\uD3EC\uB97C \uC774\uC6A9\uD55C
+          \uD655\uB960\uC744 \uAD6C\uD558\uC2DC\uC624."
+        formula: N(100, 15^2)
+        choices:
+        - 0.0228
+        - 0.0668
+        - 0.1587
+        - 0.3085
+        - 0.5000
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 0.0228
+      - id: 2025_math_prob_stat_27
+        law_id: law_probability_branch
+        question_text: "\uC870\uAC74\uBD80\uD655\uB960\uC744 \uAD6C\uD558\uC2DC\uC624."
+        formula: P(A|B)
+        choices:
+        - \frac{1}{5}
+        - \frac{2}{5}
+        - \frac{3}{5}
+        - \frac{4}{5}
+        - 1
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: \frac{1}{5}
+      - id: 2025_math_prob_stat_28
+        law_id: law_probability_branch
+        question_text: "\uC774\uC0B0\uD655\uB960\uBCC0\uC218 X\uC758 \uAE30\uB313\uAC12\uC744
+          \uAD6C\uD558\uC2DC\uC624."
+        formula: E(X)
+        choices:
+        - 2
+        - 3
+        - 4
+        - 5
+        - 6
+        points: 4
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 2
+      - id: 2025_math_prob_stat_29
+        law_id: law_probability_branch
+        question_text: "\uC911\uBCF5\uC870\uD569\uC744 \uC774\uC6A9\uD55C \uACBD\uC6B0\uC758
+          \uC218\uB97C \uAD6C\uD558\uC2DC\uC624."
+        formula: a+b+c+d=10
+        choices: []
+        points: 4
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 0
+      - id: 2025_math_prob_stat_30
+        law_id: law_probability_branch
+        question_text: "\uB3C5\uB9BD\uC2DC\uD589\uC758 \uD655\uB960 p/q\uC5D0 \uB300\uD558\uC5EC
+          p+q\uC758 \uAC12\uC744 \uAD6C\uD558\uC2DC\uC624."
+        formula: 
+        choices: []
+        points: 4
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 0
+      - id: 2026_math_prob_stat_23
+        law_id: law_probability_branch
+        question_text: "\uB2E4\uD56D\uC2DD (x+1)^5\uC758 \uC804\uAC1C\uC2DD\uC5D0\uC11C
+          x^3\uC758 \uACC4\uC218\uB294?"
+        formula: (x+1)^5
+        choices:
+        - 5
+        - 10
+        - 15
+        - 20
+        - 25
+        points: 2
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 5
+      - id: 2026_math_prob_stat_24
+        law_id: law_probability_branch
+        question_text: "\uB450 \uC0AC\uAC74 A, B\uC5D0 \uB300\uD558\uC5EC P(A)=1/2,
+          P(B)=1/3, P(A \\cap B)=1/6\uC77C \uB54C P(A \\cup B)\uC758 \uAC12\uC740?"
+        formula: P(A \cup B)
+        choices:
+        - \frac{1}{2}
+        - \frac{2}{3}
+        - \frac{3}{4}
+        - \frac{5}{6}
+        - 1
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: \frac{1}{2}
+      - id: 2026_math_prob_stat_25
+        law_id: law_probability_branch
+        question_text: "\uC911\uBCF5\uC21C\uC5F4\uC744 \uC774\uC6A9\uD55C \uACBD\uC6B0\uC758
+          \uC218\uB97C \uAD6C\uD558\uC2DC\uC624."
+        formula: 3^4
+        choices:
+        - 27
+        - 64
+        - 81
+        - 125
+        - 243
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 27
+      - id: 2026_math_prob_stat_26
+        law_id: law_probability_branch
+        question_text: "\uC815\uADDC\uBD84\uD3EC N(50, 4^2)\uC744 \uB530\uB974\uB294
+          \uD655\uB960\uBCC0\uC218 X\uC5D0 \uB300\uD558\uC5EC P(X \\ge 54)\uC758
+          \uAC12\uC740?"
+        formula: N(50, 4^2)
+        choices:
+        - 0.0228
+        - 0.0668
+        - 0.1587
+        - 0.3085
+        - 0.5000
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 0.0228
+      - id: 2026_math_prob_stat_27
+        law_id: law_probability_branch
+        question_text: "\uD45C\uBCF8\uD3C9\uADE0\uC758 \uC2E0\uB8B0\uAD6C\uAC04\uC758
+          \uAE38\uC774\uB97C \uAD6C\uD558\uC2DC\uC624."
+        formula: 2 \times 1.96 \frac{\sigma}{\sqrt{n}}
+        choices:
+        - 1.96
+        - 3.92
+        - 5.88
+        - 7.84
+        - 9.80
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 1.96
+      - id: 2026_math_prob_stat_28
+        law_id: law_probability_branch
+        question_text: "\uD655\uB960\uBC00\uB3C4\uD568\uC218 f(x)\uC5D0 \uB300\uD558\uC5EC
+          \uC0C1\uC218 k\uC758 \uAC12\uC744 \uAD6C\uD558\uC2DC\uC624."
+        formula: f(x)=kx \quad (0 \le x \le 2)
+        choices:
+        - \frac{1}{4}
+        - \frac{1}{2}
+        - \frac{3}{4}
+        - 1
+        - \frac{5}{4}
+        points: 4
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: \frac{1}{4}
+      - id: 2026_math_prob_stat_29
+        law_id: law_probability_branch
+        question_text: "\uC911\uBCF5\uC870\uD569\uC744 \uC774\uC6A9\uD558\uC5EC \uC870\uAC74
+          f(1) \\le f(2) \\le f(3) \\le f(4)\uB97C \uB9CC\uC871\uD558\uB294 \uD568\uC218
+          f\uC758 \uAC1C\uC218\uB97C \uAD6C\uD558\uC2DC\uC624."
+        formula: 
+        choices: []
+        points: 4
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 0
+      - id: 2026_math_prob_stat_30
+        law_id: law_probability_branch
+        question_text: "\uC870\uAC74\uBD80\uD655\uB960 p/q\uC5D0 \uB300\uD558\uC5EC
+          p+q\uC758 \uAC12\uC744 \uAD6C\uD558\uC2DC\uC624."
+        formula: 
+        choices: []
+        points: 4
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 0
+  - id: world_calculus
+    title: "\uBBF8\uC801\uBD84"
+    description: "\uCD08\uC6D4\uD568\uC218 \uBC0F \uAE09\uC218 \uC601\uC5ED"
+    biomes:
+    - id: biome_transcendental
+      title: "\uCD08\uC6D4\uD568\uC218\uC640 \uAE09\uC218\uC758 \uC601\uC5ED"
+      laws:
+      - id: law_series_sum
+        law_type: SeriesConvergence
+        name: "\uAE09\uC218 \uC218\uB834 \uBC95\uCE59"
+        formula_pattern: \sum_{n=1}^{\infty} a_n
+        interactive_rules:
+          operator: series_sum
+          target_property: bridge_tile
+          input_parameter: sum_limit
+          action_type: FormBridge
+      entities:
+      - id: 2023_math_calc_23
+        law_id: law_series_sum
+        question_text: "\uC758 \uAC12\uC740?"
+        formula: \lim_{x \to 0} \frac{\ln(x+1)}{\sqrt{x+4}-2}
+        choices:
+        - 1
+        - 2
+        - 3
+        - 4
+        - 5
+        points: 2
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 1
+      - id: 2023_math_calc_24
+        law_id: law_series_sum
+        question_text: "\uC758 \uAC12\uC740?"
+        formula: \lim_{n \to \infty} \frac{1}{n} \sum_{k=1}^{n} \sqrt{1 + \frac{3k}{n}}
+        choices:
+        - \frac{4}{3}
+        - \frac{13}{9}
+        - \frac{14}{9}
+        - \frac{5}{3}
+        - \frac{16}{9}
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: \frac{4}{3}
+      - id: 2023_math_calc_25
+        law_id: law_series_sum
+        question_text: "\uB4F1\uBE44\uC218\uC5F4 \\{a_n\\}\uC5D0 \uB300\uD558\uC5EC
+          \uB2E4\uC74C\uC774 \uC131\uB9BD\uD560 \uB54C, a_2\uC758 \uAC12\uC740?"
+        formula: \lim_{n \to \infty} \frac{a_{n+1}}{3^n + 2^{n-1}} = 3
+        choices:
+        - 16
+        - 18
+        - 20
+        - 22
+        - 24
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 16
+      - id: 2023_math_calc_26
+        law_id: law_series_sum
+        question_text: "\uADF8\uB9BC\uACFC \uAC19\uC774 \uACE1\uC120\uACFC x\uCD95,
+          y\uCD95 \uBC0F \uC9C1\uC120 x = \\frac{\\pi}{3}\uB85C \uB458\uB7EC\uC2F8\uC778
+          \uBD80\uBD84\uC744 \uBC11\uBA74\uC73C\uB85C \uD558\uB294 \uC785\uCCB4\uB3C4\uD615\uC774
+          \uC788\uB2E4. \uC774 \uC785\uCCB4\uB3C4\uD615\uC744 x\uCD95\uC5D0 \uC218\uC9C1\uC778
+          \uD3C9\uBA74\uC73C\uB85C \uC790\uB978 \uB2E8\uBA74\uC774 \uBAA8\uB450 \uC815\uC0AC\uAC01\uD615\uC77C
+          \uB54C, \uC774 \uC785\uCCB4\uB3C4\uD615\uC758 \uBD80\uD53C\uB294?"
+        formula: y = \sqrt{\sec^2 x + \tan x} \quad \left(0 \le x \le \frac{\pi}{3}\right)
+        choices:
+        - \frac{\sqrt{3}}{2} + \frac{\ln 2}{2}
+        - \frac{\sqrt{3}}{2} + \ln 2
+        - \sqrt{3} + \frac{\ln 2}{2}
+        - \sqrt{3} + \ln 2
+        - \sqrt{3} + 2\ln 2
+        points: 3
+        has_image: 1
+        image_asset_id: Math_Fig_2023_math_calc_26
+        render_type: Static_Sprite
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: \frac{\sqrt{3}}{2} + \frac{\ln 2}{2}
+      - id: 2023_math_calc_27
+        law_id: law_series_sum
+        question_text: "\uADF8\uB9BC\uACFC \uAC19\uC774 \uC911\uC2EC\uC774 O, \uBC18\uC9C0\uB984\uC758
+          \uAE38\uC774\uAC00 1\uC774\uACE0 \uC911\uC2EC\uAC01\uC758 \uD06C\uAE30\uAC00
+          \frac{\\pi}{2}\uC778 \uBD80\uCC44\uAF34 OA_1B_1\uC774 \uC788\uB2E4. \uD638
+          A_1B_1 \uC704\uC5D0 \uC810 P_1, \uC120\uBD84 OA_1 \uC704\uC5D0 \uC810 C_1,
+          \uC120\uBD84 OB_1 \uC704\uC5D0 \uC810 D_1\uC744 \uC0AC\uAC01\uD615 OC_1P_1D_1\uC774
+          \\overline{OC_1} : \\overline{OD_1} = 3:4\uC778 \uC9C1\uC0AC\uAC01\uD615\uC774
+          \uB418\uB3C4\uB85D \uC7A1\uB294\uB2E4. \uBD80\uCC44\uAF34 OA_1B_1\uC758
+          \uB0B4\uBD80\uC5D0 \uC810 Q_1\uC744 \\overline{P_1Q_1} = \\overline{A_1Q_1},
+          \angle P_1Q_1A_1 = \frac{\\pi}{2}\uAC00 \uB418\uB3C4\uB85D \uC7A1\uACE0,
+          \uC774\uB4F1\uBCC0\uC0BC\uAC01\uD615 P_1Q_1A_1\uC5D0 \uC0C9\uCE60\uD558\uC5EC
+          \uC5BB\uC740 \uADF8\uB9BC\uC744 R_1\uC774\uB77C \uD558\uC790. \uADF8\uB9BC
+          R_1\uC5D0\uC11C \uC120\uBD84 OA_1 \uC704\uC758 \uC810 A_2\uC640 \uC120\uBD84
+          OB_1 \uC704\uC758 \uC810 B_2\uB97C \\overline{OQ_1} = \\overline{OA_2}
+          = \\overline{OB_2}\uAC00 \uB418\uB3C4\uB85D \uC7A1\uACE0, \uC911\uC2EC\uC774
+          O, \uBC18\uC9C0\uB984\uC758 \uAE38\uC774\uAC00 \\overline{OQ_1}, \uC911\uC2EC\uAC01\uC758
+          \uD06C\uAE30\uAC00 \frac{\\pi}{2}\uC778 \uBD80\uCC44\uAF34 OA_2B_2\uB97C
+          \uADF8\uB9B0\uB2E4. \uADF8\uB9BC R_1\uC744 \uC5BB\uC740 \uAC83\uACFC \uAC19\uC740
+          \uBC29\uBC95\uC73C\uB85C \uB124 \uC810 P_2, C_2, D_2, Q_2\uB97C \uC7A1\uACE0,
+          \uC774\uB4F1\uBCC0\uC0BC\uAC01\uD615 P_2Q_2A_2\uC5D0 \uC0C9\uCE60\uD558\uC5EC
+          \uC5BB\uC740 \uADF8\uB9BC\uC744 R_2\uB77C \uD558\uC790. \uC774\uC640 \uAC19\uC740
+          \uACFC\uC815\uC744 \uACC4\uC18D\uD558\uC5EC n\uBC88\uC9F8 \uC5BB\uC740
+          \uADF8\uB9BC R_n\uC5D0 \uC0C9\uCE60\uB418\uC5B4 \uC788\uB294 \uBD80\uBD84\uC758
+          \uB113\uC774\uB97C S_n\uC774\uB77C \uD560 \uB54C, \\lim_{n \to \\infty}
+          S_n\uC758 \uAC12\uC740?"
+        formula: \lim_{n \to \infty} S_n
+        choices:
+        - \frac{9}{40}
+        - \frac{1}{4}
+        - \frac{11}{40}
+        - \frac{3}{10}
+        - \frac{13}{40}
+        points: 3
+        has_image: 1
+        image_asset_id: Math_Fig_2023_math_calc_27
+        render_type: Static_Sprite
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: \frac{9}{40}
+      - id: 2023_math_calc_28
+        law_id: law_series_sum
+        question_text: "\uADF8\uB9BC\uACFC \uAC19\uC774 \uC911\uC2EC\uC774 O\uC774\uACE0
+          \uAE38\uC774\uAC00 2\uC778 \uC120\uBD84 AB\uB97C \uC9C0\uB984\uC73C\uB85C
+          \uD558\uB294 \uBC18\uC6D0 \uC704\uC5D0 \\angle AOC = \\frac{\\pi}{2}\uC778
+          \uC810 C\uAC00 \uC788\uB2E4. \uD638 BC \uC704\uC5D0 \uC810 P\uC640 \uD638
+          CA \uC704\uC5D0 \uC810 Q\uB97C \\overline{PB} = \\overline{QC}\uAC00 \uB418\uB3C4\uB85D
+          \uC7A1\uACE0, \uC120\uBD84 AP \uC704\uC5D0 \uC810 R\uB97C \\angle CQR =
+          \\frac{\\pi}{2}\uAC00 \uB418\uB3C4\uB85D \uC7A1\uB294\uB2E4. \uC120\uBD84
+          AP\uC640 \uC120\uBD84 CO\uC758 \uAD50\uC810\uC744 S\uB77C \uD558\uC790.
+          \\angle PAB = \\theta\uC77C \uB54C, \uC0BC\uAC01\uD615 POB\uC758 \uB113\uC774\uB97C
+          f(\\theta), \uC0AC\uAC01\uD615 CQRS\uC758 \uB113\uC774\uB97C g(\\theta)\uB77C
+          \uD558\uC790. \uB2E4\uC74C\uC758 \uAC12\uC740? (\uB2E8, 0 < \\theta < \\frac{\\pi}{4})"
+        formula: \lim_{\theta \to 0+} \frac{3f(\theta) - 2g(\theta)}{\theta^2}
+        choices:
+        - 1
+        - 2
+        - 3
+        - 4
+        - 5
+        points: 4
+        has_image: 1
+        image_asset_id: Math_Fig_2023_math_calc_28
+        render_type: Static_Sprite
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 1
+      - id: 2023_math_calc_29
+        law_id: law_series_sum
+        question_text: "\uC138 \uC0C1\uC218 a, b, c\uC5D0 \uB300\uD558\uC5EC \uD568\uC218
+          f(x) = ae^{2x} + be^x + c\uAC00 \uB2E4\uC74C \uC870\uAC74\uC744 \uB9CC\uC871\uC2DC\uD0A8\uB2E4.\\n(\uAC00)
+          \\lim_{x \\to -\\infty} \\frac{f(x)+6}{e^x} = 1\\n(\uB098) f(\\ln 2) =
+          0\\n\uD568\uC218 f(x)\uC758 \uC5ED\uD568\uC218\uB97C g(x)\uB77C \uD560
+          \uB54C, \uB2E4\uC74C \uC815\uC801\uBD84\uC758 \uAC12\uC774 p + q \\ln 2\uC774\uB2E4.
+          p+q\uC758 \uAC12\uC744 \uAD6C\uD558\uC2DC\uC624. (\uB2E8, p, q\uB294 \uC720\uB9AC\uC218\uC774\uACE0,
+          \\ln 2\uB294 \uBB34\uB9AC\uC218\uC774\uB2E4.)"
+        formula: \int_{0}^{14} g(x) dx = p + q \ln 2
+        choices: []
+        points: 4
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 0
+      - id: 2023_math_calc_30
+        law_id: law_series_sum
+        question_text: "\uCD5C\uACE0\uCC28\uD56D\uC758 \uACC4\uC218\uAC00 \uC591\uC218\uC778
+          \uC0BC\uCC28\uD568\uC218 f(x)\uC640 \uD568\uC218 g(x) = e^{\\sin \\pi x}
+          - 1\uC5D0 \uB300\uD558\uC5EC \uC2E4\uC218 \uC804\uCCB4\uC758 \uC9D1\uD569\uC5D0\uC11C
+          \uC815\uC758\uB41C \uD569\uC131\uD568\uC218 h(x) = g(f(x))\uAC00 \uB2E4\uC74C
+          \uC870\uAC74\uC744 \uB9CC\uC871\uC2DC\uD0A8\uB2E4.\\n(\uAC00) \uD568\uC218
+          h(x)\uB294 x=0\uC5D0\uC11C \uADF9\uB313\uAC12 0\uC744 \uAC16\uB294\uB2E4.\\n(\uB098)
+          \uC5F4\uB9B0\uAD6C\uAC04 (0, 3)\uC5D0\uC11C \uBC29\uC815\uC2DD h(x) = 1\uC758
+          \uC11C\uB85C \uB2E4\uB978 \uC2E4\uADFC\uC758 \uAC1C\uC218\uB294 7\uC774\uB2E4.\\nf(3)
+          = \\frac{1}{2}, f'(3) = 0\uC77C \uB54C, f(2) = \\frac{q}{p}\uC774\uB2E4.
+          p+q\uC758 \uAC12\uC744 \uAD6C\uD558\uC2DC\uC624. (\uB2E8, p\uC640 q\uB294
+          \uC11C\uB85C\uC18C\uC778 \uC790\uC5F0\uC218\uC774\uB2E4.)"
+        formula: 
+        choices: []
+        points: 4
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 0
+      - id: 2024_math_calc_23
+        law_id: law_series_sum
+        question_text: "\uC758 \uAC12\uC740?"
+        formula: \lim_{x \to 0} \frac{e^{3x}-1}{2x}
+        choices:
+        - 1
+        - \frac{3}{2}
+        - 2
+        - \frac{5}{2}
+        - 3
+        points: 2
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 1
+      - id: 2024_math_calc_24
+        law_id: law_series_sum
+        question_text: "\uB9E4\uAC1C\uBCC0\uC218 t\uB85C \uB098\uD0C0\uB0B4\uC5B4\uC9C4
+          \uACE1\uC120 x=t^2+1, y=\\ln t \uC5D0\uC11C t=1\uC77C \uB54C\uC758 \uC811\uC120\uC758
+          \uAE30\uC6B8\uAE30\uB294?"
+        formula: x=t^2+1, \; y=\ln t
+        choices:
+        - \frac{1}{4}
+        - \frac{1}{2}
+        - 1
+        - 2
+        - 4
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: \frac{1}{4}
+      - id: 2024_math_calc_25
+        law_id: law_series_sum
+        question_text: "\uC758 \uAC12\uC740?"
+        formula: \int_{0}^{\frac{\pi}{2}} x \cos x dx
+        choices:
+        - \frac{\pi}{2}-1
+        - \frac{\pi}{2}
+        - \frac{\pi}{2}+1
+        - \pi-1
+        - \pi
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: \frac{\pi}{2}-1
+      - id: 2024_math_calc_26
+        law_id: law_series_sum
+        question_text: "\uC785\uCCB4\uB3C4\uD615\uC758 \uBD80\uD53C\uB97C \uAD6C\uD558\uC2DC\uC624."
+        formula: y = \sqrt{x \sin x} \quad (0 \le x \le \pi)
+        choices:
+        - \pi
+        - \frac{\pi^2}{2}
+        - \pi^2
+        - 2\pi^2
+        - 4\pi^2
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: \pi
+      - id: 2024_math_calc_27
+        law_id: law_series_sum
+        question_text: "\uAE09\uC218\uC758 \uD569\uC744 \uAD6C\uD558\uC2DC\uC624."
+        formula: \sum_{n=1}^{\infty} \frac{1}{n(n+2)}
+        choices:
+        - \frac{1}{2}
+        - \frac{3}{4}
+        - 1
+        - \frac{5}{4}
+        - \frac{3}{2}
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: \frac{1}{2}
+      - id: 2024_math_calc_28
+        law_id: law_series_sum
+        question_text: "\uD568\uC218 f(x)\uC758 \uADF9\uD55C\uAC12\uC744 \uAD6C\uD558\uC2DC\uC624."
+        formula: \lim_{x \to 0+} \frac{f(x)}{x^2}
+        choices:
+        - 1
+        - 2
+        - 3
+        - 4
+        - 5
+        points: 4
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 1
+      - id: 2024_math_calc_29
+        law_id: law_series_sum
+        question_text: "\uC815\uC801\uBD84\uC758 \uAC12\uC744 \uAD6C\uD558\uC2DC\uC624."
+        formula: \int_{1}^{e} x \ln x dx
+        choices: []
+        points: 4
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 0
+      - id: 2024_math_calc_30
+        law_id: law_series_sum
+        question_text: "\uD569\uC131\uD568\uC218 h(x)=g(f(x))\uAC00 \uC870\uAC74\uC744
+          \uB9CC\uC871\uD560 \uB54C p+q\uC758 \uAC12\uC744 \uAD6C\uD558\uC2DC\uC624."
+        formula: 
+        choices: []
+        points: 4
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 0
+      - id: 2025_math_calc_23
+        law_id: law_series_sum
+        question_text: "\uC758 \uAC12\uC740?"
+        formula: \lim_{x \to 0} \frac{\ln(1+4x)}{x}
+        choices:
+        - 1
+        - 2
+        - 3
+        - 4
+        - 5
+        points: 2
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 1
+      - id: 2025_math_calc_24
+        law_id: law_series_sum
+        question_text: "\uC0BC\uAC01\uD568\uC218\uC758 \uBBF8\uBD84\uC744 \uC774\uC6A9\uD55C
+          \uC811\uC120\uC758 \uAE30\uC6B8\uAE30\uB97C \uAD6C\uD558\uC2DC\uC624."
+        formula: y = \sin 2x
+        choices:
+        - -2
+        - -1
+        - 0
+        - 1
+        - 2
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: -2
+      - id: 2025_math_calc_25
+        law_id: law_series_sum
+        question_text: "\uCE58\uD658\uC801\uBD84\uBC95\uC744 \uC774\uC6A9\uD55C \uC815\uC801\uBD84\uC758
+          \uAC12\uC744 \uAD6C\uD558\uC2DC\uC624."
+        formula: \int_{0}^{1} 2x e^{x^2} dx
+        choices:
+        - e-1
+        - e
+        - e+1
+        - 2e-1
+        - 2e
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: e-1
+      - id: 2025_math_calc_26
+        law_id: law_series_sum
+        question_text: "\uBD80\uBD84\uC801\uBD84\uBC95\uC744 \uC774\uC6A9\uD55C \uC815\uC801\uBD84\uC758
+          \uAC12\uC744 \uAD6C\uD558\uC2DC\uC624."
+        formula: \int_{1}^{e} x^2 \ln x dx
+        choices:
+        - \frac{2e^3+1}{9}
+        - \frac{2e^3-1}{9}
+        - \frac{e^3+2}{9}
+        - \frac{e^3-2}{9}
+        - \frac{e^3+1}{9}
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: \frac{2e^3+1}{9}
+      - id: 2025_math_calc_27
+        law_id: law_series_sum
+        question_text: "\uBB34\uD55C\uB4F1\uBE44\uAE09\uC218\uC758 \uD569\uC744 \uAD6C\uD558\uC2DC\uC624."
+        formula: \sum_{n=1}^{\infty} a_n
+        choices:
+        - \frac{4}{3}
+        - \frac{5}{3}
+        - 2
+        - \frac{7}{3}
+        - \frac{8}{3}
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: \frac{4}{3}
+      - id: 2025_math_calc_28
+        law_id: law_series_sum
+        question_text: "\uB3C4\uD568\uC218\uC758 \uD65C\uC6A9\uC744 \uC774\uC6A9\uD55C
+          \uCD5C\uB313\uAC12\uC744 \uAD6C\uD558\uC2DC\uC624."
+        formula: f(x) = x e^{-x}
+        choices:
+        - \frac{1}{e}
+        - \frac{2}{e}
+        - 1
+        - e
+        - 2e
+        points: 4
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: \frac{1}{e}
+      - id: 2025_math_calc_29
+        law_id: law_series_sum
+        question_text: "\uC74C\uD568\uC218 \uBBF8\uBD84\uBC95\uC744 \uAD6C\uD558\uC2DC\uC624."
+        formula: x^2 + y^2 - xy = 3
+        choices: []
+        points: 4
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 0
+      - id: 2025_math_calc_30
+        law_id: law_series_sum
+        question_text: "\uCD08\uC6D4\uD568\uC218\uC758 \uADF9\uB313\uAC12\uACFC \uADF9\uC19F\uAC12\uC758
+          \uD569\uC744 \uAD6C\uD558\uC2DC\uC624."
+        formula: 
+        choices: []
+        points: 4
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 0
+      - id: 2025_math_calc_23
+        law_id: law_series_sum
+        question_text: "\uC758 \uAC12\uC740?"
+        formula: \lim_{x \to 0} \frac{\ln(1+4x)}{x}
+        choices:
+        - 1
+        - 2
+        - 3
+        - 4
+        - 5
+        points: 2
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 1
+      - id: 2025_math_calc_24
+        law_id: law_series_sum
+        question_text: "\uC0BC\uAC01\uD568\uC218\uC758 \uBBF8\uBD84\uC744 \uC774\uC6A9\uD55C
+          \uC811\uC120\uC758 \uAE30\uC6B8\uAE30\uB97C \uAD6C\uD558\uC2DC\uC624."
+        formula: y = \sin 2x
+        choices:
+        - -2
+        - -1
+        - 0
+        - 1
+        - 2
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: -2
+      - id: 2025_math_calc_25
+        law_id: law_series_sum
+        question_text: "\uCE58\uD658\uC801\uBD84\uBC95\uC744 \uC774\uC6A9\uD55C \uC815\uC801\uBD84\uC758
+          \uAC12\uC744 \uAD6C\uD558\uC2DC\uC624."
+        formula: \int_{0}^{1} 2x e^{x^2} dx
+        choices:
+        - e-1
+        - e
+        - e+1
+        - 2e-1
+        - 2e
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: e-1
+      - id: 2025_math_calc_26
+        law_id: law_series_sum
+        question_text: "\uBD80\uBD84\uC801\uBD84\uBC95\uC744 \uC774\uC6A9\uD55C \uC815\uC801\uBD84\uC758
+          \uAC12\uC744 \uAD6C\uD558\uC2DC\uC624."
+        formula: \int_{1}^{e} x^2 \ln x dx
+        choices:
+        - \frac{2e^3+1}{9}
+        - \frac{2e^3-1}{9}
+        - \frac{e^3+2}{9}
+        - \frac{e^3-2}{9}
+        - \frac{e^3+1}{9}
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: \frac{2e^3+1}{9}
+      - id: 2025_math_calc_27
+        law_id: law_series_sum
+        question_text: "\uBB34\uD55C\uB4F1\uBE44\uAE09\uC218\uC758 \uD569\uC744 \uAD6C\uD558\uC2DC\uC624."
+        formula: \sum_{n=1}^{\infty} a_n
+        choices:
+        - \frac{4}{3}
+        - \frac{5}{3}
+        - 2
+        - \frac{7}{3}
+        - \frac{8}{3}
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: \frac{4}{3}
+      - id: 2025_math_calc_28
+        law_id: law_series_sum
+        question_text: "\uB3C4\uD568\uC218\uC758 \uD65C\uC6A9\uC744 \uC774\uC6A9\uD55C
+          \uCD5C\uB313\uAC12\uC744 \uAD6C\uD558\uC2DC\uC624."
+        formula: f(x) = x e^{-x}
+        choices:
+        - \frac{1}{e}
+        - \frac{2}{e}
+        - 1
+        - e
+        - 2e
+        points: 4
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: \frac{1}{e}
+      - id: 2025_math_calc_29
+        law_id: law_series_sum
+        question_text: "\uC74C\uD568\uC218 \uBBF8\uBD84\uBC95\uC744 \uAD6C\uD558\uC2DC\uC624."
+        formula: x^2 + y^2 - xy = 3
+        choices: []
+        points: 4
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 0
+      - id: 2025_math_calc_30
+        law_id: law_series_sum
+        question_text: "\uCD08\uC6D4\uD568\uC218\uC758 \uADF9\uB313\uAC12\uACFC \uADF9\uC19F\uAC12\uC758
+          \uD569\uC744 \uAD6C\uD558\uC2DC\uC624."
+        formula: 
+        choices: []
+        points: 4
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 0
+      - id: 2026_math_calc_23
+        law_id: law_series_sum
+        question_text: "\uC758 \uAC12\uC740?"
+        formula: \lim_{x \to 0} \frac{\sin 3x}{x}
+        choices:
+        - 1
+        - 2
+        - 3
+        - 4
+        - 5
+        points: 2
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 1
+      - id: 2026_math_calc_24
+        law_id: law_series_sum
+        question_text: "\uD568\uC218 f(x)=x \\ln x \uC5D0 \uB300\uD558\uC5EC f'(e)\uC758
+          \uAC12\uC740?"
+        formula: f(x)=x \ln x
+        choices:
+        - 1
+        - 2
+        - 3
+        - 4
+        - 5
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 1
+      - id: 2026_math_calc_25
+        law_id: law_series_sum
+        question_text: "\uC758 \uAC12\uC740?"
+        formula: \int_{0}^{1} (2x+1) e^x dx
+        choices:
+        - e
+        - e+1
+        - 2e-1
+        - 2e
+        - 2e+1
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: e
+      - id: 2026_math_calc_26
+        law_id: law_series_sum
+        question_text: "\uACE1\uC120 y=\\sqrt{\tan x} \uC640 x\uCD95 \uBC0F x=\\pi/4
+          \uB85C \uB458\uB7EC\uC2F8\uC778 \uC785\uCCB4\uB3C4\uD615\uC758 \uBD80\uD53C\uB294?"
+        formula: y=\sqrt{\tan x}
+        choices:
+        - \frac{1}{2}\ln 2
+        - \ln 2
+        - \frac{3}{2}\ln 2
+        - 2\ln 2
+        - \frac{5}{2}\ln 2
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: \frac{1}{2}\ln 2
+      - id: 2026_math_calc_27
+        law_id: law_series_sum
+        question_text: "\uBB34\uD55C\uAE09\uC218\uC758 \uD569\uC744 \uAD6C\uD558\uC2DC\uC624."
+        formula: \sum_{n=1}^{\infty} \frac{2^n + 3^n}{6^n}
+        choices:
+        - \frac{1}{2}
+        - \frac{5}{6}
+        - 1
+        - \frac{7}{6}
+        - \frac{4}{3}
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: \frac{1}{2}
+      - id: 2026_math_calc_28
+        law_id: law_series_sum
+        question_text: "\uD568\uC218 f(x)\uC758 \uBCC0\uACE1\uC810\uC5D0\uC11C\uC758
+          \uC811\uC120\uC758 \uAE30\uC6B8\uAE30\uB97C \uAD6C\uD558\uC2DC\uC624."
+        formula: f(x) = \frac{1}{x^2+1}
+        choices:
+        - -\frac{3\sqrt{3}}{8}
+        - -\frac{\sqrt{3}}{4}
+        - -\frac{\sqrt{3}}{8}
+        - 0
+        - \frac{\sqrt{3}}{8}
+        points: 4
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: -\frac{3\sqrt{3}}{8}
+      - id: 2026_math_calc_29
+        law_id: law_series_sum
+        question_text: "\uB9E4\uAC1C\uBCC0\uC218\uB85C \uB098\uD0C0\uB0B8 \uACE1\uC120\uC758
+          \uC18D\uB825\uC744 \uAD6C\uD558\uC2DC\uC624."
+        formula: x=\sin t, \; y=\cos t
+        choices: []
+        points: 4
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 0
+      - id: 2026_math_calc_30
+        law_id: law_series_sum
+        question_text: "\uD569\uC131\uD568\uC218 g(f(x))\uC758 \uADF9\uB313\uAC12\uC744
+          \uB9CC\uC871\uC2DC\uD0A4\uB294 p+q\uC758 \uAC12\uC744 \uAD6C\uD558\uC2DC\uC624."
+        formula: 
+        choices: []
+        points: 4
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 0
+  - id: world_geometry
+    title: "\uAE30\uD558"
+    description: "\uBCA1\uD130 \uBC0F \uACF5\uAC04 \uC601\uC5ED"
+    biomes:
+    - id: biome_spatial_vector
+      title: "\uBCA1\uD130\uC640 \uACF5\uAC04\uC758 \uC601\uC5ED"
+      laws:
+      - id: law_vector_dot
+        law_type: VectorDotProduct
+        name: "\uBCA1\uD130 \uB0B4\uC801 \uBC95\uCE59"
+        formula_pattern: \vec{a} \cdot \vec{b}
+        interactive_rules:
+          operator: dot_product
+          target_property: shadow_angle
+          input_parameter: vec_a, vec_b
+          action_type: ProjectShadow
+      entities:
+      - id: 2023_math_geom_23
+        law_id: law_vector_dot
+        question_text: "\uC88C\uD45C\uACF5\uAC04\uC758 \uC810 A(2, 2, -1)\uC744 x\uCD95\uC5D0
+          \uB300\uD558\uC5EC \uB300\uCE6D\uC774\uB3D9\uD55C \uC810\uC744 B\uB77C
+          \uD558\uC790. \uC810 C(-2, 1, 1)\uC5D0 \uB300\uD558\uC5EC \uC120\uBD84
+          BC\uC758 \uAE38\uC774\uB294?"
+        formula: 
+        choices:
+        - 1
+        - 2
+        - 3
+        - 4
+        - 5
+        points: 2
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 1
+      - id: 2023_math_geom_24
+        law_id: law_vector_dot
+        question_text: "\uCD08\uC810\uC774 F\\left(\\frac{1}{3}, 0\\right)\uC774\uACE0
+          \uC900\uC120\uC774 x = -\\frac{1}{3}\uC778 \uD3EC\uBB3C\uC120\uC774 \uC810
+          (a, 2)\uB97C \uC9C0\uB0A0 \uB54C, a\uC758 \uAC12\uC740?"
+        formula: 
+        choices:
+        - 1
+        - 2
+        - 3
+        - 4
+        - 5
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 1
+      - id: 2023_math_geom_25
+        law_id: law_vector_dot
+        question_text: "\uD0C0\uC6D0 \uC704\uC758 \uC810 (2, 1)\uC5D0\uC11C\uC758
+          \uC811\uC120\uC758 \uAE30\uC6B8\uAE30\uAC00 -\frac{1}{2}\uC77C \uB54C,
+          \uC774 \uD0C0\uC6D0\uC758 \uB450 \uCD08\uC810 \uC0AC\uC774\uC758 \uAC70\uB9AC\uB294?
+          (\uB2E8, a, b\uB294 \uC591\uC218\uC774\uB2E4.)"
+        formula: \frac{x^2}{a^2} + \frac{y^2}{b^2} = 1
+        choices:
+        - 2\sqrt{3}
+        - 4
+        - 2\sqrt{5}
+        - 2\sqrt{6}
+        - 2\sqrt{7}
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 2\sqrt{3}
+      - id: 2023_math_geom_26
+        law_id: law_vector_dot
+        question_text: "\uC88C\uD45C\uD3C9\uBA74\uC5D0\uC11C \uC138 \uBCA1\uD130
+          \\vec{a} = (2, 4), \\vec{b} = (2, 8), \\vec{c} = (1, 0)\uC5D0 \uB300\uD558\uC5EC
+          \uB450 \uBCA1\uD130 \\vec{p}, \\vec{q}\uAC00 \uB2E4\uC74C\uC744 \uB9CC\uC871\uC2DC\uD0AC
+          \uB54C, |\\vec{p} - \\vec{q}|\uC758 \uCD5C\uC19F\uAC12\uC740?"
+        formula: "(\\vec{p} - \\vec{a}) \\cdot (\\vec{p} - \\vec{b}) = 0, \\quad
+          \\vec{q} = \\frac{1}{2}\\vec{a} + t\\vec{c} \\text{ ($t$\uB294 \uC2E4\uC218)}"
+        choices:
+        - \frac{3}{2}
+        - 2
+        - \frac{5}{2}
+        - 3
+        - \frac{7}{2}
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: \frac{3}{2}
+      - id: 2023_math_geom_27
+        law_id: law_vector_dot
+        question_text: "\uC88C\uD45C\uACF5\uAC04\uC5D0 \uC9C1\uC120 AB\uB97C \uD3EC\uD568\uD558\uB294
+          \uD3C9\uBA74 \\alpha\uAC00 \uC788\uB2E4. \uD3C9\uBA74 \\alpha \uC704\uC5D0
+          \uC788\uC9C0 \uC54A\uC740 \uC810 C\uC5D0 \uB300\uD558\uC5EC \uC9C1\uC120
+          AB\uC640 \uC9C1\uC120 AC\uAC00 \uC774\uB8E8\uB294 \uC608\uAC01\uC758 \uD06C\uAE30\uB97C
+          \\theta_1\uC774\uB77C \uD560 \uB54C \\sin \\theta_1 = \\frac{4}{5}\uC774\uACE0,
+          \uC9C1\uC120 AC\uC640 \uD3C9\uBA74 \\alpha\uAC00 \uC774\uB8E8\uB294 \uC608\uAC01\uC758
+          \uD06C\uAE30\uB294 \\frac{\\pi}{2} - \\theta_1\uC774\uB2E4. \uD3C9\uBA74
+          ABC\uC640 \uD3C9\uBA74 \\alpha\uAC00 \uC774\uB8E8\uB294 \uC608\uAC01\uC758
+          \uD06C\uAE30\uB97C \\theta_2\uB77C \uD560 \uB54C, \\cos \\theta_2\uC758
+          \uAC12\uC740?"
+        formula: 
+        choices:
+        - \frac{\sqrt{7}}{4}
+        - \frac{\sqrt{7}}{5}
+        - \frac{\sqrt{7}}{6}
+        - \frac{\sqrt{7}}{7}
+        - \frac{\sqrt{7}}{8}
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: \frac{\sqrt{7}}{4}
+      - id: 2023_math_geom_28
+        law_id: law_vector_dot
+        question_text: "\uB450 \uCD08\uC810\uC774 F(c, 0), F'(-c, 0) (c > 0)\uC778
+          \uC30D\uACE1\uC120 C\uC640 y\uCD95 \uC704\uC758 \uC810 A\uAC00 \uC788\uB2E4.
+          \uC30D\uACE1\uC120 C\uAC00 \uC120\uBD84 AF\uC640 \uB9CC\uB098\uB294 \uC810\uC744
+          P, \uC120\uBD84 AF'\uACFC \uB9CC\uB098\uB294 \uC810\uC744 P'\uC774\uB77C
+          \uD558\uC790. \uC9C1\uC120 AF\uB294 \uC30D\uACE1\uC120 C\uC758 \uD55C \uC810\uADFC\uC120\uACFC
+          \uD3C9\uD589\uD558\uACE0 \uB2E4\uC74C\uC774 \uC131\uB9BD\uD560 \uB54C,
+          \uC30D\uACE1\uC120 C\uC758 \uC8FC\uCD95\uC758 \uAE38\uC774\uB294?"
+        formula: '\overline{AP} : \overline{PP''} = 5 : 6, \quad \overline{PF} =
+          1'
+        choices:
+        - \frac{13}{6}
+        - \frac{9}{4}
+        - \frac{7}{3}
+        - \frac{29}{12}
+        - \frac{5}{2}
+        points: 4
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: \frac{13}{6}
+      - id: 2023_math_geom_29
+        law_id: law_vector_dot
+        question_text: "\uD3C9\uBA74 \\alpha \uC704\uC5D0 \\overline{AB} = \\overline{CD}
+          = \\overline{AD} = 2, \\angle ABC = \\angle BCD = \\frac{\\pi}{3}\uC778
+          \uC0AC\uB2E4\uB9AC\uAF34 ABCD\uAC00 \uC788\uB2E4. \uB2E4\uC74C \uC870\uAC74\uC744
+          \uB9CC\uC871\uC2DC\uD0A4\uB294 \uD3C9\uBA74 \\alpha \uC704\uC758 \uB450
+          \uC810 P, Q\uC5D0 \uB300\uD558\uC5EC \\vec{CP} \\cdot \\vec{DQ}\uC758 \uAC12\uC744
+          \uAD6C\uD558\uC2DC\uC624.\\n(\uAC00) \\vec{AC} = 2(\\vec{AD} + \\vec{BP})\\n(\uB098)
+          \\vec{AC} \\cdot \\vec{PQ} = 6\\n(\uB2E4) 2 \\times \\angle BQA = \\angle
+          PBQ < \\frac{\\pi}{2}"
+        formula: 
+        choices: []
+        points: 4
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 0
+      - id: 2023_math_geom_30
+        law_id: law_vector_dot
+        question_text: "\uC88C\uD45C\uACF5\uAC04\uC5D0 \uC815\uC0AC\uBA74\uCCB4 ABCD\uAC00
+          \uC788\uB2E4. \uC815\uC0BC\uAC01\uD615 BCD\uC758 \uC678\uC2EC\uC744 \uC911\uC2EC\uC73C\uB85C
+          \uD558\uACE0 \uC810 B\uB97C \uC9C0\uB098\uB294 \uAD6C\uB97C S\uB77C \uD558\uC790.
+          \uAD6C S\uC640 \uC120\uBD84 AB\uAC00 \uB9CC\uB098\uB294 \uC810 \uC911 B\uAC00
+          \uC544\uB2CC \uC810\uC744 P, \uAD6C S\uC640 \uC120\uBD84 AC\uAC00 \uB9CC\uB098\uB294
+          \uC810 \uC911 C\uAC00 \uC544\uB2CC \uC810\uC744 Q, \uAD6C S\uC640 \uC120\uBD84
+          AD\uAC00 \uB9CC\uB098\uB294 \uC810 \uC911 D\uAC00 \uC544\uB2CC \uC810\uC744
+          R\uB77C \uD558\uACE0, \uC810 P\uC5D0\uC11C \uAD6C S\uC5D0 \uC811\uD558\uB294
+          \uD3C9\uBA74\uC744 \\alpha\uB77C \uD558\uC790. \uAD6C S\uC758 \uBC18\uC9C0\uB984\uC758
+          \uAE38\uC774\uAC00 6\uC77C \uB54C, \uC0BC\uAC01\uD615 PQR\uC758 \uD3C9\uBA74
+          \\alpha \uC704\uB85C\uC758 \uC815\uC0AC\uC601\uC758 \uB113\uC774\uB294
+          k\uC774\uB2E4. k^2\uC758 \uAC12\uC744 \uAD6C\uD558\uC2DC\uC624."
+        formula: 
+        choices: []
+        points: 4
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 0
+      - id: 2024_math_geom_23
+        law_id: law_vector_dot
+        question_text: "\uC88C\uD45C\uACF5\uAC04\uC758 \uB450 \uC810 A(1, 2, 3),
+          B(3, 4, 5) \uC0AC\uC774\uC758 \uAC70\uB9AC\uB294?"
+        formula: 
+        choices:
+        - 2\sqrt{3}
+        - 4
+        - 2\sqrt{5}
+        - 2\sqrt{6}
+        - 5
+        points: 2
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 2\sqrt{3}
+      - id: 2024_math_geom_24
+        law_id: law_vector_dot
+        question_text: "\uD3EC\uBB3C\uC120 y^2=8x\uC758 \uCD08\uC810\uACFC \uC900\uC120
+          \uC0AC\uC774\uC758 \uAC70\uB9AC\uB294?"
+        formula: y^2 = 8x
+        choices:
+        - 2
+        - 4
+        - 6
+        - 8
+        - 10
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 2
+      - id: 2024_math_geom_25
+        law_id: law_vector_dot
+        question_text: "\uD0C0\uC6D0\uC758 \uC7A5\uCD95\uC758 \uAE38\uC774\uB294?"
+        formula: \frac{x^2}{16} + \frac{y^2}{9} = 1
+        choices:
+        - 6
+        - 8
+        - 10
+        - 12
+        - 14
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 6
+      - id: 2024_math_geom_26
+        law_id: law_vector_dot
+        question_text: "\uB450 \uBCA1\uD130\uC758 \uB0B4\uC801\uC744 \uAD6C\uD558\uC2DC\uC624."
+        formula: \vec{a} \cdot \vec{b}
+        choices:
+        - 3
+        - 6
+        - 9
+        - 12
+        - 15
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 3
+      - id: 2024_math_geom_27
+        law_id: law_vector_dot
+        question_text: "\uC0BC\uC218\uC120\uC758 \uC815\uB9AC\uB97C \uC774\uC6A9\uD55C
+          \uAC70\uB9AC\uB97C \uAD6C\uD558\uC2DC\uC624."
+        formula: 
+        choices:
+        - \sqrt{5}
+        - \sqrt{6}
+        - \sqrt{7}
+        - 2\sqrt{2}
+        - 3
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: \sqrt{5}
+      - id: 2024_math_geom_28
+        law_id: law_vector_dot
+        question_text: "\uC30D\uACE1\uC120\uC758 \uC8FC\uCD95\uC758 \uAE38\uC774\uB97C
+          \uAD6C\uD558\uC2DC\uC624."
+        formula: \frac{x^2}{a^2} - \frac{y^2}{b^2} = 1
+        choices:
+        - 2
+        - 4
+        - 6
+        - 8
+        - 10
+        points: 4
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 2
+      - id: 2024_math_geom_29
+        law_id: law_vector_dot
+        question_text: "\uD3C9\uBA74\uBCA1\uD130\uC758 \uB0B4\uC801\uC758 \uCD5C\uB313\uAC12\uC744
+          \uAD6C\uD558\uC2DC\uC624."
+        formula: \vec{p} \cdot \vec{q}
+        choices: []
+        points: 4
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 0
+      - id: 2024_math_geom_30
+        law_id: law_vector_dot
+        question_text: "\uC815\uC0AC\uC601\uC758 \uB113\uC774 k\uC5D0 \uB300\uD558\uC5EC
+          k^2\uC758 \uAC12\uC744 \uAD6C\uD558\uC2DC\uC624."
+        formula: 
+        choices: []
+        points: 4
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 0
+      - id: 2025_math_geom_23
+        law_id: law_vector_dot
+        question_text: "\uC88C\uD45C\uACF5\uAC04\uC5D0\uC11C \uC810 A(2, 3, 4)\uB97C
+          xy\uD3C9\uBA74\uC5D0 \uB300\uD558\uC5EC \uB300\uCE6D\uC774\uB3D9\uD55C
+          \uC810\uC758 \uC88C\uD45C\uB294?"
+        formula: 
+        choices:
+        - (2, 3, -4)
+        - (2, -3, 4)
+        - (-2, 3, 4)
+        - (-2, -3, 4)
+        - (2, -3, -4)
+        points: 2
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: (2, 3, -4)
+      - id: 2025_math_geom_24
+        law_id: law_vector_dot
+        question_text: "\uD3EC\uBB3C\uC120\uC758 \uBC29\uC815\uC2DD\uC744 \uAD6C\uD558\uC2DC\uC624."
+        formula: y^2 = 12x
+        choices:
+        - 3
+        - 6
+        - 9
+        - 12
+        - 15
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 3
+      - id: 2025_math_geom_25
+        law_id: law_vector_dot
+        question_text: "\uD0C0\uC6D0 \uC704\uC758 \uC810\uC5D0\uC11C\uC758 \uC811\uC120\uC758
+          \uBC29\uC815\uC2DD\uC744 \uAD6C\uD558\uC2DC\uC624."
+        formula: \frac{x^2}{9} + \frac{y^2}{4} = 1
+        choices:
+        - 1
+        - 2
+        - 3
+        - 4
+        - 5
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 1
+      - id: 2025_math_geom_26
+        law_id: law_vector_dot
+        question_text: "\uBCA1\uD130\uC758 \uC5F0\uC0B0\uC744 \uAD6C\uD558\uC2DC\uC624."
+        formula: '|2\vec{a} - \vec{b}|'
+        choices:
+        - \sqrt{10}
+        - \sqrt{13}
+        - 4
+        - \sqrt{17}
+        - 3\sqrt{2}
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: \sqrt{10}
+      - id: 2025_math_geom_27
+        law_id: law_vector_dot
+        question_text: "\uC9C1\uC120\uACFC \uD3C9\uBA74\uC774 \uC774\uB8E8\uB294
+          \uAC01\uC758 \uD06C\uAE30\uB97C \uAD6C\uD558\uC2DC\uC624."
+        formula: \cos \theta
+        choices:
+        - \frac{1}{3}
+        - \frac{1}{2}
+        - \frac{\sqrt{3}}{3}
+        - \frac{\sqrt{2}}{2}
+        - \frac{\sqrt{3}}{2}
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: \frac{1}{3}
+      - id: 2025_math_geom_28
+        law_id: law_vector_dot
+        question_text: "\uC30D\uACE1\uC120\uC758 \uC815\uADFC\uC120\uC758 \uBC29\uC815\uC2DD\uC744
+          \uAD6C\uD558\uC2DC\uC624."
+        formula: \frac{x^2}{a^2} - \frac{y^2}{b^2} = 1
+        choices:
+        - 1
+        - 2
+        - 3
+        - 4
+        - 5
+        points: 4
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 1
+      - id: 2025_math_geom_29
+        law_id: law_vector_dot
+        question_text: "\uAD6C\uC640 \uD3C9\uBA74\uC774 \uB9CC\uB098\uC11C \uC0DD\uAE30\uB294
+          \uC6D0\uC758 \uB113\uC774\uB97C \uAD6C\uD558\uC2DC\uC624."
+        formula: x^2 + y^2 + z^2 = 25
+        choices: []
+        points: 4
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 0
+      - id: 2025_math_geom_30
+        law_id: law_vector_dot
+        question_text: "\uACF5\uAC04\uB3C4\uD615\uC5D0\uC11C\uC758 \uB113\uC774\uC758
+          \uCD5C\uB313\uAC12\uC744 \uAD6C\uD558\uC2DC\uC624."
+        formula: 
+        choices: []
+        points: 4
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 0
+      - id: 2025_math_geom_23
+        law_id: law_vector_dot
+        question_text: "\uC88C\uD45C\uACF5\uAC04\uC5D0\uC11C \uC810 A(2, 3, 4)\uB97C
+          xy\uD3C9\uBA74\uC5D0 \uB300\uD558\uC5EC \uB300\uCE6D\uC774\uB3D9\uD55C
+          \uC810\uC758 \uC88C\uD45C\uB294?"
+        formula: 
+        choices:
+        - (2, 3, -4)
+        - (2, -3, 4)
+        - (-2, 3, 4)
+        - (-2, -3, 4)
+        - (2, -3, -4)
+        points: 2
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: (2, 3, -4)
+      - id: 2025_math_geom_24
+        law_id: law_vector_dot
+        question_text: "\uD3EC\uBB3C\uC120\uC758 \uBC29\uC815\uC2DD\uC744 \uAD6C\uD558\uC2DC\uC624."
+        formula: y^2 = 12x
+        choices:
+        - 3
+        - 6
+        - 9
+        - 12
+        - 15
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 3
+      - id: 2025_math_geom_25
+        law_id: law_vector_dot
+        question_text: "\uD0C0\uC6D0 \uC704\uC758 \uC810\uC5D0\uC11C\uC758 \uC811\uC120\uC758
+          \uBC29\uC815\uC2DD\uC744 \uAD6C\uD558\uC2DC\uC624."
+        formula: \frac{x^2}{9} + \frac{y^2}{4} = 1
+        choices:
+        - 1
+        - 2
+        - 3
+        - 4
+        - 5
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 1
+      - id: 2025_math_geom_26
+        law_id: law_vector_dot
+        question_text: "\uBCA1\uD130\uC758 \uC5F0\uC0B0\uC744 \uAD6C\uD558\uC2DC\uC624."
+        formula: '|2\vec{a} - \vec{b}|'
+        choices:
+        - \sqrt{10}
+        - \sqrt{13}
+        - 4
+        - \sqrt{17}
+        - 3\sqrt{2}
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: \sqrt{10}
+      - id: 2025_math_geom_27
+        law_id: law_vector_dot
+        question_text: "\uC9C1\uC120\uACFC \uD3C9\uBA74\uC774 \uC774\uB8E8\uB294
+          \uAC01\uC758 \uD06C\uAE30\uB97C \uAD6C\uD558\uC2DC\uC624."
+        formula: \cos \theta
+        choices:
+        - \frac{1}{3}
+        - \frac{1}{2}
+        - \frac{\sqrt{3}}{3}
+        - \frac{\sqrt{2}}{2}
+        - \frac{\sqrt{3}}{2}
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: \frac{1}{3}
+      - id: 2025_math_geom_28
+        law_id: law_vector_dot
+        question_text: "\uC30D\uACE1\uC120\uC758 \uC815\uADFC\uC120\uC758 \uBC29\uC815\uC2DD\uC744
+          \uAD6C\uD558\uC2DC\uC624."
+        formula: \frac{x^2}{a^2} - \frac{y^2}{b^2} = 1
+        choices:
+        - 1
+        - 2
+        - 3
+        - 4
+        - 5
+        points: 4
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 1
+      - id: 2025_math_geom_29
+        law_id: law_vector_dot
+        question_text: "\uAD6C\uC640 \uD3C9\uBA74\uC774 \uB9CC\uB098\uC11C \uC0DD\uAE30\uB294
+          \uC6D0\uC758 \uB113\uC774\uB97C \uAD6C\uD558\uC2DC\uC624."
+        formula: x^2 + y^2 + z^2 = 25
+        choices: []
+        points: 4
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 0
+      - id: 2025_math_geom_30
+        law_id: law_vector_dot
+        question_text: "\uACF5\uAC04\uB3C4\uD615\uC5D0\uC11C\uC758 \uB113\uC774\uC758
+          \uCD5C\uB313\uAC12\uC744 \uAD6C\uD558\uC2DC\uC624."
+        formula: 
+        choices: []
+        points: 4
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 0
+      - id: 2026_math_geom_23
+        law_id: law_vector_dot
+        question_text: "\uC88C\uD45C\uACF5\uAC04\uC5D0\uC11C \uB450 \uC810 A(1, 0,
+          2), B(3, 4, 6)\uC758 \uC911\uC810\uC758 \uC88C\uD45C\uB294?"
+        formula: 
+        choices:
+        - (2, 2, 4)
+        - (2, 4, 4)
+        - (4, 4, 8)
+        - (2, 2, 8)
+        - (4, 2, 4)
+        points: 2
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: (2, 2, 4)
+      - id: 2026_math_geom_24
+        law_id: law_vector_dot
+        question_text: "\uCD08\uC810\uC774 (2, 0)\uC774\uACE0 \uC6D0\uC810\uC774
+          \uAF2D\uC9D3\uC810\uC778 \uD3EC\uBB3C\uC120\uC758 \uBC29\uC815\uC2DD\uC740?"
+        formula: 
+        choices:
+        - y^2=2x
+        - y^2=4x
+        - y^2=8x
+        - y^2=16x
+        - y^2=32x
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: y^2=2x
+      - id: 2026_math_geom_25
+        law_id: law_vector_dot
+        question_text: "\uD0C0\uC6D0\uC758 \uCD08\uC810 \uC0AC\uC774\uC758 \uAC70\uB9AC\uB294?"
+        formula: \frac{x^2}{25} + \frac{y^2}{9} = 1
+        choices:
+        - 4
+        - 6
+        - 8
+        - 10
+        - 12
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 4
+      - id: 2026_math_geom_26
+        law_id: law_vector_dot
+        question_text: "\uB450 \uBCA1\uD130 \vec{a}=(2, 1), \vec{b}=(1, 3)\uC5D0
+          \uB300\uD558\uC5EC |\vec{a}+\vec{b}|\uC758 \uAC12\uC740?"
+        formula: \vec{a}=(2, 1), \; \vec{b}=(1, 3)
+        choices:
+        - 3
+        - 4
+        - 5
+        - 6
+        - 7
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 3
+      - id: 2026_math_geom_27
+        law_id: law_vector_dot
+        question_text: "\uD3C9\uBA74 \u03B1 \uC704\uB85C\uC758 \uC815\uC0AC\uC601\uC758
+          \uB113\uC774\uB97C \uAD6C\uD558\uC2DC\uC624."
+        formula: S \cos \theta
+        choices:
+        - 2
+        - 4
+        - 6
+        - 8
+        - 10
+        points: 3
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 2
+      - id: 2026_math_geom_28
+        law_id: law_vector_dot
+        question_text: "\uC30D\uACE1\uC120 \uC704\uC758 \uC810\uC5D0\uC11C\uC758
+          \uC811\uC120\uC758 \uAE30\uC6B8\uAE30\uB97C \uAD6C\uD558\uC2DC\uC624."
+        formula: x^2 - y^2 = 3
+        choices:
+        - 1
+        - 2
+        - 3
+        - 4
+        - 5
+        points: 4
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 1
+      - id: 2026_math_geom_29
+        law_id: law_vector_dot
+        question_text: "\uAD6C x^2+y^2+z^2-4x=0 \uC758 \uC911\uC2EC\uACFC \uBC18\uC9C0\uB984\uC758
+          \uD569\uC744 \uAD6C\uD558\uC2DC\uC624."
+        formula: x^2+y^2+z^2-4x=0
+        choices: []
+        points: 4
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 0
+      - id: 2026_math_geom_30
+        law_id: law_vector_dot
+        question_text: "\uBCA1\uD130 \uB0B4\uC801\uC758 \uCD5C\uB313\uAC12 k\uC5D0
+          \uB300\uD558\uC5EC k^2\uC758 \uAC12\uC744 \uAD6C\uD558\uC2DC\uC624."
+        formula: 
+        choices: []
+        points: 4
+        has_image: 0
+        image_asset_id: 
+        render_type: None
+        interaction_node:
+          node_type: EntityRuneNode
+          trigger_event: OnPlayerDecipher
+          required_solution: 0

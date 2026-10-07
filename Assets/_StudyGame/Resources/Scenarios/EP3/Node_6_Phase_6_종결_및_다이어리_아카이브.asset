@@ -1,0 +1,57 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7bb2c85358cf6284e9eadc2b78252a4d, type: 3}
+  m_Name: "Node_6_Phase_6_\uC885\uACB0_\uBC0F_\uB2E4\uC774\uC5B4\uB9AC_\uC544\uCE74\uC774\uBE0C"
+  m_EditorClassIdentifier: 
+  NodeId: 5d20a209-9435-4e5f-8520-32941456b4b8
+  NodeTitle: "[Phase 6] \uC885\uACB0 \uBC0F \uB2E4\uC774\uC5B4\uB9AC \uC544\uCE74\uC774\uBE0C"
+  TemplateType: SNS
+  ThemeColorHex: '#ffffff'
+  ThemeIcon: "\U0001F4DD"
+  Properties:
+  - PropertyName: Dialogues
+    Type: 5
+    StringValue: 
+    FloatValue: 0
+    ColorValue: {r: 1, g: 1, b: 1, a: 1}
+    AssetValue: {fileID: 0}
+    TableColumns:
+    - "\uD654\uC790"
+    - "\uB300\uC0AC"
+    TableRows:
+    - Cells:
+      - "\uC724"
+      - "...\uC5B4, \uADF8\uB7EC\uB124. \uC801\uC5B4\uB3C4 \uB0B4\uAC00 \uC77D\uC740
+        \uB370\uAE4C\uC9C4 \uBB54 \uB0B4\uC6A9\uC778\uC9C0 \uC54C\uACA0\uC5B4. \uD558,
+        \uC9C4\uC9DC \uC9C4 \uBE60\uC9C4\uB2E4."
+    ShowAsBadge: 0
+  - PropertyName: SNS Feed
+    Type: 5
+    StringValue: 
+    FloatValue: 0
+    ColorValue: {r: 1, g: 1, b: 1, a: 1}
+    AssetValue: {fileID: 0}
+    TableColumns:
+    - "\uACC4\uC815\uBA85"
+    - "\uB0B4\uC6A9"
+    TableRows:
+    - Cells:
+      - '@Blank_Paper [Public]'
+      - "\uAD6D\uC5B4\uC2E4 \uD0C0\uC774\uBA38 \uC18C\uB9AC \uC0AC\uB77C\uC9D0!!
+        \uC640 \uB098 \uC9C4\uC9DC \u3148\u3134 \uC815\uC2E0\uBCD1 \uAC78\uB9AC\uB294
+        \uC904 \uC54C\uC558\uB124."
+    - Cells:
+      - '@Lost_Pen [Public]'
+      - "\uCCB4\uC721\uBCF5 \uCC3E\uC558\uC2B5\uB2C8\uB2E4!! \uBCF8\uAD00 3\uCE35
+        \uBD84\uC2E4\uBB3C \uC13C\uD130\uC5D0 \uB9E1\uACA8\uC8FC\uC2E0 \uBD84 \uAC10\uC0AC\uD569\uB2C8\uB2E4
+        \uC808 \uBC1B\uC73C\uC138\uC694 \U0001F647"
+    ShowAsBadge: 0

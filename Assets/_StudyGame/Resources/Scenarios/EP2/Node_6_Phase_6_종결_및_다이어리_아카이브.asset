@@ -1,0 +1,55 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7bb2c85358cf6284e9eadc2b78252a4d, type: 3}
+  m_Name: "Node_6_Phase_6_\uC885\uACB0_\uBC0F_\uB2E4\uC774\uC5B4\uB9AC_\uC544\uCE74\uC774\uBE0C"
+  m_EditorClassIdentifier: 
+  NodeId: 310dcac5-b14c-4158-9505-21e6aca8dbdc
+  NodeTitle: "[Phase 6] \uC885\uACB0 \uBC0F \uB2E4\uC774\uC5B4\uB9AC \uC544\uCE74\uC774\uBE0C"
+  TemplateType: SNS
+  ThemeColorHex: '#ffffff'
+  ThemeIcon: "\U0001F4DD"
+  Properties:
+  - PropertyName: Dialogues
+    Type: 5
+    StringValue: 
+    FloatValue: 0
+    ColorValue: {r: 1, g: 1, b: 1, a: 1}
+    AssetValue: {fileID: 0}
+    TableColumns:
+    - "\uD654\uC790"
+    - "\uB300\uC0AC"
+    TableRows:
+    - Cells:
+      - "\uC9C0\uBBFC"
+      - "...\uADF8\uB798\uC57C\uACA0\uC5B4. \uB2F9\uBD84\uAC04\uC740 \uC880 \uC785
+        \uB2E4\uBB3C\uACE0 \uC788\uC744\uB798."
+    ShowAsBadge: 0
+  - PropertyName: SNS Feed
+    Type: 5
+    StringValue: 
+    FloatValue: 0
+    ColorValue: {r: 1, g: 1, b: 1, a: 1}
+    AssetValue: {fileID: 0}
+    TableColumns:
+    - "\uACC4\uC815\uBA85"
+    - "\uB0B4\uC6A9"
+    TableRows:
+    - Cells:
+      - '@Listening_Test_Hater [Public]'
+      - "\uC5B4\uD559\uC2E4 \uC815\uC0C1\uD654\uB428! \uC640 \u3148\u3134 \uB098
+        \uBC29\uAE08 \uB0B4 \uC18D\uB9C8\uC74C \uC785 \uBC16\uC73C\uB85C \uB0B4\uBC49\uC744
+        \uBED4;; \uB2E4\uB4E4 \uC870\uC2EC\uD574\uB77C."
+    - Cells:
+      - '@Midnight_Snack [Public]'
+      - "\uC624\uB298 \uC11D\uC2DD \uB9DB\uC5C6\uC5B4\uC11C \uCEF5\uB77C\uBA74 \uB053\uC5EC
+        \uBA39\uB294 \uC911 \u314B\u314B\u314B"
+    ShowAsBadge: 0

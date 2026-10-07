@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7bb2c85358cf6284e9eadc2b78252a4d, type: 3}
+  m_Name: "Node_5_Phase_5_\uBCF4\uC2A4\uC804_\uD074\uB77C\uC774\uB9E5\uC2A4_(\uC9C8\uBB38_\uC870\uB9BD\uAE30)"
+  m_EditorClassIdentifier: 
+  NodeId: 8be48424-49e6-4419-87a0-fde2d09fb971
+  NodeTitle: "[Phase 5] \uBCF4\uC2A4\uC804 \uD074\uB77C\uC774\uB9E5\uC2A4 (\uC9C8\uBB38
+    \uC870\uB9BD\uAE30)"
+  TemplateType: "\uC77C\uBC18"
+  ThemeColorHex: '#ffffff'
+  ThemeIcon: "\U0001F4DD"
+  Properties: []

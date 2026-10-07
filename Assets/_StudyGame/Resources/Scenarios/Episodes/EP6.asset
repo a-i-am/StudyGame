@@ -1,0 +1,143 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7bb2c85358cf6284e9eadc2b78252a4d, type: 3}
+  m_Name: EP6
+  m_EditorClassIdentifier: 
+  NodeId: dd4680fd-bb51-4bcf-a87b-aae6239bc70b
+  NodeTitle: "\U0001F4D6 \uC5D0\uD53C\uC18C\uB4DC 6 (\uACFC\uD559 - \uD33D\uCC3D\uD558\uB294
+    \uB208\uBB3C) \uC0C1\uC138 \uC2DC\uB098\uB9AC\uC624 \uB300\uBCF8"
+  TemplateType: "\uC5D0\uD53C\uC18C\uB4DC \uD1B5\uC9DC \uB178\uB4DC"
+  ThemeColorHex: '#9b59b6'
+  ThemeIcon: "\U0001F4DA"
+  Properties:
+  - PropertyName: "[Phase 0] \uD504\uB864\uB85C\uADF8 \uBC0F \uD544\uB4DC \uD0D0\uD5D8
+      (\uC5BC\uC5B4\uBD99\uC740 \uACFC\uD559\uAD00) (SNS)"
+    Type: 5
+    StringValue: 
+    FloatValue: 0
+    ColorValue: {r: 1, g: 1, b: 1, a: 1}
+    AssetValue: {fileID: 0}
+    TableColumns:
+    - "\uACC4\uC815\uBA85"
+    - "\uB0B4\uC6A9"
+    TableRows:
+    - Cells:
+      - '@Escape_Library [Public]'
+      - "\uBBF8\uCE5C \uACFC\uD559\uC2E4 \uCABD \uAC00\uC9C0 \uB9C8\uC148;; \uBC29\uAE08
+        \uB4E4\uACE0 \uC788\uB358 \uC0DD\uC218\uBCD1 \uBE60\uC9C1 \uD558\uACE0 \uD1B5\uC9F8\uB85C
+        \uC5BC\uC5B4\uD130\uC9D0."
+    - Cells:
+      - '@Hot_Pack_AD [Ad]'
+      - "\uBD99\uC774\uB294 \uD56B\uD329 100\uAC1C \uC138\uD2B8! \uC601\uD558 20\uB3C4\uC5D0\uB3C4
+        \uB044\uB5A1\uC5C6\uB294 \uD6C4\uB048\uD568!"
+    - Cells:
+      - '@Cat_Lover_99 [Public]'
+      - "\uD559\uAD50 \uB4A4\uC5D0 \uAE38\uB0E5\uC774\uB4E4 \uCD94\uC6CC\uC11C \uC5B4\uB5A1\uD558\uB0D0
+        \u3160\u3160 \uB2E4\uB4E4 \uC2B5\uC2DD \uCE94 \uC8FC\uC9C0 \uB9C8\uB77C \uAE08\uBC29
+        \uC5BC\uC5B4\uC11C \uC560\uB4E4 \uD600 \uB2E4\uCE68 \u3160 \uB530\uB73B\uD55C
+        \uBB3C\uB85C \uC8FC\uC148 \u3160"
+    ShowAsBadge: 1
+  - PropertyName: "[Phase 1] \uB300\uD654 A (\uD574\uC601 \uCCAB \uC870\uC6B0) (\uB300\uD654)"
+    Type: 5
+    StringValue: 
+    FloatValue: 0
+    ColorValue: {r: 1, g: 1, b: 1, a: 1}
+    AssetValue: {fileID: 0}
+    TableColumns:
+    - "\uD654\uC790"
+    - "\uB300\uC0AC"
+    TableRows:
+    - Cells:
+      - "\uD574\uC601"
+      - "\uCC38\uC544\uC57C \uB3FC. \uD22D\uD558\uBA74 \uC6B4\uB2E4\uACE0 \uC560\uB4E4\uC774
+        \uC9DC\uC99D \uB0C8\uB2E8 \uB9D0\uC774\uC57C. \uADF8\uB7EC\uB2C8\uAE4C \uB2E4
+        \uC5BC\uB824\uBC84\uB824\uC57C \uD574."
+    - Cells:
+      - "\uD574\uC601"
+      - "\uC548\uC5D0 \uC788\uB294 \uBB3C\uAE30\uB97C \uB2E4 \uC5BC\uB824\uBC84\uB9AC\uBA74...
+        \uB354 \uC774\uC0C1 \uD758\uB7EC\uB0B4\uB9AC\uC9C0 \uC54A\uACA0\uC9C0. \uB098
+        \uC9C4\uC9DC \uAFB9 \uCC38\uACE0 \uC788\uB2E4\uACE0."
+    ShowAsBadge: 1
+  - PropertyName: "[Phase 2] \uD544\uB4DC \uC561\uC158 \uBC0F \uC544\uC774\uD15C
+      \uD0D0\uC0C9"
+    Type: 0
+    StringValue: "\uC774\uBCA4\uD2B8 \uC0C1\uD638\uC791\uC6A9 \uBC0F \uC9C0\uBB38
+      \uCC98\uB9AC"
+    FloatValue: 0
+    ColorValue: {r: 1, g: 1, b: 1, a: 1}
+    AssetValue: {fileID: 0}
+    TableColumns:
+    - "\uD654\uC790"
+    - "\uB300\uC0AC"
+    TableRows: []
+    ShowAsBadge: 1
+  - PropertyName: "[Phase 3] \uB371 \uC804\uD22C (\uC911\uD615 \uC774\uC0C1\uD604\uC0C1)"
+    Type: 0
+    StringValue: "\uC774\uBCA4\uD2B8 \uC0C1\uD638\uC791\uC6A9 \uBC0F \uC9C0\uBB38
+      \uCC98\uB9AC"
+    FloatValue: 0
+    ColorValue: {r: 1, g: 1, b: 1, a: 1}
+    AssetValue: {fileID: 0}
+    TableColumns:
+    - "\uD654\uC790"
+    - "\uB300\uC0AC"
+    TableRows: []
+    ShowAsBadge: 1
+  - PropertyName: "[Phase 4] \uB300\uD654 B (\uBC29\uC5B4\uB9C9 \uD30C\uD6FC \uBC0F
+      \uC7AC\uC9C4\uC785) (\uB300\uD654)"
+    Type: 5
+    StringValue: 
+    FloatValue: 0
+    ColorValue: {r: 1, g: 1, b: 1, a: 1}
+    AssetValue: {fileID: 0}
+    TableColumns:
+    - "\uD654\uC790"
+    - "\uB300\uC0AC"
+    TableRows:
+    - Cells:
+      - "\uD574\uC601"
+      - "\uC548 \uB3FC, \uCC38\uC544\uC57C \uD574... \uCC38\uC744 \uC218 \uC788\uC5B4...!"
+    - Cells:
+      - "\uD574\uC601"
+      - "\uB2E4\uB4E4 \uB098\uBCF4\uACE0 \uD53C\uACE4\uD558\uB314\uC5B4! \uADF8\uB7EC\uB2C8\uAE4C
+        \uD55C \uBC29\uC6B8\uB3C4 \uC548 \uB0A8\uAE30\uACE0 \uB2E4 \uC5BC\uB824\uBC84\uB824\uC57C
+        \uD55C\uB2E8 \uB9D0\uC774\uC57C!!"
+    ShowAsBadge: 1
+  - PropertyName: "[Phase 5] \uBCF4\uC2A4\uC804 \uD074\uB77C\uC774\uB9E5\uC2A4 (\uC9C8\uBB38
+      \uC870\uB9BD\uAE30: \uACFC\uD559 \uACFC\uBAA9 \uAE30\uBBF9)"
+    Type: 0
+    StringValue: "\uC774\uBCA4\uD2B8 \uC0C1\uD638\uC791\uC6A9 \uBC0F \uC9C0\uBB38
+      \uCC98\uB9AC"
+    FloatValue: 0
+    ColorValue: {r: 1, g: 1, b: 1, a: 1}
+    AssetValue: {fileID: 0}
+    TableColumns:
+    - "\uD654\uC790"
+    - "\uB300\uC0AC"
+    TableRows: []
+    ShowAsBadge: 1
+  - PropertyName: "[Phase 6] \uC885\uACB0 \uBC0F \uB2E4\uC774\uC5B4\uB9AC \uC544\uCE74\uC774\uBE0C
+      (SNS)"
+    Type: 5
+    StringValue: 
+    FloatValue: 0
+    ColorValue: {r: 1, g: 1, b: 1, a: 1}
+    AssetValue: {fileID: 0}
+    TableColumns:
+    - "\uACC4\uC815\uBA85"
+    - "\uB0B4\uC6A9"
+    TableRows:
+    - Cells:
+      - '@Escape_Library [Public]'
+      - "\uC640 \uACFC\uD559\uAD00 \uC628\uC218 \uB098\uC634 \u3160\u3160\u3160 \uC0B4\uC558\uB2E4
+        \u3160\u3160\u3160 \uD328\uB529 \uBC97\uC5B4 \uB358\uC9D0!"
+    ShowAsBadge: 1

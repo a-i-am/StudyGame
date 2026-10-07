@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7bb2c85358cf6284e9eadc2b78252a4d, type: 3}
+  m_Name: 2023_math_geom_23
+  m_EditorClassIdentifier: 
+  NodeId: 2023_math_geom_23
+  NodeTitle: '[Math] '
+  TemplateType: "\uAE30\uBBF9 (Anomaly)"
+  ThemeColorHex: '#3366FF'
+  ThemeIcon: "\U0001F4D0"
+  Properties:
+  - PropertyName: Original Formula
+    Type: 0
+    StringValue: 
+    FloatValue: 0
+    ColorValue: {r: 1, g: 1, b: 1, a: 1}
+    AssetValue: {fileID: 0}
+    TableColumns:
+    - "\uD654\uC790"
+    - "\uB300\uC0AC"
+    TableRows: []
+    ShowAsBadge: 0
+  - PropertyName: "\U0001F3AF \uAE30\uBBF9 1: Generic"
+    Type: 0
+    StringValue: "\uC57D\uC810: 1"
+    FloatValue: 0
+    ColorValue: {r: 1, g: 1, b: 1, a: 1}
+    AssetValue: {fileID: 0}
+    TableColumns:
+    - "\uD654\uC790"
+    - "\uB300\uC0AC"
+    TableRows: []
+    ShowAsBadge: 1

@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e6e2bd4f683cf74987c0cd6edd6953b, type: 3}
+  m_Name: TutorSkill_Node Id
+  m_EditorClassIdentifier: 
+  nodeId: tutor_limit_02
+  skillName: "극한 직관 연산"
+  description: "도영이와의 협동 연산. 이상현상 타격 시 보너스 추론 포인트를 획득합니다."
+  icon: {fileID: 0}
+  requiredConcept: {fileID: 0}
+  prerequisites: []
+  effectType: 1
+  effectValue: 15
+  rewardSentenceItem: {fileID: 0}

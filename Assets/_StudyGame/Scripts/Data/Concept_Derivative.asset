@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ff0930d99ee5574aa08aff5a8a1fe58, type: 3}
+  m_Name: Concept_Derivative
+  m_EditorClassIdentifier: 
+  conceptId: 
+  title: "\uB3C4\uD568\uC218"
+  subject: 0
+  prerequisites: []
+  archiveSummary: "\uC21C\uAC04\uBCC0\uD654\uC728\uC744 \uD568\uC218\uB85C \uB098\uD0C0\uB0B8
+    \uAC83"
+  loreFlavorText: 
+  diaryIcon: {fileID: 0}
