@@ -1,0 +1,23 @@
+{
+    "name": "StudyGame.Combat.Tests.PlayMode",
+    "rootNamespace": "StudyGame.Combat.Tests",
+    "references": [
+        "StudyGame.Combat",
+        "Cinemachine",
+        "Unity.InputSystem",
+        "UnityEngine.TestRunner"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "nunit.framework.dll"
+    ],
+    "autoReferenced": false,
+    "defineConstraints": [
+        "UNITY_INCLUDE_TESTS"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
