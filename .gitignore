@@ -184,7 +184,8 @@ temp_tools.jsonl
 Assets/Resources/
 
 
-# Private Vault for AI and sensitive docs
+# Archive and Private Vault for project docs and sensitive assets
+_archive/
 .PrivateVault/
 
 # Private Repo / AI System Infrastructure
@@ -198,3 +199,10 @@ scripts/
 # Private Art Assets
 Assets/PrivateAssets/
 Assets/PrivateAssets.meta
+
+# Local editor scratch scripts and screenshots
+Assets/Editor/FindSlowRunScript.cs*
+Assets/Editor/FixAllRigsScript.cs*
+Assets/Editor/InspectFBXScript.cs*
+Assets/Screenshots/
+Assets/Screenshots.meta
