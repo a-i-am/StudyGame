@@ -194,7 +194,7 @@ _archive/
 AGENTS.md
 CLAUDE.md
 GEMINI.md
-scripts/
+/scripts/
 
 # Private Art Assets
 Assets/PrivateAssets/
