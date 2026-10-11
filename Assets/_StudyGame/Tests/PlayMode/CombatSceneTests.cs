@@ -152,6 +152,30 @@ namespace StudyGame.Combat.Tests
         }
 
         [UnityTest]
+        public IEnumerator PlayerHidesWhenCameraIsPushedIntoBody()
+        {
+            Renderer[] renderers = _player.GetComponentsInChildren<Renderer>(true);
+            Assert.Greater(renderers.Length, 0);
+            Transform target = _player.transform.Find("CameraTarget");
+            Vector3 back = -target.forward;
+            back.y = 0f;
+            back.Normalize();
+
+            GameObject wall = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            wall.transform.position = target.position + back * (_player.GetComponent<CharacterController>().radius + 0.2f);
+            wall.transform.rotation = Quaternion.LookRotation(back);
+            wall.transform.localScale = new Vector3(8f, 8f, 0.2f);
+            Physics.SyncTransforms();
+
+            for (int i = 0; i < 5; i++) yield return null;
+            Assert.IsTrue(renderers[0].forceRenderingOff, "camera " + _brain.transform.position);
+
+            UnityEngine.Object.Destroy(wall);
+            yield return new WaitForSeconds(2f);
+            Assert.IsFalse(renderers[0].forceRenderingOff);
+        }
+
+        [UnityTest]
         public IEnumerator UpdateLoopsDoNotAllocate()
         {
             _pad = InputSystem.AddDevice<Gamepad>();

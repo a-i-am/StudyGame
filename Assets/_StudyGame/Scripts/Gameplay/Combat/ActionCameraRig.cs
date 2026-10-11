@@ -14,6 +14,7 @@ namespace StudyGame.Combat
         [SerializeField] float _dashFov = 58f;
         [SerializeField] float _referenceAspect = 16f / 9f;
         [SerializeField] float _maxVerticalFov = 80f;
+        [SerializeField] float _hideDistance = 0.8f;
 
         [SerializeField] InputActionAsset _actions;
         [SerializeField] Transform _followTarget;
@@ -23,12 +24,15 @@ namespace StudyGame.Combat
         [SerializeField] float _maxPitch = 60f;
 
         InputAction _look;
+        Renderer[] _playerRenderers;
+        bool _playerHidden;
         float _yaw;
         float _pitch;
 
         void Awake()
         {
             _look = _actions.FindActionMap("Player", true).FindAction("Look", true);
+            _playerRenderers = _player.GetComponentsInChildren<Renderer>(true);
         }
 
         void OnEnable()
@@ -62,6 +66,12 @@ namespace StudyGame.Combat
             float explore = Mathf.Min(FovMath.VerticalFovForAspect(_exploreFov, _referenceAspect, _outputCamera.aspect), _maxVerticalFov);
             _exploreCamera.m_Lens.FieldOfView = explore;
             _dashCamera.m_Lens.FieldOfView = explore + _dashFov - _exploreFov;
+
+            // shortcut: 즉시 숨김, 에셋 세션에서 MToon 디더 페이드로 교체
+            bool hide = (_outputCamera.transform.position - _followTarget.position).sqrMagnitude < _hideDistance * _hideDistance;
+            if (hide == _playerHidden) return;
+            _playerHidden = hide;
+            for (int i = 0; i < _playerRenderers.Length; i++) _playerRenderers[i].forceRenderingOff = hide;
         }
     }
 }
