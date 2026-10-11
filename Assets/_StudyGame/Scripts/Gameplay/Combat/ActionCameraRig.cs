@@ -13,8 +13,7 @@ namespace StudyGame.Combat
         [SerializeField] float _exploreFov = 50f;
         [SerializeField] float _dashFov = 58f;
         [SerializeField] float _referenceAspect = 16f / 9f;
-        [SerializeField] int _activePriority = 20;
-        [SerializeField] int _inactivePriority = 10;
+        [SerializeField] float _maxVerticalFov = 80f;
 
         [SerializeField] InputActionAsset _actions;
         [SerializeField] Transform _followTarget;
@@ -24,8 +23,6 @@ namespace StudyGame.Combat
         [SerializeField] float _maxPitch = 60f;
 
         InputAction _look;
-        bool _dashActive;
-        float _lastAspect = -1f;
         float _yaw;
         float _pitch;
 
@@ -34,11 +31,20 @@ namespace StudyGame.Combat
             _look = _actions.FindActionMap("Player", true).FindAction("Look", true);
         }
 
+        void OnEnable()
+        {
+            _look.Enable();
+        }
+
+        void OnDisable()
+        {
+            _look.Disable();
+        }
+
         void Start()
         {
             _yaw = _followTarget.eulerAngles.y;
             _pitch = Mathf.DeltaAngle(0f, _followTarget.eulerAngles.x);
-            ApplyPriorities(false);
         }
 
         void LateUpdate()
@@ -51,23 +57,11 @@ namespace StudyGame.Combat
             _pitch = Mathf.Clamp(_pitch - look.y * scale, _minPitch, _maxPitch);
             _followTarget.rotation = Quaternion.Euler(_pitch, _yaw, 0f);
 
-            bool dashing = _player.IsDashing;
-            if (dashing != _dashActive) ApplyPriorities(dashing);
+            _dashCamera.Priority = _player.IsDashing ? 30 : 10;
 
-            float aspect = _outputCamera.aspect;
-            if (!Mathf.Approximately(aspect, _lastAspect))
-            {
-                _lastAspect = aspect;
-                _exploreCamera.m_Lens.FieldOfView = FovMath.VerticalFovForAspect(_exploreFov, _referenceAspect, aspect);
-                _dashCamera.m_Lens.FieldOfView = FovMath.VerticalFovForAspect(_dashFov, _referenceAspect, aspect);
-            }
-        }
-
-        void ApplyPriorities(bool dashing)
-        {
-            _dashActive = dashing;
-            _exploreCamera.Priority = dashing ? _inactivePriority : _activePriority;
-            _dashCamera.Priority = dashing ? _activePriority : _inactivePriority;
+            float explore = Mathf.Min(FovMath.VerticalFovForAspect(_exploreFov, _referenceAspect, _outputCamera.aspect), _maxVerticalFov);
+            _exploreCamera.m_Lens.FieldOfView = explore;
+            _dashCamera.m_Lens.FieldOfView = explore + _dashFov - _exploreFov;
         }
     }
 }

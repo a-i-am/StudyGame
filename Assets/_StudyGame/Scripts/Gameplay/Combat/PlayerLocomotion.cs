@@ -16,7 +16,7 @@ namespace StudyGame.Combat
         [SerializeField] float _rotationSharpness = 12f;
         [SerializeField] float _gravity = 9.8f;
         [SerializeField] float _dashDistance = 5f;
-        [SerializeField] float _dashDuration = 0.25f;
+        [SerializeField, Min(0.01f)] float _dashDuration = 0.25f;
         [SerializeField] float _dashInvulnerableDuration = 0.2f;
         [SerializeField] float _dashCooldown = 0.5f;
 
@@ -26,6 +26,7 @@ namespace StudyGame.Combat
         InputAction _sprint;
         DashTimer _dashTimer;
         Vector3 _dashDirection;
+        float _dashSpeed;
         float _verticalVelocity;
 
         public bool IsDashing => _dashTimer != null && _dashTimer.IsDashing;
@@ -35,6 +36,7 @@ namespace StudyGame.Combat
         {
             _controller = GetComponent<CharacterController>();
             _dashTimer = new DashTimer(_dashDuration, _dashInvulnerableDuration, _dashCooldown);
+            _dashSpeed = _dashDistance / _dashDuration;
             InputActionMap map = _actions.FindActionMap("Player", true);
             _move = map.FindAction("Move", true);
             _dashAction = map.FindAction("Dash", true);
@@ -43,12 +45,16 @@ namespace StudyGame.Combat
 
         void OnEnable()
         {
-            _actions.Enable();
+            _move.Enable();
+            _dashAction.Enable();
+            _sprint.Enable();
         }
 
         void OnDisable()
         {
-            _actions.Disable();
+            _move.Disable();
+            _dashAction.Disable();
+            _sprint.Disable();
         }
 
         void Update()
@@ -64,7 +70,7 @@ namespace StudyGame.Combat
             Vector3 displacement;
             if (_dashTimer.IsDashing)
             {
-                displacement = _dashDirection * (_dashDistance / _dashDuration * _dashTimer.Tick(dt));
+                displacement = _dashDirection * (_dashSpeed * _dashTimer.Tick(dt));
                 Face(_dashDirection, dt);
             }
             else

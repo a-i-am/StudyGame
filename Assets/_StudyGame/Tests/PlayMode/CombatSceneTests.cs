@@ -26,6 +26,7 @@ namespace StudyGame.Combat.Tests
         public IEnumerator LoadScene()
         {
             Time.captureFramerate = 30;
+            foreach (InputDevice device in InputSystem.devices) InputSystem.DisableDevice(device);
 #if UNITY_EDITOR
             yield return UnityEditor.SceneManagement.EditorSceneManager.LoadSceneAsyncInPlayMode(
                 ScenePath, new LoadSceneParameters(LoadSceneMode.Single));
@@ -46,6 +47,7 @@ namespace StudyGame.Combat.Tests
             Time.captureFramerate = 0;
             if (_pad != null) InputSystem.RemoveDevice(_pad);
             _pad = null;
+            foreach (InputDevice device in InputSystem.devices) InputSystem.EnableDevice(device);
         }
 
         [UnityTest]
@@ -55,11 +57,22 @@ namespace StudyGame.Combat.Tests
             Camera output = _brain.OutputCamera;
             Assert.AreEqual(1.45f, target.localPosition.y, 1e-3f);
             Assert.AreEqual(30f, Mathf.DeltaAngle(0f, target.eulerAngles.x), 0.5f);
-            Assert.AreEqual(FovMath.VerticalFovForAspect(60f, 16f / 9f, output.aspect), output.fieldOfView, 0.5f);
+            Assert.AreEqual(Mathf.Min(FovMath.VerticalFovForAspect(60f, 16f / 9f, output.aspect), 80f), output.fieldOfView, 0.5f);
 
             Vector3 expected = target.position + Quaternion.Euler(0f, target.eulerAngles.y, 0f) * new Vector3(0f, 1.5f, -4f);
             Assert.Less(Vector3.Distance(expected, output.transform.position), 0.1f, "camera " + output.transform.position);
             yield break;
+        }
+
+        [UnityTest]
+        public IEnumerator PortraitFovIsCapped()
+        {
+            Camera output = _brain.OutputCamera;
+            output.aspect = 9f / 16f;
+            yield return null;
+            yield return null;
+            Assert.AreEqual(80f, output.fieldOfView, 0.5f);
+            output.ResetAspect();
         }
 
         [UnityTest]
@@ -149,11 +162,9 @@ namespace StudyGame.Combat.Tests
 
             Action locomotion = Bind(_player, "Update");
             Action camera = Bind(_rig, "LateUpdate");
-            FieldInfo lastAspect = typeof(ActionCameraRig).GetField("_lastAspect", BindingFlags.Instance | BindingFlags.NonPublic);
             locomotion();
             camera();
 
-            lastAspect.SetValue(_rig, -1f);
             Assert.That(() => { locomotion(); camera(); }, Is.Not.AllocatingGCMemory());
             _player.TryDash(_player.transform.forward);
             Assert.That(() => { locomotion(); camera(); }, Is.Not.AllocatingGCMemory());

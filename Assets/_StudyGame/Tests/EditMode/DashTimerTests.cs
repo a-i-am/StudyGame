@@ -54,6 +54,17 @@ namespace StudyGame.Combat.Tests
             Assert.AreEqual(0.1f, _timer.Tick(0.1f), 1e-6f);
         }
 
+        [Test]
+        public void CooldownCountsOvershootFromDashEnd()
+        {
+            _timer.TryStart();
+            _timer.Tick(0.3f);
+            _timer.Tick(0.44f);
+            Assert.IsFalse(_timer.CanDash);
+            _timer.Tick(0.02f);
+            Assert.IsTrue(_timer.CanDash);
+        }
+
         [TestCase(1f / 30f)]
         [TestCase(1f / 45f)]
         [TestCase(1f / 165f)]
